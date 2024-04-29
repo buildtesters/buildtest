@@ -13,6 +13,102 @@ from buildtest.utils.file import read_file, resolve_path
 from buildtest.utils.tools import checkColor
 
 
+def print_by_query(
+    report,
+    name,
+    theme=None,
+    output=None,
+    error=None,
+    testpath=None,
+    buildscript=None,
+    buildenv=None,
+):
+    """This method prints the test records when they are queried using ``buildtest inspect query`` command.
+
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        name (list): List of test names to query
+        theme (str, optional): Specify pygments theme for syntax highlighting
+        output (bool, optional): Print output file when set to True
+        error (bool, optional): Print error file when set to True
+        testpath (bool, optional): Print testpath when set to True
+        buildscript (bool, optional): Print buildscript when set to True
+        buildenv (bool, optional): Print buildenv when set to True
+    """
+
+    records = {}
+    query_builders = fetch_test_names(report, name)
+
+    for builder in query_builders:
+        tid = builder.split("/")[1]
+        name = builder.split("/")[0]
+        if not records.get(name):
+            records[name] = []
+
+        records[name].append(report.fetch_records_by_ids([tid]))
+
+    for name, test_record in records.items():
+        for tests in test_record:
+            for full_id, test in tests.items():
+                theme = theme or "monokai"
+
+                console.rule(f"[cyan]{name}/{full_id}")
+
+                console.print(f"[blue]Executor: {test['executor']}")
+                console.print(f"[blue]Description: {test['description']}")
+                console.print(f"[blue]State: {test['state']}")
+                console.print(f"[blue]Returncode: {test['returncode']}")
+                console.print(f"[green]Runtime: {test['runtime']} sec")
+                console.print(f"[green]Starttime: {test['starttime']}")
+                console.print(f"[green]Endtime: {test['endtime']}")
+                console.print(f"[green]Command: {test['command']}")
+                console.print(f"[red]Test Script: {test['testpath']}")
+                console.print(f"[red]Build Script: {test['build_script']}")
+                console.print(f"[red]Output File: {test['outfile']}")
+                console.print(f"[red]Error File: {test['errfile']}")
+                console.print(f"[red]Log File: {test['logpath']}")
+
+                if test["metrics"]:
+                    table = Table(
+                        Column("Name", overflow="fold", header_style="blue"),
+                        Column("Value", overflow="fold", header_style="blue"),
+                        title="Metrics",
+                    )
+                    for name, values in test["metrics"].items():
+                        table.add_row(name, values)
+
+                    console.print(table)
+
+                # print content of output file when 'buildtest inspect query --output' is set
+                if output:
+                    print_file_content(test["outfile"], "Output File: ", "text", theme)
+
+                # print content of error file when 'buildtest inspect query --error' is set
+                if error:
+                    print_file_content(test["errfile"], "Error File: ", "text", theme)
+
+                # print content of testpath when 'buildtest inspect query --testpath' is set
+                if testpath:
+                    print_file_content(test["testpath"], "Test File: ", "shell", theme)
+
+                # print content of build script when 'buildtest inspect query --buildscript' is set
+                if buildscript:
+                    print_file_content(
+                        test["build_script"], "Test File: ", "shell", theme
+                    )
+
+                if buildenv:
+                    print_file_content(test["buildenv"], "Test File: ", "text", theme)
+
+
+def print_file_content(file_path, title, lexer, theme):
+    content = read_file(file_path)
+    console.rule(f"{title} {file_path}")
+
+    syntax = Syntax(content, lexer, theme=theme)
+    console.print(syntax)
+
+
 def fetch_test_names(report, names):
     """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
     are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
@@ -163,112 +259,6 @@ def inspect_list(
         return
 
     console.print(inspect_table)
-
-
-def print_by_query(
-    report,
-    name,
-    theme=None,
-    output=None,
-    error=None,
-    testpath=None,
-    buildscript=None,
-    buildenv=None,
-):
-    """This method prints the test records when they are queried using ``buildtest inspect query`` command.
-
-    Args:
-        report (buildtest.cli.report.Report): An instance of Report class
-        name (list): List of test names to query
-        theme (str, optional): Specify pygments theme for syntax highlighting
-        output (bool, optional): Print output file when set to True
-        error (bool, optional): Print error file when set to True
-        testpath (bool, optional): Print testpath when set to True
-        buildscript (bool, optional): Print buildscript when set to True
-        buildenv (bool, optional): Print buildenv when set to True
-    """
-
-    records = {}
-    query_builders = fetch_test_names(report, name)
-
-    for builder in query_builders:
-        tid = builder.split("/")[1]
-        name = builder.split("/")[0]
-        if not records.get(name):
-            records[name] = []
-
-        records[name].append(report.fetch_records_by_ids([tid]))
-
-    for name, test_record in records.items():
-        for tests in test_record:
-            for full_id, test in tests.items():
-                theme = theme or "monokai"
-
-                console.rule(f"[cyan]{name}/{full_id}")
-
-                console.print(f"[blue]Executor: {test['executor']}")
-                console.print(f"[blue]Description: {test['description']}")
-                console.print(f"[blue]State: {test['state']}")
-                console.print(f"[blue]Returncode: {test['returncode']}")
-                console.print(f"[green]Runtime: {test['runtime']} sec")
-                console.print(f"[green]Starttime: {test['starttime']}")
-                console.print(f"[green]Endtime: {test['endtime']}")
-                console.print(f"[green]Command: {test['command']}")
-                console.print(f"[red]Test Script: {test['testpath']}")
-                console.print(f"[red]Build Script: {test['build_script']}")
-                console.print(f"[red]Output File: {test['outfile']}")
-                console.print(f"[red]Error File: {test['errfile']}")
-                console.print(f"[red]Log File: {test['logpath']}")
-
-                if test["metrics"]:
-                    table = Table(
-                        Column("Name", overflow="fold", header_style="blue"),
-                        Column("Value", overflow="fold", header_style="blue"),
-                        title="Metrics",
-                    )
-                    for name, values in test["metrics"].items():
-                        table.add_row(name, values)
-
-                    console.print(table)
-
-                # print content of output file when 'buildtest inspect query --output' is set
-                if output:
-                    content = read_file(test["outfile"])
-                    console.rule(f"Output File: {test['outfile']}")
-
-                    syntax = Syntax(content, "text")
-                    console.print(syntax)
-
-                # print content of error file when 'buildtest inspect query --error' is set
-                if error:
-                    content = read_file(test["errfile"])
-                    console.rule(f"Error File: {test['errfile']}")
-
-                    syntax = Syntax(content, "text", theme=theme)
-                    console.print(syntax)
-
-                # print content of testpath when 'buildtest inspect query --testpath' is set
-                if testpath:
-                    content = read_file(test["testpath"])
-                    console.rule(f"Test File: {test['testpath']}")
-
-                    syntax = Syntax(content, "shell", theme=theme)
-                    console.print(syntax)
-
-                # print content of build script when 'buildtest inspect query --buildscript' is set
-                if buildscript:
-                    content = read_file(test["build_script"])
-                    console.rule(f"Test File: {test['build_script']}")
-
-                    syntax = Syntax(content, lexer="shell", theme=theme)
-                    console.print(syntax)
-
-                if buildenv:
-                    content = read_file(test["buildenv"])
-                    console.rule(f"Test File: {test['buildenv']}")
-
-                    syntax = Syntax(content, lexer="text", theme=theme)
-                    console.print(syntax)
 
 
 def inspect_query(
@@ -442,4 +432,3 @@ def inspect_by_name(report, names, pager=None):
         return
 
     print_by_name(report, names)
-    return
