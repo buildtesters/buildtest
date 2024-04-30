@@ -143,64 +143,33 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=True,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-        all_executors=False,
+        display_in_json_format=True,
     )
 
     # buildtest config executors list --yaml
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=True,
-        disabled=False,
-        invalid=False,
-        all_executors=False,
+        display_in_yaml_format=True,
     )
 
     # buildtest config executors list --all
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-        all_executors=True,
+        configuration=configuration, buildexecutor=buildexecutor, display_all=True
     )
 
     # buildtest config executors list --disabled
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=True,
-        invalid=False,
+        configuration=configuration, buildexecutor=buildexecutor, display_disabled=True
     )
 
     # buildtest config executors list --invalid
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=True,
+        configuration=configuration, buildexecutor=buildexecutor, display_invalid=True
     )
 
     # buildtest config executors list
-    view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-    )
+    view_executors(configuration=configuration, buildexecutor=buildexecutor)
 
 
 def test_disabled_invalid_executors():
@@ -214,21 +183,7 @@ def test_disabled_invalid_executors():
     print("reading config file:", configfile)
     be = BuildExecutor(configuration)
     # buildtest config executors list --disabled
-    view_executors(
-        configuration=configuration,
-        buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
-        disabled=True,
-        invalid=False,
-    )
+    view_executors(configuration=configuration, buildexecutor=be, display_disabled=True)
 
     # buildtest config executors list --invalid
-    view_executors(
-        configuration=configuration,
-        buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=True,
-    )
+    view_executors(configuration=configuration, buildexecutor=be, display_invalid=True)

@@ -1007,7 +1007,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on filename",
                 "parents": [],
                 "aliases": ["ef"],
-                "args": [
+                "arguments": [
                     (["file"], {"help": "Edit buildspec file in editor", "nargs": "*"})
                 ],
             },
@@ -1016,7 +1016,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on test name",
                 "parents": [],
                 "aliases": ["et"],
-                "args": [
+                "arguments": [
                     (
                         ["name"],
                         {
@@ -1031,11 +1031,11 @@ class BuildTestParser:
                 "help": "Query information from buildspecs cache",
                 "aliases": ["f"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
                     self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
-                    self.parent_parser["count"],
                 ],
                 " args": [],
             },
@@ -1044,9 +1044,11 @@ class BuildTestParser:
                 "help": "Query maintainers from buildspecs cache",
                 "aliases": ["m"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
                 ],
                 "arguments": [
                     (
@@ -1091,7 +1093,7 @@ class BuildTestParser:
             {
                 "name": "summary",
                 "help": "Print summary of buildspec cache",
-                "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
+                "parents": [self.parent_parser["pager"]],
                 "arguments": [],
                 "aliases": ["sm"],
             },
@@ -1217,35 +1219,42 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--helpfilter"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
-                    },
-                ),
-                (
-                    ["--helpformat"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Format fields for --format option for formatting buildspec cache output",
-                    },
-                ),
-                (
                     ["--filterfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Filter fields for --filter option for filtering buildspec cache output",
+                        "help": "Print raw filter fields for --filter option for filtering buildspec cache output",
                     },
                 ),
                 (
                     ["--formatfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Format fields for --format option for formatting buildspec cache output",
+                        "help": "Print raw format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpformat"],
+                    {
+                        "action": "store_true",
+                        "help": "Show format fields for --format option for formatting buildspec cache output",
                     },
                 ),
             ],
             "extra": [
+                (
+                    ["-q", "--quiet"],
+                    {
+                        "action": "store_true",
+                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                    },
+                ),
                 (
                     ["-r", "--rebuild"],
                     {
@@ -1259,13 +1268,6 @@ class BuildTestParser:
                         "type": str,
                         "action": "append",
                         "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
-                    },
-                ),
-                (
-                    ["-q", "--quiet"],
-                    {
-                        "action": "store_true",
-                        "help": "Don't print output of buildspec cache when rebuilding cache",
                     },
                 ),
             ],
@@ -1283,7 +1285,11 @@ class BuildTestParser:
             {
                 "name": "invalid",
                 "help": "Show invalid buildspecs",
-                "parents": [self.parent_parser["row-count"]],
+                "parents": [
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["pager"],
+                ],
                 "arguments": [
                     (
                         ["-e", "--error"],

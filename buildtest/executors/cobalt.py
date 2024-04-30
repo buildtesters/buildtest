@@ -151,7 +151,7 @@ class CobaltExecutor(BaseExecutor):
     def gather(self, builder):
         """This method is responsible for moving output and error file in the run
         directory. We need to read ``<JOBID>.cobaltlog`` file which contains
-        output of exit code by performing a regular expression ``(exit code of.)(\d+)(\;)``.
+        output of exit code by performing a regular expression.
         The cobalt log file will contain a line: **task completed normally with an exit code of 0; initiating job cleanup and removal**
 
         Args:
