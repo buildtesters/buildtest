@@ -52,7 +52,6 @@ class BuildTestSystem:
         self.system["user"] = getpass.getuser()
         self.system["python"] = os.getenv("BUILDTEST_PYTHON")
         self.system["pyver"] = platform.python_version()
-        self.system["processor"] = platform.processor()
         self.system["host"] = socket.getfqdn()
         self.system["machine"] = platform.machine()
 

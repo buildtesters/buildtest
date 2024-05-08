@@ -39,7 +39,6 @@ def buildtest_info(configuration, buildtest_system):
     system_details = [
         f"[red]Python Path:[/red]               [green]{buildtest_system.system['python']}[/green]",
         f"[red]Python Version:[/red]            [green]{buildtest_system.system['pyver']}[/green]",
-        f"[red]Processor:[/red]                 [green]{buildtest_system.system['processor']}[/green]",
         f"[red]Host:[/red]                      [green]{buildtest_system.system['host']}[/green]",
         f"[red]Operating System:[/red]          [green]{buildtest_system.system['os']}[/green]",
         f"[red]Module System:[/red]             [green]{buildtest_system.system['moduletool']}[/green]",
