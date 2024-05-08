@@ -49,10 +49,12 @@ def buildtest_info(configuration, buildtest_system):
         f"[red]Platform:[/red]                  [green]{cpu_details['platform']}[/green]",
         f"[red]CPU:[/red]                       [green]{cpu_details['cpu']}[/green]",
         f"[red]Virtual CPU:[/red]               [green]{cpu_details['vcpu']}[/green]",
-        f"[red]Virtual Memory Total:[/red]      [green]{cpu_details['virtualmemory']['total']}[/green]",
-        f"[red]Virtual Memory Used:[/red]       [green]{cpu_details['virtualmemory']['used']}[/green]",
-        f"[red]Virtual Memory Available:[/red]  [green]{cpu_details['virtualmemory']['available']}[/green]",
-        f"[red]Virtual Memory Free:[/red]       [green]{cpu_details['virtualmemory']['free']}[/green]",
+        f"[red]Sockets:[/red]                   [green]{cpu_details['num_sockets']}[/green]",
+        f"[red]Cores per Socket:[/red]          [green]{cpu_details['num_cpus_per_socket']}[/green]",
+        f"[red]Virtual Memory Total:[/red]      [green]{cpu_details['virtualmemory']['total']} MB[/green]",
+        f"[red]Virtual Memory Used:[/red]       [green]{cpu_details['virtualmemory']['used']} MB[/green]",
+        f"[red]Virtual Memory Available:[/red]  [green]{cpu_details['virtualmemory']['available']} MB[/green]",
+        f"[red]Virtual Memory Free:[/red]       [green]{cpu_details['virtualmemory']['free']} MB[/green]",
     ]
 
     if is_dir(BUILD_HISTORY_DIR):
