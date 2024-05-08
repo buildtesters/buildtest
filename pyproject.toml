@@ -28,6 +28,8 @@ dependencies=[
    'black==24.3.0',
    'pyflakes',
    'isort',
+   'archspec',
+   'psutil',
 ]
 
 
