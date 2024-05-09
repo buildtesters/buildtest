@@ -280,7 +280,7 @@
         "executors": {
             "type": "object",
             "additionalProperties": false,
-            "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
+            "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``. The executors are referenced in buildspec using ``executor`` field.",
             "required": ["local"],
             "properties": {
               "defaults": {
@@ -331,16 +331,6 @@
                 },
                 "additionalProperties": {
                   "$ref": "#/definitions/slurm"
-                }
-              },
-              "cobalt": {
-                "type": "object",
-                "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
-                "propertyNames": {
-                  "pattern": "^[A-Za-z0-9_.-]+$"
-                },
-                "additionalProperties": {
-                  "$ref": "#/definitions/cobalt"
                 }
               },
               "pbs": {
@@ -407,10 +397,6 @@
             "lsf": {
               "type": "string",
               "description": "Specify path to lsf executable"
-            },
-            "cobalt": {
-              "type": "string",
-              "description": "Specify path to cobalt executable"
             },
             "pbs": {
               "type": "string",
@@ -576,38 +562,6 @@
           "type": "array",
           "items": { "type": "string" },
           "description": "Specify any options for ``bsub`` for this executor when running all jobs associated to this executor"
-        },
-        "queue": {
-          "type": "string",
-          "description": "Specify the lsf queue you want to use ``-q <queue>``"
-        },
-        "before_script": {
-          "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
-          "#ref": "#/definitions/script"
-        },
-        "maxpendtime": {
-          "description": "overrides default ``maxpendtime`` value",
-          "$ref": "#/definitions/maxpendtime"
-        },
-        "account": {
-          "description": "overrides default ``account`` value",
-          "$ref": "#/definitions/account"
-        },
-        "disable": {"$ref":  "#/definitions/disable"},
-        "module": { "$ref": "#/definitions/module" }
-      }
-    },
-    "cobalt": {
-      "type": "object",
-      "description": "An instance object of cobalt executor",
-      "additionalProperties": false,
-      "required": [ "queue" ],
-      "properties": {
-        "description": { "$ref": "#/definitions/description" },
-        "options": {
-          "type": "array",
-          "items": { "type": "string" },
-          "description": "Specify any options for ``qsub`` for this executor when running all jobs associated to this executor"
         },
         "queue": {
           "type": "string",

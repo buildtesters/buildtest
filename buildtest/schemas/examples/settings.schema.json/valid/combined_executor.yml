@@ -18,7 +18,6 @@ system:
       terse: False
       format: "name,id,state,runtime,returncode"
     paths:
-      cobalt: /usr/bin
       pbs: /usr/bin
       torque: /usr/bin
       lsf: /usr/bin
@@ -36,10 +35,6 @@ system:
         batch:
           queue: batch
           options: ["-q batch", "-t 00:10"]
-      cobalt:
-        normal:
-          queue: normal
-          options: ["-n 1", "-t 10"]
       pbs:
         dev:
           queue: development

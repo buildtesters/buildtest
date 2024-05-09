@@ -1,8 +1,0 @@
-buildspecs:
-  hold_job:
-    executor: jlse.cobalt.iris
-    type: script
-    tags: [jobs]
-    description: Hold Job in queue
-    cobalt: ["-n 1", "-t 10", "-h"]
-    run: hostname

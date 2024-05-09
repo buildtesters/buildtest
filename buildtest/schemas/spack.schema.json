@@ -23,7 +23,6 @@
     "vars": { "$ref": "definitions.schema.json#/definitions/env" },
     "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
     "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
-    "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
     "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
     "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
     "tags": { "$ref": "definitions.schema.json#/definitions/tags" },
