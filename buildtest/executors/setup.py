@@ -1,8 +1,7 @@
 """
 This module is responsible for setup of executors defined in buildtest
 configuration. The BuildExecutor class initializes the executors and chooses the
-executor class (LocalExecutor, LSFExecutor, SlurmExecutor, CobaltExecutor) to call depending
-on executor name.
+executor class to call depending on executor name.
 """
 
 import logging
@@ -18,7 +17,6 @@ from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, ExecutorError
 from buildtest.executors.base import BaseExecutor
-from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.container import ContainerExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
@@ -94,7 +92,6 @@ class BuildExecutor:
             "lsf": LSFExecutor,
             "pbs": PBSExecutor,
             "torque": TorqueExecutor,
-            "cobalt": CobaltExecutor,
             "container": ContainerExecutor,
         }
 
@@ -397,7 +394,7 @@ class BuildExecutor:
 
             # for every pending job poll job and mark if job is finished or cancelled
             for job in jobs:
-                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
+                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor
                 executor = self.get(job.executor)
 
                 executor.poll(job)

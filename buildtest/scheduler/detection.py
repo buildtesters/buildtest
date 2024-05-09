@@ -286,32 +286,6 @@ class LSF(Scheduler):
         return True
 
 
-class Cobalt(Scheduler):
-    """The Cobalt class checks for Cobalt binaries and gets a list of Cobalt queues"""
-
-    # specify a set of Cobalt commands to check for file existence
-    binaries = ["qsub", "qstat", "qdel", "nodelist", "showres", "partlist"]
-
-    def get_queues(self):
-        """Get all Cobalt queues by running ``qstat -Ql`` and parsing output"""
-
-        query = f"{self.sched_cmds['qstat']} -Ql"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        content = cmd.get_output()
-
-        self.logger.debug(f"Get all Cobalt Queues by running {query}")
-        # remove all None from list
-        content = list(filter(None, content))
-
-        queues = []
-        for line in content:
-            if line.startswith("Name"):
-                name = line.partition(":")[2].strip()
-                queues.append(name)
-        return queues
-
-
 class PBS(Scheduler):
     """The PBS class checks for PBS binaries and gets a list of available queues"""
 
