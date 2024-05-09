@@ -157,9 +157,9 @@ Specify directory paths to search for binaries
 The ``paths`` property can be used to search for binaries for batch schedulers. If your scheduler binaries
 are installed in a non-standard location that is not in $PATH, you can use this to specify the directory path.
 
-In example below we will, we will specify directories for SLURM, LSF, PBS, TORQUE, and COBALT binaries that
+In example below we will, we will specify directories for SLURM, LSF, PBS and TORQUE binaries that
 are not in $PATH and installed in `/usr/local/slurm/bin`, `/usr/local/lsf/bin`,
-`/usr/local/pbs/bin`, `/usr/local/torque/bin`, `/usr/local/cobalt/bin` respectively.
+`/usr/local/pbs/bin`, `/usr/local/torque/bin` respectively.
 
 .. code-block:: yaml
 
@@ -168,7 +168,6 @@ are not in $PATH and installed in `/usr/local/slurm/bin`, `/usr/local/lsf/bin`,
       lsf: /usr/local/lsf/bin
       pbs: /usr/local/pbs/bin
       torque: /usr/local/torque/bin
-      cobalt: /usr/local/cobalt/bin
 
 
 Buildspec Cache

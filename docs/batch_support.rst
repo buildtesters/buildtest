@@ -1437,68 +1437,6 @@ scheduler commands that are used to submit and poll the job.
     Adding 1 test results to report file: /home/adaptive50/buildtest/var/report.json
     Writing Logfile to /home/adaptive50/buildtest/var/logs/buildtest_z2vikoox.log
 
-
-Cobalt
--------
-
-`Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_ is a job scheduler developed
-by `Argonne National Laboratory <https://www.anl.gov/>`_ that runs on compute
-resources and IBM BlueGene series. Cobalt resembles `PBS <https://community.altair.com/community?id=altair_product_documentation>`_
-in terms of command line interface such as ``qsub``, ``qacct`` however they
-slightly differ in their behavior.
-
-Cobalt support has been tested on JLSE and Theta system. Cobalt directives
-are specified using ``#COBALT`` this can be specified using ``cobalt`` property
-which accepts a list of strings. Shown below is an example using cobalt property.
-
-.. code-block:: yaml
-    :emphasize-lines: 5
-    :linenos:
-
-    buildspecs:
-      yarrow_hostname:
-        executor: jlse.cobalt.yarrow
-        type: script
-        cobalt: ["-n 1", "--proccount 1", "-t 10"]
-        run: hostname
-
-In this example, we allocate 1 node with 1 processor for 10min. This is translated into
-the following job script.
-
-.. code-block:: console
-
-    #!/usr/bin/bash
-    #COBALT -n 1
-    #COBALT --proccount 1
-    #COBALT -t 10
-    #COBALT --jobname yarrow_hostname
-    source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.yarrow/before_script.sh
-    hostname
-    source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.yarrow/after_script.sh
-
-When job starts, Cobalt will write a cobalt log file ``<JOBID>.cobaltlog`` which
-is provided by scheduler for troubleshooting. The output and error file are generated
-once job finishes. Cobalt job progresses through job state ``starting`` --> ``pending`` --> ``running`` --> ``exiting``.
-buildtest will capture Cobalt job details using ``qstat -lf <JOBID>`` and this
-is updated in the report file.
-
-buildtest will poll job at set interval, where we run ``qstat --header State <JobID>`` to
-check state of job, if job is finished then we gather results. Once job is finished,
-qstat will not be able to poll job this causes an issue where buildtest can't poll
-job since qstat will not return anything. This is a transient issue depending on when
-you poll job, generally at ALCF qstat will not report existing job within 30sec after
-job is terminated. buildtest will assume if it's able to poll job and is in `exiting`
-stage that job is complete, if its unable to retrieve this state we check for
-output and error file. If file exists we assume job is complete and buildtest will
-gather the results.
-
-buildtest will determine exit code by parsing cobalt log file, the file contains a line
-such as ::
-
-    Thu Nov 05 17:29:30 2020 +0000 (UTC) Info: task completed normally with an exit code of 0; initiating job cleanup and removal
-
-qstat has no job record for capturing returncode so buildtest must rely on Cobalt Log file.
-
 .. _max_pend_time:
 
 Jobs exceeds `max_pend_time`

@@ -35,18 +35,3 @@ customized to each site but and can be changed in the configuration file or over
 .. literalinclude:: ../../tests/settings/summit.yml
    :language: yaml
    :emphasize-lines: 2-5,19-23,37-43
-
-Argonne National Laboratory
----------------------------
-
-`Joint Laboratory for System Evaluation (JLSE) <https://www.jlse.anl.gov/>`_ provides
-a testbed of emerging HPC systems, the default scheduler is Cobalt, this is
-defined in the ``cobalt`` section defined in the executor field.
-
-We set default launcher to qsub defined with ``launcher: qsub``. This is inherited
-for all batch executors. In each cobalt executor the ``queue`` property will specify
-the queue name to submit job, for instance the executor ``yarrow`` with ``queue: yarrow``
-will submit job using ``qsub -q yarrow`` when using this executor.
-
-.. literalinclude:: ../../tests/settings/jlse.yml
-   :language: yaml
