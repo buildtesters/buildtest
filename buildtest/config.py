@@ -9,7 +9,7 @@ from buildtest.defaults import (
     console,
 )
 from buildtest.exceptions import BuildTestError, ConfigurationError
-from buildtest.scheduler.detection import LSF, PBS, Cobalt, Slurm, Torque
+from buildtest.scheduler.detection import LSF, PBS, Slurm, Torque
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
 from buildtest.utils.file import resolve_path
@@ -46,7 +46,6 @@ class SiteConfiguration:
             "slurm": {},
             "lsf": {},
             "pbs": {},
-            "cobalt": {},
             "torque": {},
             "container": {},
         }
@@ -172,7 +171,6 @@ class SiteConfiguration:
         self._validate_local_executors()
         self._validate_slurm_executors()
         self._validate_lsf_executors()
-        self._validate_cobalt_executors()
         self._validate_pbs_executors()
         self._validate_torque_executors()
         self._validate_container_executors()
@@ -329,49 +327,6 @@ class SiteConfiguration:
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": slurm_executor[executor]
-            }
-
-    def _validate_cobalt_executors(self):
-        """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
-        its a non-zero exit code then queue doesn't exist otherwise it is a valid
-        queue.
-        """
-
-        cobalt_executor = deep_get(self.target_config, "executors", "cobalt")
-        if not cobalt_executor:
-
-            if self.verbose:
-                console.print(
-                    "No Cobalt executors found in configuration file", style="bold blue"
-                )
-
-            return
-
-        executor_type = "cobalt"
-
-        cobalt = Cobalt(custom_dirs=deep_get(self.target_config, "paths", "cobalt"))
-        if not cobalt.active():
-            return
-
-        queue_info = cobalt.queues()
-
-        for executor in cobalt_executor:
-            executor_name = f"{self.name()}.{executor_type}.{executor}"
-
-            if self.is_executor_disabled(cobalt_executor[executor]):
-                self.disabled_executors.append(executor_name)
-                continue
-
-            queue = cobalt_executor[executor].get("queue")
-            # if queue property defined in cobalt executor name check if it exists
-            if queue not in queue_info:
-                logger.error(
-                    f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {queue_info} "
-                )
-                continue
-
-            self.valid_executors[executor_type][executor_name] = {
-                "setting": cobalt_executor[executor]
             }
 
     def _validate_pbs_executors(self):

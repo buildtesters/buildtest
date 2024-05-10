@@ -144,7 +144,7 @@ class BuilderBase(ABC):
         self.logger.debug(f"Processing Buildspec File: {self.buildspec}")
         self.logger.debug(f"Processing Test: {self.name}")
 
-        # get type attribute from Executor class (local, slurm, cobalt, pbs, lsf)
+        # get type attribute from Executor class (local, slurm, pbs, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
         self.buildexecutor = buildexecutor
 
@@ -748,7 +748,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         return lines
 
     def sched_init(self):
-        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub', 'cobalt'"""
+        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub'"""
         self.sbatch = deep_get(
             self.recipe, "executors", self.executor, "sbatch"
         ) or self.recipe.get("sbatch")
@@ -758,9 +758,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         self.pbs = deep_get(
             self.recipe, "executors", self.executor, "pbs"
         ) or self.recipe.get("pbs")
-        self.cobalt = deep_get(
-            self.recipe, "executors", self.executor, "cobalt"
-        ) or self.recipe.get("cobalt")
 
         self.burstbuffer = self.recipe.get("BB") or deep_get(
             self.recipe, "executors", self.executor, "BB"
@@ -795,11 +792,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             lines.append(f"#PBS -N {self.name}")
             lines.append(f"#PBS -o {self.name}.o")
             lines.append(f"#PBS -e {self.name}.e")
-
-        if self.cobalt:
-            for line in self.cobalt:
-                lines.append(f"#COBALT {line}")
-            lines.append(f"#COBALT --jobname={self.name}")
 
         return lines
 

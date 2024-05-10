@@ -197,7 +197,6 @@ and link to coverage results which can be viewed in your browser. In next exampl
         buildtest/cli/debugreport.py                  18     12      2      0    30.00%
         buildtest/cli/compilers.py                   122     83     56      3    26.97%
         buildtest/executors/pbs.py                   125     92     18      0    25.87%
-        buildtest/executors/cobalt.py                149    112     24      0    23.70%
         buildtest/log.py                              20     15      2      0    22.73%
         buildtest/executors/slurm.py                 153    117     34      0    21.39%
         buildtest/executors/local.py                  51     40     10      0    21.31%

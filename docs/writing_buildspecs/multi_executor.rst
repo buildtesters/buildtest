@@ -30,7 +30,7 @@ Multiple Executors
 
 The ``executors`` property can be used to define executor specific configuration
 for each test, currently this field can be used with :ref:`vars <variables>`, :ref:`env <environment_variables>`
-, scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt`` and :ref:`cray burst buffer/data warp <cray_burstbuffer_datawarp>`.
+, scheduler directives: ``sbatch``, ``bsub``, ``pbs``,  and :ref:`cray burst buffer/data warp <cray_burstbuffer_datawarp>`.
 The ``executors`` field is a JSON object that expects name of executor followed by property set per executor. In this next example,
 we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
 

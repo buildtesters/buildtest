@@ -59,10 +59,6 @@ system:
       # directory path to search for torque binaries.
       #torque: "/usr/bin"
 
-      # directory path to search for cobalt binaries.
-      #cobalt: "/usr/bin"
-
-
     # start of executor configuration
     executors:
       # local executor is used to submit jobs on local machine. In this example we have 4 executors: bash, sh, csh, zsh that will submit jobs using bash, sh, csh, zsh shell respectively.
