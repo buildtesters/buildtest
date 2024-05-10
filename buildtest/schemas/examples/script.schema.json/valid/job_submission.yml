@@ -18,4 +18,3 @@ buildspecs:
       - "-W 00:30"
       - "-N 1"
     run: hostname
-
