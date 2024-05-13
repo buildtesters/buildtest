@@ -390,6 +390,18 @@
             "torque": {
               "type": "string",
               "description": "Specify path to torque executable"
+            },
+            "docker": {
+              "type": "string",
+              "description": "Specify path to docker executable"
+            },
+            "singularity": {
+              "type": "string",
+              "description": "Specify path to singularity executable"
+            },
+            "podman": {
+              "type": "string",
+              "description": "Specify path to podman executable"
             }
           }
         },
