@@ -5,7 +5,7 @@ import shutil
 from buildtest.builders.base import BuilderBase
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import write_file
-from buildtest.utils.tools import deep_get
+from buildtest.utils.tools import check_binaries, deep_get
 
 
 class ScriptBuilder(BuilderBase):
@@ -40,6 +40,7 @@ class ScriptBuilder(BuilderBase):
         self.compiler_settings = {"vars": None, "env": None, "modules": None}
 
         self.configuration = configuration
+
         self.compiler_section = self.recipe.get("compilers")
 
         # if 'compilers' property defined resolve compiler logic
@@ -200,14 +201,42 @@ class ScriptBuilder(BuilderBase):
             container = self.recipe["container"]
             container_platform = container["platform"]
             container_command = []
-            if container_platform in ["docker", "podman"]:
+
+            docker_path = check_binaries(
+                ["docker"],
+                custom_dirs=deep_get(
+                    self.configuration.target_config, "paths", "docker"
+                ),
+            )
+            podman_path = check_binaries(
+                ["podman"],
+                custom_dirs=deep_get(
+                    self.configuration.target_config, "paths", "podman"
+                ),
+            )
+            singularity_path = check_binaries(
+                ["singularity"],
+                custom_dirs=deep_get(
+                    self.configuration.target_config, "paths", "singularity"
+                ),
+            )
+
+            if container_platform == "docker":
                 container_command.extend(
-                    [container_platform, "run", "-v", f"{self.stage_dir}:/buildtest"]
+                    [docker_path["docker"], "run", "-v", f"{self.stage_dir}:/buildtest"]
+                )
+            elif container_platform == "podman":
+                container_command.extend(
+                    [podman_path["podman"], "run", "-v", f"{self.stage_dir}:/buildtest"]
                 )
 
-            elif container_platform in ["singularity"]:
+            elif container_platform == "singularity":
                 container_command.extend(
-                    [f"{container_platform}", "run", f"-B {self.stage_dir}:/buildtest"]
+                    [
+                        singularity_path["singularity"],
+                        "run",
+                        f"-B {self.stage_dir}:/buildtest",
+                    ]
                 )
 
             if container.get("mounts"):
