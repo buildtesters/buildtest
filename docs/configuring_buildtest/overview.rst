@@ -170,6 +170,19 @@ are not in $PATH and installed in `/usr/local/slurm/bin`, `/usr/local/lsf/bin`,
       torque: /usr/local/torque/bin
 
 
+You can also specify paths to container runtimes, if they are installed in a non-standard location that is not in $PATH. For
+example, if you have `docker`, `podman` and `singularity` installed in `/usr/local/bin` you can specify the following:
+
+.. code-block:: yaml
+
+    paths:
+      docker: /usr/local/bin
+      podman: /usr/local/bin
+      singularity: /usr/local/bin
+
+Buildtest will attempt to search for container runtime in the specified directory including what is available in
+$PATH.
+
 Buildspec Cache
 ----------------
 
