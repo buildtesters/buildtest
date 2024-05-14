@@ -37,9 +37,6 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError
 from buildtest.scheduler.job import Job
-from buildtest.scheduler.lsf import LSFJob
-from buildtest.scheduler.pbs import PBSJob
-from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import (
@@ -51,7 +48,7 @@ from buildtest.utils.file import (
 )
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
-from buildtest.utils.tools import deep_get
+from buildtest.utils.tools import check_container_runtime, deep_get
 
 
 class BuilderBase(ABC):
@@ -569,7 +566,7 @@ function cleanup() {
 trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU
 """
         lines.append(trap_msg)
-        lines += self._default_test_variables()
+        lines += self._set_default_test_variables()
         lines.append("# source executor startup script")
 
         if modulepurge:
@@ -595,8 +592,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             lines += [" ".join(self._emit_command())]
         elif self.is_container_executor():
             lines += self.get_container_invocation()
-            # lines += ["docker run -it --rm -v $PWD:$PWD -w $PWD " + f"-v {self.stage_dir}:/buildtest" + f" ubuntu bash -c {self.testpath}"]
-
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
@@ -661,9 +656,14 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         image = self.buildexecutor.executors[self.executor]._settings.get("image")
         options = self.buildexecutor.executors[self.executor]._settings.get("options")
         mounts = self.buildexecutor.executors[self.executor]._settings.get("mounts")
+
+        container_path = check_container_runtime(
+            platform, self.buildexecutor.configuration
+        )
+
         if platform in ["docker", "podman"]:
             lines += [
-                f"{platform} run -it --rm -v {self.stage_dir}:/buildtest -w /buildtest"
+                f"{container_path} run -it --rm -v {self.stage_dir}:/buildtest -w /buildtest"
             ]
 
             if mounts:
@@ -675,7 +675,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 f"{image} bash -c {os.path.join('/buildtest', os.path.basename(self.testpath))}"
             ]
         elif platform == "singularity":
-            lines += [f"{platform} exec -B {self.stage_dir}/buildtest"]
+            lines += [f"{container_path} exec -B {self.stage_dir}/buildtest"]
             if mounts:
                 lines += [f"-B {mounts}"]
             if options:
@@ -715,7 +715,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return ""
 
-    def _default_test_variables(self):
+    def _set_default_test_variables(self):
         """Return a list of lines inserted in build script that define buildtest specific variables
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
@@ -810,7 +810,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             datawarp (str): Data Warp configuration specified by ``DW`` property in buildspec
 
         Returns:
-            list: List of string values containing containing ``#DW`` directives written in test
+            list: List of string values containing ``#DW`` directives written in test
         """
 
         if not datawarp:
@@ -1116,126 +1116,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 if key in self.status:
                     self.metadata["check"][key] = check_func(self)
 
-            # filter out any None values from status check
-            status_checks = [
-                value for value in self.metadata["check"].values() if value is not None
-            ]
-
-            state = (
-                all(status_checks)
-                if self.status.get("mode") in ["AND", "and"]
-                else any(status_checks)
-            )
-            self.metadata["result"]["state"] = "PASS" if state else "FAIL"
-
-    def check_test_state1(self):
-        """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
-
-        self.metadata["result"]["state"] = "FAIL"
-
-        if self.metadata["result"]["returncode"] == 0:
-            self.metadata["result"]["state"] = "PASS"
-
-        # if status is defined in Buildspec, then check for returncode and regex
-        if self.status:
-            # if 'state' property is specified explicitly honor this value regardless of what is calculated
-            if self.status.get("state"):
-                self.metadata["result"]["state"] = self.status["state"]
-                return
-
-            if "returncode" in self.status:
-                self.metadata["check"]["returncode"] = returncode_check(self)
-
-            # check regex against output or error stream based on regular expression defined in status property. Return value is a boolean
-            if self.status.get("regex"):
-                self.metadata["check"]["regex"] = regex_check(self)
-
-            if self.status.get("runtime"):
-                self.metadata["check"]["runtime"] = runtime_check(self)
-
-            if self.status.get("file_regex"):
-                self.metadata["check"]["file_regex"] = file_regex_check(self)
-
-            if self.status.get("slurm_job_state") and isinstance(self.job, SlurmJob):
-                self.metadata["check"]["slurm_job_state"] = (
-                    self.status["slurm_job_state"] == self.job.state()
-                )
-
-            if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
-                self.metadata["check"]["pbs_job_state"] = (
-                    self.status["pbs_job_state"] == self.job.state()
-                )
-
-            if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
-                self.metadata["check"]["lsf_job_state"] = (
-                    self.status["lsf_job_state"] == self.job.state()
-                )
-
-            if self.status.get("assert_ge"):
-                self.metadata["check"]["assert_ge"] = comparison_check(
-                    builder=self, comparison_type="ge"
-                )
-
-            if self.status.get("assert_le"):
-                self.metadata["check"]["assert_le"] = comparison_check(
-                    builder=self, comparison_type="le"
-                )
-
-            if self.status.get("assert_gt"):
-                self.metadata["check"]["assert_gt"] = comparison_check(
-                    builder=self, comparison_type="gt"
-                )
-
-            if self.status.get("assert_lt"):
-                self.metadata["check"]["assert_lt"] = comparison_check(
-                    builder=self, comparison_type="lt"
-                )
-
-            if self.status.get("assert_eq"):
-                self.metadata["check"]["assert_eq"] = comparison_check(
-                    builder=self, comparison_type="eq"
-                )
-
-            if self.status.get("assert_ne"):
-                self.metadata["check"]["assert_ne"] = comparison_check(
-                    builder=self, comparison_type="ne"
-                )
-
-            if self.status.get("assert_range"):
-                self.metadata["check"]["assert_range"] = assert_range_check(self)
-
-            if self.status.get("contains"):
-                self.metadata["check"]["contains"] = contains_check(
-                    builder=self, comparison_type="contains"
-                )
-
-            if self.status.get("not_contains"):
-                self.metadata["check"]["not_contains"] = contains_check(
-                    builder=self, comparison_type="not_contains"
-                )
-
-            if self.status.get("is_symlink"):
-                self.metadata["check"]["is_symlink"] = is_symlink_check(builder=self)
-
-            if self.status.get("exists"):
-                self.metadata["check"]["exists"] = exists_check(builder=self)
-
-            if self.status.get("is_dir"):
-                self.metadata["check"]["is_dir"] = is_dir_check(builder=self)
-
-            if self.status.get("is_file"):
-                self.metadata["check"]["is_file"] = is_file_check(builder=self)
-
-            if self.status.get("file_count"):
-                self.metadata["check"]["file_count"] = file_count_check(builder=self)
-
-            if self.status.get("linecount"):
-                self.metadata["check"]["linecount"] = linecount_check(builder=self)
-
-            if self.status.get("file_linecount"):
-                self.metadata["check"]["file_linecount"] = file_linecount_check(
-                    builder=self
-                )
             # filter out any None values from status check
             status_checks = [
                 value for value in self.metadata["check"].values() if value is not None

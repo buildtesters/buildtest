@@ -5,6 +5,7 @@ from functools import reduce
 
 from rich.color import Color, ColorParseError
 
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_dir, resolve_path
 
 logger = logging.getLogger(__name__)
@@ -76,3 +77,24 @@ def check_binaries(binaries, custom_dirs=None):
         logger.debug(f"{command}: {command_fpath}")
 
     return sched_dict
+
+
+def check_container_runtime(platform, configuration):
+    """Check if container runtime exists in $PATH and any additional directories specified by
+    custom_dirs. The return is a dictionary
+
+    Args:
+        platform (str): platform to check for container runtime
+        configuration (dict): configuration dictionary
+    """
+
+    binary_path = check_binaries(
+        [platform], custom_dirs=deep_get(configuration.target_config, "paths", platform)
+    )
+
+    if not binary_path[platform]:
+        raise BuildTestError(
+            f"[red]Unable to find {platform} binary in PATH, this test will be not be executed.[/red]"
+        )
+
+    return binary_path[platform]

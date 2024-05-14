@@ -3,10 +3,9 @@ import shlex
 import shutil
 
 from buildtest.builders.base import BuilderBase
-from buildtest.exceptions import BuildTestError
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import write_file
-from buildtest.utils.tools import check_binaries, deep_get
+from buildtest.utils.tools import check_container_runtime, deep_get
 
 
 class ScriptBuilder(BuilderBase):
@@ -198,13 +197,12 @@ class ScriptBuilder(BuilderBase):
         container_runtime = container_config["platform"]
         container_command = []
 
+        container_path = check_container_runtime(container_runtime, self.configuration)
         container_launch_command = {
-            "docker": ["docker", "run", "-v"],
-            "podman": ["podman", "run", "-v"],
-            "singularity": ["singularity", "run", "-B"],
+            "docker": [container_path, "run", "--rm", "-v"],
+            "podman": [container_path, "run", "--rm", "-v"],
+            "singularity": [container_path, "run", "-B"],
         }
-
-        self._check_binary_path(container_runtime)
         container_command.extend(container_launch_command[container_runtime])
         container_command.append(f"{self.stage_dir}:/buildtest")
 
@@ -221,16 +219,3 @@ class ScriptBuilder(BuilderBase):
             container_command.append(container_config["command"])
 
         return container_command
-
-    def _check_binary_path(self, platform):
-        binary_path = check_binaries(
-            [platform],
-            custom_dirs=deep_get(self.configuration.target_config, "paths", platform),
-        )
-
-        if not binary_path[platform]:
-            raise BuildTestError(
-                f"[blue]{self}[/blue]: [red]Unable to find {platform} binary in PATH, this test will be not be executed.[/red]"
-            )
-
-        return binary_path[platform]
