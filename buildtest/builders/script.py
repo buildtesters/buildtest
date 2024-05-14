@@ -3,6 +3,7 @@ import shlex
 import shutil
 
 from buildtest.builders.base import BuilderBase
+from buildtest.exceptions import BuildTestError
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import write_file
 from buildtest.utils.tools import check_binaries, deep_get
@@ -220,6 +221,24 @@ class ScriptBuilder(BuilderBase):
                     self.configuration.target_config, "paths", "singularity"
                 ),
             )
+            # these checks are to ensure if selected container platform is available in PATH, if not we raise an error and test will not be generated
+            if not podman_path["podman"] and container_platform == "podman":
+                raise BuildTestError(
+                    f"[blue]{self}[/blue]: [red]Unable to find podman binary in PATH, this test will be not be executed.[/red]"
+                )
+
+            if not docker_path["docker"] and container_platform == "docker":
+                raise BuildTestError(
+                    f"[blue]{self}[/blue]: [red]Unable to find docker binary in PATH, this test will be not be executed.[/red]"
+                )
+
+            if (
+                not singularity_path["singularity"]
+                and container_platform == "singularity"
+            ):
+                raise BuildTestError(
+                    f"[blue]{self}[/blue]: [red]Unable to find singularity in PATH, this test will be not be executed.[/red]"
+                )
 
             if container_platform == "docker":
                 container_command.extend(
