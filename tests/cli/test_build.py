@@ -501,6 +501,19 @@ class TestBuildTest:
                 write_config_file=tf.name,
             )
 
+        tf = tempfile.NamedTemporaryFile(suffix=".yaml")
+        tf.close()
+        # writing to file with .yaml extension is not allowed
+        with pytest.raises(BuildTestError):
+            BuildTest(
+                configuration=configuration,
+                buildspecs=[
+                    os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
+                ],
+                save_profile="demo",
+                write_config_file=tf.name,
+            )
+
     @pytest.mark.cli
     def test_retry(self):
         buildspecs = [

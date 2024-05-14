@@ -954,6 +954,10 @@ class BuildTest:
                 raise BuildTestError(
                     f"[red]Configuration file {config_file_path} already exists. Please specify a new file path"
                 )
+            if not os.path.splitext(config_file_path)[1] == ".yml":
+                raise BuildTestError(
+                    f"[red]Configuration file {config_file_path} must end in .yml extension"
+                )
 
         config_file_path = config_file_path or self.configuration.file
         resolved_buildspecs = []
