@@ -296,19 +296,6 @@ class BuilderBase(ABC):
         # from buildtest.executors.container import ContainerExecutor
         return self.buildexecutor.executors[self.executor].type == "container"
 
-    def is_slurm_executor(self):
-        """Return True if current builder executor type is LocalExecutor otherwise returns False.
-
-        Returns:
-            bool: returns True if builder is using executor type LocalExecutor otherwise returns False
-
-        """
-
-        # import issue when putting this at top of file
-        from buildtest.executors.slurm import SlurmExecutor
-
-        return isinstance(self.buildexecutor.executors[self.executor], SlurmExecutor)
-
     def is_batch_job(self):
         """Return True/False if builder.job attribute is of type Job instance if not returns False.
         This method indicates if builder has a job submitted to queue
@@ -1070,6 +1057,78 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         return True
 
     def check_test_state(self):
+        """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
+
+        self.metadata["result"]["state"] = "FAIL"
+
+        if self.metadata["result"]["returncode"] == 0:
+            self.metadata["result"]["state"] = "PASS"
+
+        # if status is defined in Buildspec, then check for returncode and regex
+        if self.status:
+            # if 'state' property is specified explicitly honor this value regardless of what is calculated
+            if self.status.get("state"):
+                self.metadata["result"]["state"] = self.status["state"]
+                return
+
+            # Define a dictionary mapping status keys to their corresponding check functions
+            status_checks = {
+                "returncode": returncode_check,
+                "regex": regex_check,
+                "runtime": runtime_check,
+                "file_regex": file_regex_check,
+                "assert_ge": lambda: comparison_check(
+                    builder=self, comparison_type="ge"
+                ),
+                "assert_le": lambda: comparison_check(
+                    builder=self, comparison_type="le"
+                ),
+                "assert_gt": lambda: comparison_check(
+                    builder=self, comparison_type="gt"
+                ),
+                "assert_lt": lambda: comparison_check(
+                    builder=self, comparison_type="lt"
+                ),
+                "assert_eq": lambda: comparison_check(
+                    builder=self, comparison_type="eq"
+                ),
+                "assert_ne": lambda: comparison_check(
+                    builder=self, comparison_type="ne"
+                ),
+                "assert_range": assert_range_check,
+                "contains": lambda: contains_check(
+                    builder=self, comparison_type="contains"
+                ),
+                "not_contains": lambda: contains_check(
+                    builder=self, comparison_type="not_contains"
+                ),
+                "is_symlink": is_symlink_check,
+                "exists": exists_check,
+                "is_dir": is_dir_check,
+                "is_file": is_file_check,
+                "file_count": file_count_check,
+                "linecount": linecount_check,
+                "file_linecount": file_linecount_check,
+            }
+
+            # Iterate over the status_checks dictionary and perform the checks
+            for key, check_func in status_checks.items():
+                if key in self.status:
+                    self.metadata["check"][key] = check_func(self)
+
+            # filter out any None values from status check
+            status_checks = [
+                value for value in self.metadata["check"].values() if value is not None
+            ]
+
+            state = (
+                all(status_checks)
+                if self.status.get("mode") in ["AND", "and"]
+                else any(status_checks)
+            )
+            self.metadata["result"]["state"] = "PASS" if state else "FAIL"
+
+    def check_test_state1(self):
         """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
 
         self.metadata["result"]["state"] = "FAIL"

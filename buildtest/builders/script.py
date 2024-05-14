@@ -26,6 +26,7 @@ class ScriptBuilder(BuilderBase):
         numprocs=None,
         numnodes=None,
         compiler=None,
+        strict=None,
     ):
         super().__init__(
             name=name,
@@ -41,7 +42,7 @@ class ScriptBuilder(BuilderBase):
         self.compiler_settings = {"vars": None, "env": None, "modules": None}
 
         self.configuration = configuration
-
+        self.strict = strict
         self.compiler_section = self.recipe.get("compilers")
 
         # if 'compilers' property defined resolve compiler logic
@@ -132,7 +133,8 @@ class ScriptBuilder(BuilderBase):
             if data_warp_lines:
                 script_lines += data_warp_lines
 
-        script_lines.append(self._emit_set_command())
+        if self.strict:
+            script_lines.append(self._emit_set_command())
 
         if self.shell.name == "python":
             script_lines = ["#!/bin/bash"]

@@ -626,6 +626,7 @@ class BuildTest:
         save_profile=None,
         profile=None,
         max_jobs=None,
+        strict=None,
         verbose=None,
         write_config_file=None,
     ):
@@ -665,6 +666,7 @@ class BuildTest:
             save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
             profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
             max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
+            strict (bool, optional): Enable strict mode for buildtest. This option is specified by ``buildtest build --strict``
             verbose (bool, optional): Enable verbose output for buildtest that is specified by ``buildtest --verbose``
             write_config_file (str, optional): Write configuration file to specified location. This is specified by ``buildtest build --write-config-file``
         """
@@ -742,6 +744,7 @@ class BuildTest:
         self.save_profile = save_profile
         self.profile = profile
         self.max_jobs = max_jobs
+        self.strict = strict
         self.write_config_file = write_config_file
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
@@ -893,6 +896,7 @@ class BuildTest:
         self.timeout = content["timeout"]
         self.limit = content["limit"]
         self.max_jobs = content["max_jobs"]
+        self.strict = content["strict"]
 
     def save_rerun_file(self):
         """Record buildtest command options and save them into rerun file which is read when invoking ``buildtest build --rerun``."""
@@ -924,6 +928,7 @@ class BuildTest:
             "timeout": self.timeout,
             "limit": self.limit,
             "max_jobs": self.max_jobs,
+            "strict": self.strict,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -980,6 +985,7 @@ class BuildTest:
             "executor-type": self.executor_type,
             "max_jobs": self.max_jobs,
             "remove-stagedir": self.remove_stagedir,
+            "strict": self.strict,
         }
         # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
         profile_configuration["module-purge"] = (
@@ -1063,6 +1069,7 @@ class BuildTest:
         self.executor_type = profile_configuration.get("executor-type")
         self.max_jobs = profile_configuration.get("max_jobs")
         self.remove_stagedir = profile_configuration.get("remove-stagedir")
+        self.strict = profile_configuration.get("strict")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -1207,6 +1214,7 @@ class BuildTest:
                 numnodes=self.numnodes,
                 executor_type=self.executor_type,
                 exclude_tags=self.exclude_tags,
+                strict=self.strict,
             )
 
             if not builder.get_builders():

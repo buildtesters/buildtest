@@ -325,6 +325,7 @@ def handle_build_command(args, configuration, report_file):
                 save_profile=args.save_profile,
                 profile=args.profile,
                 max_jobs=args.max_jobs,
+                strict=args.strict,
                 verbose=args.verbose,
                 write_config_file=args.write_config_file,
             )

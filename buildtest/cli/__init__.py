@@ -953,6 +953,13 @@ class BuildTestParser:
                     },
                 ),
                 (
+                    ["--strict"],
+                    {
+                        "action": "store_true",
+                        "help": "Enable strict mode for test by setting 'set -eo pipefail' in test script",
+                    },
+                ),
+                (
                     ["--testdir"],
                     {
                         "help": "Specify a custom test directory where to write tests. This overrides configuration file and default location."
