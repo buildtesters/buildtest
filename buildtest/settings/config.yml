@@ -60,7 +60,7 @@ system:
       #torque: "/usr/bin"
 
       # path to docker directory
-      #docker: "$HOME/bin"
+      #docker: "/usr/local/bin"
 
       # path to singularity directory
       #singularity: "/usr/local/bin"
