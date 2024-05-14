@@ -436,6 +436,7 @@ class TestBuildTest:
             max_jobs=2,
             save_profile="demo",
             verbose=True,
+            strict=True,
         )
         profile_configuration = buildtest_configuration.get_profile(profile_name="demo")
         pprint(profile_configuration)
