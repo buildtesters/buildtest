@@ -77,7 +77,7 @@ def is_symlink(filename: str) -> bool:
     # apply user expansion when file includes something like  ~/example
     expanded_filepath = os.path.expanduser(expanded_filepath)
 
-    return os.path.islink(expanded_filepath)
+    return os.path.islink(expanded_filepath) and os.path.exists(expanded_filepath)
 
 
 def search_files(
