@@ -698,7 +698,8 @@
           "enum": ["local", "batch"]
         },
         "remove-stagedir": {"type": "boolean", "description": "Remove stage directory after test completes"},
-        "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"}
+        "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"},
+        "strict": {"type": "boolean", "description": "Enable strict mode for buildtest"}
       }
     },
     "description": {

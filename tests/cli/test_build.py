@@ -140,6 +140,7 @@ class TestBuildTest:
                 filter_buildspecs={"type": "FOO"},
             )
 
+    @pytest.mark.cli
     def test_helpfilter(self):
         BuildTest(configuration=configuration, helpfilter=True)
 
@@ -251,7 +252,6 @@ class TestBuildTest:
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, name="pass_test")
 
-    @pytest.mark.cli
     def test_build_csh_executor(self):
         if not shutil.which("csh"):
             pytest.skip("Unable to run this test since it requires 'csh'")
@@ -260,7 +260,6 @@ class TestBuildTest:
         cmd = BuildTest(configuration=configuration, executors=["generic.local.csh"])
         cmd.build()
 
-    @pytest.mark.cli
     def test_skip_field(self):
         cmd = BuildTest(
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "skip_tests.yml")],
@@ -351,7 +350,6 @@ class TestBuildTest:
         )
         cmd.build()
 
-    @pytest.mark.cli
     def test_invalid_buildspes(self):
         buildspec_file = [
             os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml"),
@@ -389,6 +387,14 @@ class TestBuildTest:
         )
         cmd.build()
 
+    @pytest.mark.cli
+    def test_with_strict_mode(self):
+        buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "strict_example.yml")]
+
+        cmd = BuildTest(configuration=configuration, buildspecs=buildspecs, strict=True)
+        cmd.build()
+
+    @pytest.mark.cli
     def test_save_profile(self):
         tf = tempfile.NamedTemporaryFile(suffix=".yml")
         print(configuration.file)
@@ -430,6 +436,7 @@ class TestBuildTest:
             max_jobs=2,
             save_profile="demo",
             verbose=True,
+            strict=True,
         )
         profile_configuration = buildtest_configuration.get_profile(profile_name="demo")
         pprint(profile_configuration)
@@ -485,6 +492,19 @@ class TestBuildTest:
         # writing to directory is not allowed
         with pytest.raises(BuildTestError):
             print(f"Writing to directory: {tf.name} is not allowed")
+            BuildTest(
+                configuration=configuration,
+                buildspecs=[
+                    os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
+                ],
+                save_profile="demo",
+                write_config_file=tf.name,
+            )
+
+        tf = tempfile.NamedTemporaryFile(suffix=".yaml")
+        tf.close()
+        # writing to file with .yaml extension is not allowed
+        with pytest.raises(BuildTestError):
             BuildTest(
                 configuration=configuration,
                 buildspecs=[

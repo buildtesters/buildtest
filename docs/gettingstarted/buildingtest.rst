@@ -617,3 +617,32 @@ then proceed to next test.
 .. dropdown:: ``buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2``
 
     .. command-output:: buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2
+
+Strict Mode
+------------
+
+Buildtest has an option to enable strict mode for test execution which can be enabled via ``--strict`` option. If this
+is set, buildtest will instead ``set -eo pipefail`` in the generated test which will cause test to exit immediately if any
+commands fail. To demonstrate this we have the following buildspec, which runs an **ls** command for an invalid path followed by
+an **echo** command.
+
+.. literalinclude:: ../tutorials/strict_example.yml
+    :language: yaml
+    :emphasize-lines: 8
+
+If we were to run this test without strict mode, we see the test will pass.
+
+.. dropdown:: ``buildtest build -b tutorials/strict_example.yml``
+
+    .. command-output:: buildtest build -b tutorials/strict_example.yml
+
+Now let's run the same test with strict mode enabled, we will see the test will fail with a different return code.
+
+.. dropdown:: ``buildtest build -b tutorials/strict_example.yml --strict``
+
+    .. command-output:: buildtest build -b tutorials/strict_example.yml --strict
+
+    We can see the generated test using **buildtest inspect query -t** and we will see the test script has **set -eo pipefail** in
+    the generated test.
+
+    .. command-output:: buildtest inspect query -t linux_strict_test

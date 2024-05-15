@@ -672,10 +672,6 @@
       "$ref": "#/definitions/list_of_strings",
       "description": "This field is used for specifying #BSUB options in test script."
     },
-    "cobalt": {
-      "$ref": "#/definitions/list_of_strings",
-      "description": "This field is used for specifying #COBALT options in test script."
-    },
     "pbs": {
       "$ref": "#/definitions/list_of_strings",
       "description": "This field is used for specifying #PBS directives in test script."
@@ -701,9 +697,6 @@
               "$ref": "#/definitions/list_of_strings"
             },
             "pbs": {
-              "$ref": "#/definitions/list_of_strings"
-            },
-            "cobalt": {
               "$ref": "#/definitions/list_of_strings"
             },
             "BB": {
