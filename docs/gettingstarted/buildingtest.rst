@@ -640,7 +640,7 @@ Now let's run the same test with strict mode enabled, we will see the test will 
 
 .. dropdown:: ``buildtest build -b tutorials/strict_example.yml --strict``
 
-    .. commmand-output:: buildtest build -b tutorials/strict_example.yml --strict
+    .. command-output:: buildtest build -b tutorials/strict_example.yml --strict
 
     We can see the generated test using **buildtest inspect query -t** and we will see the test script has **set -eo pipefail** in
     the generated test.
