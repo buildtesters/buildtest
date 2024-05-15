@@ -341,7 +341,7 @@ class BuilderBase(ABC):
         """
         self.prepare_run(cmd)
         command_result = self.execute_run(cmd, timeout)
-        run_result = self.handle_run_result(cmd, timeout, command_result)
+        run_result = self.handle_run_result(command_result, timeout)
         return run_result
 
     def prepare_run(self, cmd):
@@ -369,20 +369,20 @@ class BuilderBase(ABC):
         command.execute(timeout=timeout)
         return command
 
-    def handle_run_result(self, cmd, timeout, command_result):
+    def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
         copy output and error file to test directory and set state to complete. If the test fails we will retry the test based on retry count.
         If the test fails after retry we will mark test as failed.
         """
-
-        self.logger.debug(f"Running Test via command: {cmd}")
+        launch_command = command_result.get_command()
+        self.logger.debug(f"Running Test via command: {launch_command}")
         ret = command_result.returncode()
         err_msg = command_result.get_error()
 
         if len(err_msg) >= 60:
             err_msg = err_msg[-60:]
         if not self._retry or ret == 0:
-            return cmd
+            return command_result
 
         console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
         console.rule(f"[red]Error Message for {self}")
@@ -392,12 +392,12 @@ class BuilderBase(ABC):
         )
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
-            command = BuildTestCommand(cmd)
+            command = self.execute_run(launch_command, timeout)
+
             console.print(
-                f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]"
+                f"[blue]{self}[/]: Running Test via command: [cyan]{launch_command}[/cyan]"
             )
-            command.execute(timeout=timeout)
-            self.logger.debug(f"Running Test via command: {cmd}")
+            self.logger.debug(f"Running Test via command: {launch_command}")
             ret = command.returncode()
             if ret == 0:
                 return command
