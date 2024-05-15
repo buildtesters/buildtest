@@ -1077,30 +1077,30 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 "regex": regex_check,
                 "runtime": runtime_check,
                 "file_regex": file_regex_check,
-                "assert_ge": lambda: comparison_check(
-                    builder=self, comparison_type="ge"
+                "assert_ge": lambda builder: comparison_check(
+                    builder=builder, comparison_type="ge"
                 ),
-                "assert_le": lambda: comparison_check(
-                    builder=self, comparison_type="le"
+                "assert_le": lambda builder: comparison_check(
+                    builder=builder, comparison_type="le"
                 ),
-                "assert_gt": lambda: comparison_check(
-                    builder=self, comparison_type="gt"
+                "assert_gt": lambda builder: comparison_check(
+                    builder=builder, comparison_type="gt"
                 ),
-                "assert_lt": lambda: comparison_check(
-                    builder=self, comparison_type="lt"
+                "assert_lt": lambda builder: comparison_check(
+                    builder=builder, comparison_type="lt"
                 ),
-                "assert_eq": lambda: comparison_check(
-                    builder=self, comparison_type="eq"
+                "assert_eq": lambda builder: comparison_check(
+                    builder=builder, comparison_type="eq"
                 ),
-                "assert_ne": lambda: comparison_check(
-                    builder=self, comparison_type="ne"
+                "assert_ne": lambda builder: comparison_check(
+                    builder=builder, comparison_type="ne"
                 ),
                 "assert_range": assert_range_check,
-                "contains": lambda: contains_check(
-                    builder=self, comparison_type="contains"
+                "contains": lambda builder: contains_check(
+                    builder=builder, comparison_type="contains"
                 ),
-                "not_contains": lambda: contains_check(
-                    builder=self, comparison_type="not_contains"
+                "not_contains": lambda builder: contains_check(
+                    builder=builder, comparison_type="not_contains"
                 ),
                 "is_symlink": is_symlink_check,
                 "exists": exists_check,
