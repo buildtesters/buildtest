@@ -152,7 +152,7 @@ class BuilderBase(ABC):
 
         self._set_metadata_values()
         self.shell_detection()
-        self.sched_init()
+        self.set_scheduler_settings()
 
     @property
     def dependency(self):
@@ -175,7 +175,7 @@ class BuilderBase(ABC):
         self.shebang = (
             self.recipe.get("shebang") or f"{self.shell.shebang} {self.shell.opts}"
         )
-        self.logger.debug("Using shell %s", self.shell.name)
+        self.logger.debug(f"Using shell {self.shell.name}")
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
     def _set_metadata_values(self):
@@ -330,8 +330,8 @@ class BuilderBase(ABC):
         self._write_build_script(modules, modulepurge, unload_modules)
 
     def run(self, cmd, timeout=None):
-        """Run the test and record the starttime and start timer. We also return the instance
-        object of type BuildTestCommand which is used by Executors for processing output and error
+        """This is the entry point for running the test. This method will prepare test to be run, then
+        run the test. Once test is complete, we also handle test results by capturing output and error.
 
         Returns:
             If success, the return type is an object of type :class:`buildtest.utils.command.BuildTestCommand`
@@ -339,42 +339,54 @@ class BuilderBase(ABC):
             If their is a failure (non-zero) returncode we retry test and if it doesn't pass we
             raise exception of :class:`buildtest.exceptions.RuntimeFailure`
         """
+        self.prepare_run(cmd)
+        command_result = self.execute_run(cmd, timeout)
+        run_result = self.handle_run_result(cmd, timeout, command_result)
+        return run_result
+
+    def prepare_run(self, cmd):
+        """This method prepares the test to be run by recording starttime, setting state to running and starting the timer.
+        In additional we will write build environment into build-env.txt which is used for debugging purposes.
+        """
 
         self.metadata["command"] = cmd
-
         console.print(f"[blue]{self}[/]: Current Working Directory : {os.getcwd()}")
-        # capture output of 'env' and write to file 'build-env.sh' prior to running test
         command = BuildTestCommand("env")
         command.execute()
         content = "".join(command.get_output())
         self.metadata["buildenv"] = os.path.join(self.test_root, "build-env.txt")
         write_file(self.metadata["buildenv"], content)
-
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
-
         self.record_starttime()
         self.running()
         self.start()
 
+    def execute_run(self, cmd, timeout):
+        """This method will execute the test and return the instance object of type
+        BuildTestCommand which is used by Executors for processing output and error"""
+
         command = BuildTestCommand(cmd)
         command.execute(timeout=timeout)
+        return command
+
+    def handle_run_result(self, cmd, timeout, command_result):
+        """This method will handle the result of running test. If the test is successful we will record endtime,
+        copy output and error file to test directory and set state to complete. If the test fails we will retry the test based on retry count.
+        If the test fails after retry we will mark test as failed.
+        """
 
         self.logger.debug(f"Running Test via command: {cmd}")
-        ret = command.returncode()
-        err_msg = command.get_error()
-        # limit error messages to 60 lines
+        ret = command_result.returncode()
+        err_msg = command_result.get_error()
+
         if len(err_msg) >= 60:
             err_msg = err_msg[-60:]
-
         if not self._retry or ret == 0:
-            return command
+            return cmd
 
         console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
         console.rule(f"[red]Error Message for {self}")
         console.print(f"[red]{' '.join(err_msg)}")
-
-        ########## Retry for failed tests  ##########
-
         console.print(
             f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
         )
@@ -385,11 +397,8 @@ class BuilderBase(ABC):
                 f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]"
             )
             command.execute(timeout=timeout)
-
             self.logger.debug(f"Running Test via command: {cmd}")
             ret = command.returncode()
-
-            # if we recieve a returncode of 0 return immediately with the instance of command
             if ret == 0:
                 return command
             console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
@@ -498,11 +507,6 @@ class BuilderBase(ABC):
 
         create_dir(self.testdir)
 
-        # num_content = len(os.listdir(self.testdir))
-        # the testid is incremented for every run, this can be done by getting
-        # length of all files in testdir and creating a directory. Subsequent
-        # runs will increment this counter
-
         self.test_root = os.path.join(self.testdir, self.testid[:8])
 
         create_dir(self.test_root)
@@ -522,10 +526,10 @@ class BuilderBase(ABC):
         self.metadata["stagedir"] = self.stage_dir
 
         # Derive the path to the test script
-        self.testpath = "%s.%s" % (
-            os.path.join(self.stage_dir, self.name),
-            self.get_test_extension(),
+        self.testpath = (
+            os.path.join(self.stage_dir, self.name) + "." + self.get_test_extension()
         )
+
         self.testpath = os.path.expandvars(self.testpath)
 
         self.metadata["testpath"] = os.path.join(
@@ -620,8 +624,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
-
-        # console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
@@ -734,7 +736,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return lines
 
-    def sched_init(self):
+    def set_scheduler_settings(self):
         """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub'"""
         self.sbatch = deep_get(
             self.recipe, "executors", self.executor, "sbatch"
@@ -935,7 +937,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
     def add_metrics(self):
         """This method will update the metrics field stored in ``self.metadata['metrics']``. The ``metrics``
-        property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
+        property can be defined in the buildspec to assign value to a metrics name based on regular expression,
         environment or variable assignment.
         """
 
@@ -943,67 +945,73 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             return
 
         for key, metric in self.metrics.items():
-            # Default value of metric is an empty string
             self.metadata["metrics"][key] = ""
             regex = metric.get("regex")
             file_regex = metric.get("file_regex")
 
             if regex:
-
-                stream = regex.get("stream")
-                content_input = self._output if stream == "stdout" else self._error
-
-                linenum = regex.get("linenum")
-                content = self._extract_line(linenum, content_input)
-
-                if regex.get("re") == "re.match":
-                    match = re.match(regex["exp"], content, re.MULTILINE)
-                elif regex.get("re") == "re.fullmatch":
-                    match = re.fullmatch(regex["exp"], content, re.MULTILINE)
-                else:
-                    match = re.search(regex["exp"], content, re.MULTILINE)
-                if match:
-                    try:
-                        self.metadata["metrics"][key] = match.group(
-                            regex.get("item", 0)
-                        )
-                    except IndexError:
-                        self.logger.error(
-                            f"Unable to fetch match group: {regex.get('item', 0)} for metric: {key}."
-                        )
-                        continue
+                self.handle_regex_metric(key, regex)
             elif file_regex:
-                fname = file_regex["file"]
-                if fname:
-                    resolved_fname = resolve_path(fname)
-                    if not is_file(resolved_fname):
-                        msg = f"[blue]{self}[/]: Unable to resolve file path: {fname} for metric: {key}"
-                        self.logger.error(msg)
-                        console.print(msg, style="red")
-                        continue
-
-                    linenum = file_regex.get("linenum")
-                    content_input = read_file(resolved_fname)
-                    content = self._extract_line(linenum, content_input)
-
-                    match = (
-                        re.search(file_regex["exp"], content, re.MULTILINE)
-                        if content
-                        else None
-                    )
-
-                    if match:
-                        try:
-                            self.metadata["metrics"][key] = match.group(
-                                file_regex.get("item", 0)
-                            )
-                        except IndexError:
-                            self.logger.error(
-                                f"Unable to fetch match group: {file_regex.get('item', 0)} for metric: {key}."
-                            )
-                            continue
+                self.handle_file_regex_metric(key, file_regex)
 
             self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
+
+    def handle_regex_metric(self, key, regex):
+        """Handle metrics based on regular expressions."""
+
+        stream = regex.get("stream")
+        content_input = self._output if stream == "stdout" else self._error
+
+        linenum = regex.get("linenum")
+        content = self._extract_line(linenum, content_input)
+
+        match = self.get_match(regex, content)
+        if match:
+            try:
+                self.metadata["metrics"][key] = match.group(regex.get("item", 0))
+            except IndexError:
+                self.logger.error(
+                    f"Unable to fetch match group: {regex.get('item', 0)} for metric: {key}."
+                )
+
+    def handle_file_regex_metric(self, key, file_regex):
+        """Handle metrics based on file regular expressions."""
+
+        fname = file_regex["file"]
+        if fname:
+            resolved_fname = resolve_path(fname)
+            if not is_file(resolved_fname):
+                msg = f"[blue]{self}[/]: Unable to resolve file path: {fname} for metric: {key}"
+                self.logger.error(msg)
+                console.print(msg, style="red")
+                return
+
+            linenum = file_regex.get("linenum")
+            content_input = read_file(resolved_fname)
+            content = self._extract_line(linenum, content_input)
+
+            match = (
+                re.search(file_regex["exp"], content, re.MULTILINE) if content else None
+            )
+            if match:
+                try:
+                    self.metadata["metrics"][key] = match.group(
+                        file_regex.get("item", 0)
+                    )
+                except IndexError:
+                    self.logger.error(
+                        f"Unable to fetch match group: {file_regex.get('item', 0)} for metric: {key}."
+                    )
+
+    def get_match(self, regex, content):
+        """Get the match based on the regular expression."""
+
+        if regex.get("re") == "re.match":
+            return re.match(regex["exp"], content, re.MULTILINE)
+        elif regex.get("re") == "re.fullmatch":
+            return re.fullmatch(regex["exp"], content, re.MULTILINE)
+        else:
+            return re.search(regex["exp"], content, re.MULTILINE)
 
     def output(self):
         """Return output content"""
