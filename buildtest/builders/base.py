@@ -375,12 +375,26 @@ class BuilderBase(ABC):
         if self.post_run_script:
             post_run = BuildTestCommand(self.post_run_script)
             post_run.execute()
+            output = post_run.get_output()
+            error = post_run.get_error()
+            if len(output) >= 10:
+                output = output[-10:]
+
+            if len(error) >= 10:
+                error = error[-10:]
+
             console.print(
                 f"[blue]{self}[/]: Running Post Run Script: [cyan]{self.post_run_script}[/cyan]"
             )
             console.print(
                 f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
             )
+
+            console.rule(f"[blue]{self}[/]: Post Run Script Output")
+            console.print(f"[blue]{' '.join(output)}")
+
+            console.rule(f"[red]{self}[/]: Post Run Script Error")
+            console.print(f"[red]{' '.join(error)}")
 
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
@@ -656,7 +670,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         if not self.recipe.get("post_run"):
             return
 
-        lines = ["#!/bin/bash"]
+        lines = ["#!/bin/bash -v"]
         lines += self.recipe["post_run"].split("\n")
 
         lines = "\n".join(lines)
