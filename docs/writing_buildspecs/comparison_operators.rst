@@ -33,7 +33,6 @@ from the regular expression search. The item must be non-negative number.
 .. literalinclude:: ../tutorials/perf_checks/assert_ge.yml
     :language: yaml
     :emphasize-lines: 12-48
-    :linenos:
 
 
 buildtest will evaluate each assertion in the list and use a logical AND to determine the final
@@ -65,7 +64,6 @@ In this example, we perform a **>** operation, this can be done via ``assert_gt`
 .. literalinclude:: ../tutorials/perf_checks/assert_gt.yml
     :language: yaml
     :emphasize-lines: 37-47
-    :linenos:
 
 .. _assert_le:
 
@@ -77,7 +75,6 @@ In this example, we perform a **<=** operation, this can be done via ``assert_le
 .. literalinclude:: ../tutorials/perf_checks/assert_le.yml
     :language: yaml
     :emphasize-lines: 37-47
-    :linenos:
 
 .. _assert_lt:
 
@@ -89,7 +86,6 @@ In this example, we perform a **<** operation, this can be done via ``assert_lt`
 .. literalinclude:: ../tutorials/perf_checks/assert_lt.yml
     :language: yaml
     :emphasize-lines: 37-47
-    :linenos:
 
 .. _assert_eq:
 
@@ -104,7 +100,6 @@ type (``int``, ``float``, ``str``).
 .. literalinclude:: ../tutorials/perf_checks/assert_eq.yml
     :language: yaml
     :emphasize-lines: 40-50
-    :linenos:
 
 This test is expected to pass where all assertions are **True**. Let's build the test and see the output
 
@@ -123,7 +118,6 @@ a mismatch in value captured by metric ``x`` which is **1** however the referenc
 .. literalinclude:: ../tutorials/perf_checks/assert_eq_exceptions.yml
     :language: yaml
     :emphasize-lines: 22-23,28-29,33,42-43
-    :linenos:
 
 Let's build this test and see the output.
 
@@ -145,7 +139,6 @@ should pass. The reference value is converted to the data-type (``type`` field) 
 .. literalinclude:: ../tutorials/perf_checks/assert_ne.yml
     :language: yaml
     :emphasize-lines: 17,23,29,35,41-49
-    :linenos:
 
 We expect this test to pass. In order to run this test, you can do the following
 
@@ -166,7 +159,6 @@ is an example using the ``assert_range`` property with stream benchmark.
 .. literalinclude:: ../tutorials/perf_checks/assert_range.yml
     :language: yaml
     :emphasize-lines: 37-51
-    :linenos:
 
 Let's build this test and see the output
 
@@ -192,7 +184,6 @@ string equivalent **'1'**.
 .. literalinclude:: ../tutorials/perf_checks/contains.yml
     :language: yaml
     :emphasize-lines: 17-25,41-45
-    :linenos:
 
 You can run this test, by running the following command
 
