@@ -368,6 +368,9 @@ class BuilderBase(ABC):
 
         command = BuildTestCommand(cmd)
         command.execute(timeout=timeout)
+        return command
+
+    def execute_post_run_script(self):
 
         if self.post_run_script:
             post_run = BuildTestCommand(self.post_run_script)
@@ -378,7 +381,6 @@ class BuilderBase(ABC):
             console.print(
                 f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
             )
-        return command
 
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
@@ -388,7 +390,14 @@ class BuilderBase(ABC):
         launch_command = command_result.get_command()
         self.logger.debug(f"Running Test via command: {launch_command}")
         ret = command_result.returncode()
+        output_msg = command_result.get_output()
         err_msg = command_result.get_error()
+
+        if len(output_msg) >= 10:
+            output_msg = output_msg[-10:]
+
+        console.rule(f"[blue]Output Message for {self}")
+        console.print(f"[blue]{' '.join(output_msg)}")
 
         if len(err_msg) >= 60:
             err_msg = err_msg[-60:]
@@ -642,10 +651,10 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         Upon creating file we set permission of builder script to 755 so test can be run.
         """
 
+        self.post_run_script = f"{os.path.join(self.stage_dir, self.name)}_postrun.sh"
+
         if not self.recipe.get("post_run"):
             return
-
-        self.post_run_script = f"{os.path.join(self.stage_dir, self.name)}_postrun.sh"
 
         lines = ["#!/bin/bash"]
         lines += self.recipe["post_run"].split("\n")
@@ -1089,6 +1098,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         # mark job is success if it finished all post run steps
         self.complete()
+
+        self.execute_post_run_script()
 
     def is_valid_metric(self, name):
         if name not in list(self.metadata["metrics"].keys()):

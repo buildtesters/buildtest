@@ -234,3 +234,11 @@ def test_metrics_file_regex_with_invalid_linenum():
         configuration=config,
     )
     cmd.build()
+
+
+def test_post_run_check():
+    """This test will run post run check with status check"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "post_run.yml")], configuration=config
+    )
+    cmd.build()
