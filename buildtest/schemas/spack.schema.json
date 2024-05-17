@@ -37,6 +37,7 @@
       "type": "string",
       "description": "Shell commands run after spack"
     },
+    "post_run": { "$ref": "definitions.schema.json#/definitions/run" },
     "needs": {
       "$ref": "definitions.schema.json#/definitions/needs"
     },

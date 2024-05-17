@@ -328,6 +328,7 @@ class BuilderBase(ABC):
         self._build_setup()
         self._write_test()
         self._write_build_script(modules, modulepurge, unload_modules)
+        self._write_post_run_script()
 
     def run(self, cmd, timeout=None):
         """This is the entry point for running the test. This method will prepare test to be run, then
@@ -367,6 +368,16 @@ class BuilderBase(ABC):
 
         command = BuildTestCommand(cmd)
         command.execute(timeout=timeout)
+
+        if self.post_run_script:
+            post_run = BuildTestCommand(self.post_run_script)
+            post_run.execute()
+            console.print(
+                f"[blue]{self}[/]: Running Post Run Script: [cyan]{self.post_run_script}[/cyan]"
+            )
+            console.print(
+                f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
+            )
         return command
 
     def handle_run_result(self, command_result, timeout):
@@ -624,6 +635,27 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
+
+    def _write_post_run_script(self):
+        """This method will write the content of post run script that is run after the test is complete.
+        The post run script is used to perform cleanup operations after test is complete.
+        Upon creating file we set permission of builder script to 755 so test can be run.
+        """
+
+        if not self.recipe.get("post_run"):
+            return
+
+        self.post_run_script = f"{os.path.join(self.stage_dir, self.name)}_postrun.sh"
+
+        lines = ["#!/bin/bash"]
+        lines += self.recipe["post_run"].split("\n")
+
+        lines = "\n".join(lines)
+        write_file(self.post_run_script, lines)
+        self._set_execute_perm(self.post_run_script)
+        console.print(
+            f"[blue]{self}[/]: Writing Post Run Script: {self.post_run_script}"
+        )
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
