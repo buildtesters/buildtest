@@ -48,7 +48,12 @@ from buildtest.utils.file import (
 )
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
-from buildtest.utils.tools import check_container_runtime, deep_get
+from buildtest.utils.tools import (
+    check_container_runtime,
+    deep_get,
+    print_content,
+    print_file_content,
+)
 
 
 class BuilderBase(ABC):
@@ -282,15 +287,9 @@ class BuilderBase(ABC):
 
         """
 
-        # import issue when putting this at top of file
-        # from buildtest.executors.local import LocalExecutor
-
-        # return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
-
         return self.buildexecutor.executors[self.executor].type == "local"
 
     def is_container_executor(self):
-        # from buildtest.executors.container import ContainerExecutor
         return self.buildexecutor.executors[self.executor].type == "container"
 
     def is_batch_job(self):
@@ -303,12 +302,10 @@ class BuilderBase(ABC):
     def start(self):
         """Keep internal timer for test using class :class:`buildtest.utils.timer.Timer`. This method will start the timer for builder which is invoked upon running test."""
 
-        # self.timer = Timer()
         self.timer.start()
 
     def stop(self):
         """Stop internal timer for builder."""
-        # self.duration += self.timer.stop()
         self.timer.stop()
 
     def retry(self, retry):
@@ -375,13 +372,8 @@ class BuilderBase(ABC):
         if os.path.exists(self.post_run_script):
             post_run = BuildTestCommand(self.post_run_script)
             post_run.execute()
-            output = post_run.get_output()
-            error = post_run.get_error()
-            if len(output) >= 10:
-                output = output[-10:]
-
-            if len(error) >= 10:
-                error = error[-10:]
+            output = "".join(post_run.get_output())
+            error = "".join(post_run.get_error())
 
             console.print(
                 f"[blue]{self}[/]: Running Post Run Script: [cyan]{self.post_run_script}[/cyan]"
@@ -390,13 +382,21 @@ class BuilderBase(ABC):
                 f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
             )
 
-            console.rule(f"[blue]{self}[/]: Start of Post Run Output")
-            console.print(f"[blue]{' '.join(output)}")
-            console.rule(f"[blue]{self}[/]: End of Post Run Output")
+            print_content(
+                output,
+                title=f"[blue]{self}[/]: Start of Post Run Output",
+                theme="monokai",
+                lexer="text",
+                show_last_lines=10,
+            )
 
-            console.rule(f"[red]{self}[/]: Start of Post Run Error")
-            console.print(f"[red]{' '.join(error)}")
-            console.rule(f"[red]{self}[/]: End of Post Run Error")
+            print_content(
+                error,
+                title=f"[blue]{self}[/]: Start of Post Run Error",
+                theme="monokai",
+                lexer="text",
+                show_last_lines=10,
+            )
 
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
@@ -406,25 +406,30 @@ class BuilderBase(ABC):
         launch_command = command_result.get_command()
         self.logger.debug(f"Running Test via command: {launch_command}")
         ret = command_result.returncode()
-        output_msg = command_result.get_output()
-        err_msg = command_result.get_error()
+        output_msg = "".join(command_result.get_output())
+        err_msg = "".join(command_result.get_error())
 
-        if len(output_msg) >= 10:
-            output_msg = output_msg[-10:]
+        print_content(
+            output_msg,
+            title=f"[blue]{self}[/]: Start of Output",
+            theme="monokai",
+            lexer="text",
+            show_last_lines=10,
+        )
 
-        console.rule(f"[blue]{self}[/blue]: Start of Output")
-        console.print(f"[blue]{' '.join(output_msg)}")
-        console.rule(f"[blue]{self}[/blue]: End of Output")
-
-        if len(err_msg) >= 60:
-            err_msg = err_msg[-60:]
         if not self._retry or ret == 0:
             return command_result
 
         console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
-        console.rule(f"[blue]{self}[/blue]: Start of Error")
-        console.print(f"[red]{' '.join(err_msg)}")
-        console.rule(f"[blue]{self}[/blue]: End of Error")
+
+        print_content(
+            err_msg,
+            title=f"[blue]{self}[/]: Start of Error",
+            theme="monokai",
+            lexer="text",
+            show_last_lines=30,
+        )
+
         console.print(
             f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
         )
@@ -662,6 +667,12 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
+        print_file_content(
+            file_path=self.build_script,
+            title=f"[blue]{self}[/]: Start of Build Script",
+            lexer="bash",
+            theme="monokai",
+        )
 
     def _write_post_run_script(self):
         """This method will write the content of post run script that is run after the test is complete.
@@ -682,6 +693,12 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         self._set_execute_perm(self.post_run_script)
         console.print(
             f"[blue]{self}[/]: Writing Post Run Script: {self.post_run_script}"
+        )
+        print_file_content(
+            file_path=self.post_run_script,
+            title=f"[blue]{self}[/]: Start of Post Run Script",
+            lexer="bash",
+            theme="monokai",
         )
 
     def _write_test(self):
@@ -709,10 +726,12 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         shutil.copy2(
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
-
-        console.rule(f"[blue]{self}[/]: Start of Test Script")
-        console.print(lines)
-        console.rule(f"[blue]{self}[/]: End of Test Script")
+        print_file_content(
+            file_path=self.testpath,
+            title=f"[blue]{self}[/]: Start of Test Script",
+            lexer="bash",
+            theme="monokai",
+        )
 
     def get_container_invocation(self):
         """This method returns a list of lines containing the container invocation"""
