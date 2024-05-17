@@ -328,6 +328,7 @@ class BuilderBase(ABC):
         self._build_setup()
         self._write_test()
         self._write_build_script(modules, modulepurge, unload_modules)
+        self._write_post_run_script()
 
     def run(self, cmd, timeout=None):
         """This is the entry point for running the test. This method will prepare test to be run, then
@@ -369,6 +370,32 @@ class BuilderBase(ABC):
         command.execute(timeout=timeout)
         return command
 
+    def execute_post_run_script(self):
+
+        if self.post_run_script:
+            post_run = BuildTestCommand(self.post_run_script)
+            post_run.execute()
+            output = post_run.get_output()
+            error = post_run.get_error()
+            if len(output) >= 10:
+                output = output[-10:]
+
+            if len(error) >= 10:
+                error = error[-10:]
+
+            console.print(
+                f"[blue]{self}[/]: Running Post Run Script: [cyan]{self.post_run_script}[/cyan]"
+            )
+            console.print(
+                f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
+            )
+
+            console.rule(f"[blue]{self}[/]: Post Run Script Output")
+            console.print(f"[blue]{' '.join(output)}")
+
+            console.rule(f"[red]{self}[/]: Post Run Script Error")
+            console.print(f"[red]{' '.join(error)}")
+
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
         copy output and error file to test directory and set state to complete. If the test fails we will retry the test based on retry count.
@@ -377,7 +404,14 @@ class BuilderBase(ABC):
         launch_command = command_result.get_command()
         self.logger.debug(f"Running Test via command: {launch_command}")
         ret = command_result.returncode()
+        output_msg = command_result.get_output()
         err_msg = command_result.get_error()
+
+        if len(output_msg) >= 10:
+            output_msg = output_msg[-10:]
+
+        console.rule(f"[blue]Output Message for {self}")
+        console.print(f"[blue]{' '.join(output_msg)}")
 
         if len(err_msg) >= 60:
             err_msg = err_msg[-60:]
@@ -624,6 +658,27 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
+
+    def _write_post_run_script(self):
+        """This method will write the content of post run script that is run after the test is complete.
+        The post run script is used to perform cleanup operations after test is complete.
+        Upon creating file we set permission of builder script to 755 so test can be run.
+        """
+
+        self.post_run_script = f"{os.path.join(self.stage_dir, self.name)}_postrun.sh"
+
+        if not self.recipe.get("post_run"):
+            return
+
+        lines = ["#!/bin/bash -v"]
+        lines += self.recipe["post_run"].split("\n")
+
+        lines = "\n".join(lines)
+        write_file(self.post_run_script, lines)
+        self._set_execute_perm(self.post_run_script)
+        console.print(
+            f"[blue]{self}[/]: Writing Post Run Script: {self.post_run_script}"
+        )
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
@@ -1057,6 +1112,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         # mark job is success if it finished all post run steps
         self.complete()
+
+        self.execute_post_run_script()
 
     def is_valid_metric(self, name):
         if name not in list(self.metadata["metrics"].keys()):

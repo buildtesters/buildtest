@@ -62,7 +62,7 @@ will override the ``sbatch`` property defined in the top-level file otherwise it
 
 .. literalinclude:: ../tutorials/multi_executors/executor_scheduler.yml
    :language: yaml
-
+   :emphasize-lines: 8-13
 
 .. dropdown:: ``buildtest build -b tutorials/multi_executors/executor_scheduler.yml``
 
@@ -85,6 +85,7 @@ see :ref:`cray_burstbuffer_datawarp`.
 
 .. literalinclude:: ../tutorials/burstbuffer_datawarp_executors.yml
     :language: yaml
+    :emphasize-lines: 9-18
 
 Custom Status by Executor
 --------------------------

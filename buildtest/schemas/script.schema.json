@@ -60,6 +60,9 @@
     "run": {
       "$ref": "definitions.schema.json#/definitions/run"
     },
+    "post_run": {
+      "$ref": "definitions.schema.json#/definitions/run"
+    },
     "status": {
       "$ref": "definitions.schema.json#/definitions/status"
     },

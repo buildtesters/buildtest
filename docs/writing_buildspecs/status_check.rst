@@ -493,3 +493,36 @@ Let's try running this test example and see the generated output, all test shoul
 .. dropdown:: ``buildtest build -b tutorials/test_status/specify_regex_type.yml``
 
     .. command-output:: buildtest build -b tutorials/test_status/specify_regex_type.yml
+
+`post_run`: Specify Post Run Tests
+-----------------------------------
+
+Buildtest can run additional commands after test execution that can be specified via ``post_run`` property. This can be used to perform cleanup or additional
+operations after test execution. To demonstrate this example we have the following buildspec. In this test we will create a directory named **demo** and create
+a symbolic link named **$HOME/.bashrc_link**. You will notice that in ``status`` check we are comparing the existence of directory and symbolic link. This
+is where ``post_run`` script comes into play where we want to remove the created directory and symbolic link. If we were to do this in ``run`` section, the test
+will fail since **status** check will fail to find these files. The ``post_run`` property is a list of commands that will be executed in a bash shell.
+
+.. literalinclude:: ../tutorials/post_run.yml
+   :language: yaml
+   :emphasize-lines: 6-16
+
+Now we can build this test and see the output, note buildtest will run the post_run script after test execution and show the exit code of test. It won't affect the actual
+test behavior even if the post run script fails to execute properly.
+
+.. dropdown:: ``buildtest build -b tutorials/post_run.yml``
+
+    .. command-output:: buildtest build -b tutorials/post_run.yml
+
+We can confirm the files are not present by checking existence of these files by running the following commands
+
+    .. command-output:: ls -l $HOME/.bashrc_link
+        :shell:
+        :returncode: 2
+
+We can retrieve the full path to stage directory via ``buildtest path -s`` command given the name of test. The **demo** directory is created in stage directory
+so if we run the following command we should see this directory is not present.
+
+    .. command-output:: ls -l $(buildtest path -s post_run_example)/demo
+        :shell:
+        :returncode: 2
