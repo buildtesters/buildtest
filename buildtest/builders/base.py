@@ -372,7 +372,7 @@ class BuilderBase(ABC):
 
     def execute_post_run_script(self):
 
-        if self.post_run_script:
+        if os.path.exists(self.post_run_script):
             post_run = BuildTestCommand(self.post_run_script)
             post_run.execute()
             output = post_run.get_output()
@@ -390,11 +390,13 @@ class BuilderBase(ABC):
                 f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
             )
 
-            console.rule(f"[blue]{self}[/]: Post Run Script Output")
+            console.rule(f"[blue]{self}[/]: Start of Post Run Output")
             console.print(f"[blue]{' '.join(output)}")
+            console.rule(f"[blue]{self}[/]: End of Post Run Output")
 
-            console.rule(f"[red]{self}[/]: Post Run Script Error")
+            console.rule(f"[red]{self}[/]: Start of Post Run Error")
             console.print(f"[red]{' '.join(error)}")
+            console.rule(f"[red]{self}[/]: End of Post Run Error")
 
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
@@ -410,8 +412,9 @@ class BuilderBase(ABC):
         if len(output_msg) >= 10:
             output_msg = output_msg[-10:]
 
-        console.rule(f"[blue]Output Message for {self}")
+        console.rule(f"[blue]{self}[/blue]: Start of Output")
         console.print(f"[blue]{' '.join(output_msg)}")
+        console.rule(f"[blue]{self}[/blue]: End of Output")
 
         if len(err_msg) >= 60:
             err_msg = err_msg[-60:]
@@ -419,8 +422,9 @@ class BuilderBase(ABC):
             return command_result
 
         console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
-        console.rule(f"[red]Error Message for {self}")
+        console.rule(f"[blue]{self}[/blue]: Start of Error")
         console.print(f"[red]{' '.join(err_msg)}")
+        console.rule(f"[blue]{self}[/blue]: End of Error")
         console.print(
             f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
         )
@@ -705,6 +709,10 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         shutil.copy2(
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
+
+        console.rule(f"[blue]{self}[/]: Start of Test Script")
+        console.print(lines)
+        console.rule(f"[blue]{self}[/]: End of Test Script")
 
     def get_container_invocation(self):
         """This method returns a list of lines containing the container invocation"""
