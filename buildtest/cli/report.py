@@ -573,6 +573,7 @@ class Report:
                 headers=self.display_table.keys(),
                 color=consoleColor,
                 display_header=noheader,
+                pager=self.pager,
             )
         else:
             table = create_table(

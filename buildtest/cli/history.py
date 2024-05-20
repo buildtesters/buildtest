@@ -152,6 +152,15 @@ def list_build_history(
 
 
 def process_history_data(history_files):
+    """This method processes history files and extracts data from each build.json file
+    and returns a list of data for each build.
+
+    Args:
+        history_files (list): A list of history files to process
+
+    Returns:
+        list: A list containing build history data
+    """
 
     tdata = []
     for fname in history_files:

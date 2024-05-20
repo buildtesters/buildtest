@@ -632,6 +632,7 @@ class BuildspecCache:
                 headers=["Buildspecs"],
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -669,7 +670,11 @@ class BuildspecCache:
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
             print_terse_format(
-                tdata, headers=["Tags"], color=self.color, display_header=self.header
+                tdata,
+                headers=["Tags"],
+                color=self.color,
+                display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -704,6 +709,7 @@ class BuildspecCache:
                 headers=["Executors"],
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -744,6 +750,7 @@ class BuildspecCache:
                 headers=["Executors", "Name", "Description"],
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -787,6 +794,7 @@ class BuildspecCache:
                 headers=["Tags", "Name", "Description"],
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -841,6 +849,7 @@ class BuildspecCache:
                 headers=self.table.keys(),
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -878,6 +887,7 @@ class BuildspecCache:
                 headers=["Maintainers"],
                 color=self.color,
                 display_header=self.header,
+                pager=pager,
             )
             return
 
@@ -915,6 +925,7 @@ class BuildspecCache:
                 headers=["Buildspecs"],
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             return
 
@@ -924,7 +935,8 @@ class BuildspecCache:
             title="List of Maintainers",
             column_style=self.color,
         )
-        print_table(table)
+        print(self.pager)
+        print_table(table, pager=self.pager)
 
     def print_invalid_buildspecs(self, error=None, terse=None, row_count=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalid``
@@ -963,6 +975,7 @@ class BuildspecCache:
                 headers=["Buildspecs"],
                 color=self.color,
                 display_header=self.header,
+                pager=self.pager,
             )
             # will raise exit 1 to indicate error if there is any invalid buildspec which can be useful for scripting
             sys.exit(1)
@@ -1348,7 +1361,11 @@ def buildspec_maintainers(
     """
 
     cache = BuildspecCache(
-        configuration=configuration, terse=terse, header=header, color=color
+        configuration=configuration,
+        terse=terse,
+        header=header,
+        color=color,
+        pager=pager,
     )
 
     if row_count:
