@@ -10,6 +10,7 @@ from rich.table import Column, Table
 from buildtest.defaults import console
 from buildtest.utils.file import resolve_path
 from buildtest.utils.print import print_file_content
+from buildtest.utils.table import create_table, print_table, print_terse_format
 from buildtest.utils.tools import checkColor
 
 
@@ -144,15 +145,21 @@ def fetch_test_names(report, names):
     return query_builders
 
 
-def print_builders(report):
+def print_builders(report, pager=None, color=None):
     """This method prints all the builders.
 
     Args:
         report (str): Path to report file
     """
 
+    if pager:
+        with console.pager():
+            for name in report.builder_names():
+                console.print(name)
+        return
+
     for name in report.builder_names():
-        console.print(name)
+        console.print(f"[{color}]{name}")
 
 
 def print_terse(table, no_header=None, console_color=None):
@@ -207,50 +214,41 @@ def inspect_list(
 
     # implement command 'buildtest inspect list --builder'
     if builder:
-        if pager:
-            with console.pager():
-                print_builders(report)
-            return
-
-        print_builders(report)
+        print_builders(report, pager=pager, color=consoleColor)
         return
 
-    table = {"id": [], "name": [], "buildspec": []}
+    tdata = []
 
     for identifier in test_ids.keys():
-        table["id"].append(identifier)
-        table["name"].append(test_ids[identifier]["name"])
-        table["buildspec"].append(test_ids[identifier]["buildspec"])
+        tdata.append(
+            [
+                identifier,
+                test_ids[identifier]["name"],
+                test_ids[identifier]["buildspec"],
+            ]
+        )
 
     # print output in terse format
     if terse:
-        if pager:
-            with console.pager():
-                print_terse(table, no_header, consoleColor)
-            return
-
-        print_terse(table, no_header, consoleColor)
+        print_terse_format(
+            tdata=tdata,
+            headers=["id", "name", "buildspec"],
+            color=consoleColor,
+            display_header=no_header,
+            pager=pager,
+        )
         return
 
-    inspect_table = Table(
-        header_style="blue",
+    # Create the table using the create_table method
+    inspect_table = create_table(
+        data=tdata,
         title="Test Summary by id, name, buildspec",
-        row_styles=[consoleColor],
+        columns=["id", "name", "buildspec"],
+        header_style="blue",
+        column_style=consoleColor,
     )
-    for column in table.keys():
-        inspect_table.add_column(column, overflow="fold")
 
-    for identifier, name, buildspec in zip(
-        table["id"], table["name"], table["buildspec"]
-    ):
-        inspect_table.add_row(identifier, name, buildspec)
-
-    if pager:
-        with console.pager():
-            console.print(inspect_table)
-        return
-
-    console.print(inspect_table)
+    print_table(inspect_table, pager=pager)
 
 
 def inspect_query(
