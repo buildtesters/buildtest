@@ -5,12 +5,11 @@ import re
 import sys
 
 from rich.pretty import pprint
-from rich.syntax import Syntax
 from rich.table import Column, Table
 
 from buildtest.defaults import console
-from buildtest.utils.file import read_file, resolve_path
-from buildtest.utils.tools import checkColor
+from buildtest.utils.file import resolve_path
+from buildtest.utils.tools import checkColor, print_file_content
 
 
 def print_by_query(
@@ -94,19 +93,11 @@ def print_by_query(
                 # print content of build script when 'buildtest inspect query --buildscript' is set
                 if buildscript:
                     print_file_content(
-                        test["build_script"], "Test File: ", "shell", theme
+                        test["build_script"], "Build Script File: ", "shell", theme
                     )
 
                 if buildenv:
                     print_file_content(test["buildenv"], "Test File: ", "text", theme)
-
-
-def print_file_content(file_path, title, lexer, theme):
-    content = read_file(file_path)
-    console.rule(f"{title} {file_path}")
-
-    syntax = Syntax(content, lexer, theme=theme)
-    console.print(syntax)
 
 
 def fetch_test_names(report, names):
