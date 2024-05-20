@@ -9,6 +9,7 @@ from rich.table import Column, Table
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
+from buildtest.utils.table import create_table, print_table, print_terse_format
 from buildtest.utils.tools import checkColor
 
 logger = logging.getLogger(__name__)
@@ -557,50 +558,32 @@ class Report:
         )
 
         consoleColor = checkColor(color)
+        tdata = [self.display_table[key] for key in self.display_table.keys()]
+        tdata = [list(i) for i in zip(*tdata)]
+        # limited number of rows to be printed in terse mode. If count is negative we print all rows
+        tdata = tdata[: self.count] if self.count > 0 else tdata
+        title = title or f"Report File: {self.reportfile()}"
+
+        if self.count == 0:
+            return
+
         if terse:
-            row_entry = [self.display_table[key] for key in self.display_table.keys()]
-
-            if not noheader:
-                console.print("|".join(self.display_table.keys()), style=consoleColor)
-
-            transpose_list = [list(i) for i in zip(*row_entry)]
-
-            if self.count == 0:
-                return
-
-            # limited number of rows to be printed in terse mode. If count is negative we print all rows
-            transpose_list = (
-                transpose_list[: self.count] if self.count > 0 else transpose_list
+            print_terse_format(
+                tdata,
+                headers=self.display_table.keys(),
+                color=consoleColor,
+                display_header=noheader,
             )
-
-            for row in transpose_list:
-                line = "|".join(row)
-                console.print(f"[{consoleColor}]{line}")
         else:
-            row_entry = []
-            title = title or f"Report File: {self.reportfile()}"
-            table = Table(title=title, show_lines=True, expand=True)
-            for field, value in self.display_table.items():
-                table.add_column(field, overflow="fold", style=consoleColor)
-                row_entry.append(self.display_table[field])
-
-            transpose_list = [list(i) for i in zip(*row_entry)]
-
-            if self.count == 0:
-                console.print(table)
-                return
-
-            transpose_list = (
-                transpose_list[: self.count] if self.count > 0 else transpose_list
+            table = create_table(
+                title=title,
+                columns=self.display_table.keys(),
+                column_style=consoleColor,
+                data=tdata,
+                show_lines=False,
             )
-            for row in transpose_list:
-                table.add_row(*row)
 
-            if row_count:
-                console.print(table.row_count)
-                return
-
-            console.print(table)
+            print_table(table, row_count=row_count, pager=self.pager)
 
     def latest_testid_by_name(self, name):
         """Given a test name return test id of latest run
@@ -870,20 +853,24 @@ def report_summary(report, configuration, detailed=None, color=None):
     """
     consoleColor = checkColor(color)
     test_breakdown = report.breakdown_by_test_names()
-
-    table = Table(title="Breakdown by test", header_style=consoleColor)
-    table.add_column("Name", overflow="fold", style=consoleColor)
-    table.add_column("Total Pass", overflow="fold", style=consoleColor)
-    table.add_column("Total Fail", overflow="fold", style=consoleColor)
-    table.add_column("Total Runs", overflow="fold", style=consoleColor)
-
+    tdata = []
     for k in test_breakdown.keys():
-        table.add_row(
-            k,
-            str(test_breakdown[k]["pass"]),
-            str(test_breakdown[k]["fail"]),
-            str(test_breakdown[k]["runs"]),
+        tdata.append(
+            [
+                k,
+                str(test_breakdown[k]["pass"]),
+                str(test_breakdown[k]["fail"]),
+                str(test_breakdown[k]["runs"]),
+            ]
         )
+
+    table = create_table(
+        title="Breakdown by test",
+        columns=["Name", "Total Pass", "Total Fail", "Total Runs"],
+        data=tdata,
+        column_style=consoleColor,
+    )
+
     pass_results = Report(
         filter={"state": "PASS"},
         format="name,id,executor,state,returncode,runtime",
@@ -925,6 +912,7 @@ def print_report_summary_output(
     if not detailed:
         return
 
-    console.print(table)
+    print_table(table, row_count=False, pager=False)
+
     pass_results.print_report(title="PASS Tests", color=color)
     fail_results.print_report(title="FAIL Tests", color=color)
