@@ -9,7 +9,8 @@ from rich.table import Column, Table
 
 from buildtest.defaults import console
 from buildtest.utils.file import resolve_path
-from buildtest.utils.tools import checkColor, print_file_content
+from buildtest.utils.print import print_file_content
+from buildtest.utils.tools import checkColor
 
 
 def print_by_query(
