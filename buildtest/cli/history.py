@@ -4,10 +4,10 @@ import re
 import sys
 
 from rich.pretty import pprint
-from rich.table import Table
 
 from buildtest.defaults import BUILD_HISTORY_DIR, console
 from buildtest.utils.file import is_dir, load_json, read_file, walk_tree
+from buildtest.utils.table import create_table, print_table, print_terse_format
 from buildtest.utils.tools import checkColor
 
 logger = logging.getLogger(__name__)
@@ -48,28 +48,6 @@ def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
     return sorted(data, key=alphanum_key)
-
-
-def print_terse(table, no_header=None, consoleColor=None):
-    """This method prints the buildtest history list in terse mode which is run via command ``buildtest history list --terse``
-
-    Args:
-        table (dict): Table with columns required for the ``buildtest history list`` command.
-        no_header (bool, optional): Control whether header columns are displayed with terse format
-        consoleColor (bool, optional): Select desired color when displaying results
-    """
-
-    row_entry = [table[key] for key in table.keys()]
-    transpose_list = [list(i) for i in zip(*row_entry)]
-    header = "|".join(table.keys())
-
-    # We print the table columns if --no-header is not specified
-    if not no_header:
-        console.print(header, style=consoleColor)
-
-    for row in transpose_list:
-        line = "|".join(row)
-        console.print(f"[{consoleColor}]{line}")
 
 
 def query_builds(build_id, log_option=None, output=None, pager=None):
@@ -117,63 +95,6 @@ def query_builds(build_id, log_option=None, output=None, pager=None):
     pprint(content)
 
 
-def create_history_table(table, consoleColor):
-    """This method creates a rich Table object for displaying build history in tabular format
-
-    Args:
-        table (dict): A dictionary containing keys and values for each column in table
-        consoleColor (str): Color for console output
-    """
-    history_table = Table(
-        header_style="blue", show_lines=True, row_styles=[consoleColor]
-    )
-    for field in [
-        "id",
-        "hostname",
-        "user",
-        "system",
-        "date",
-        "pass tests",
-        "fail tests",
-        "total tests",
-        "command",
-    ]:
-        history_table.add_column(field, overflow="fold")
-    for (
-        build_id,
-        hostname,
-        user,
-        system,
-        date,
-        pass_test,
-        fail_tests,
-        total_tests,
-        command,
-    ) in zip(
-        table["id"],
-        table["hostname"],
-        table["user"],
-        table["system"],
-        table["date"],
-        table["pass_tests"],
-        table["fail_tests"],
-        table["total_tests"],
-        table["command"],
-    ):
-        history_table.add_row(
-            build_id,
-            hostname,
-            user,
-            system,
-            date,
-            pass_test,
-            fail_tests,
-            total_tests,
-            command,
-        )
-    return history_table
-
-
 def list_build_history(
     no_header=None, terse=None, pager=None, color=None, row_count=None
 ):
@@ -192,45 +113,62 @@ def list_build_history(
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
     # only filter filters that are 'build.json'
     history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
-    # There are many ways to calcuate number of history files. There should be one build.json file per subdirectory so a count on number of build.json
-    # equal to number of subdirectories in BUILD_HISTORY_DIR
-    if row_count:
-        print(len(history_files))
-        return
+
     history_files = sorted_alphanumeric(history_files)
-    table = {
-        "id": [],
-        "hostname": [],
-        "user": [],
-        "system": [],
-        "date": [],
-        "pass_tests": [],
-        "fail_tests": [],
-        "total_tests": [],
-        "pass_rate": [],
-        "fail_rate": [],
-        "command": [],
-    }
-    for fname in history_files:
-        content = load_json(fname)
-        table["id"].append(os.path.basename(os.path.dirname(fname)))
-        for field in ["user", "hostname", "system", "date", "command"]:
-            table[field].append(content[field])
-        table["pass_tests"].append(content["test_summary"]["pass"])
-        table["fail_tests"].append(content["test_summary"]["fail"])
-        table["total_tests"].append(content["test_summary"]["total"])
-        table["pass_rate"].append(content["test_summary"]["pass_rate"])
-        table["fail_rate"].append(content["test_summary"]["fail_rate"])
+    tdata = process_history_data(history_files)
+    headers = [
+        "id",
+        "user",
+        "hostname",
+        "system",
+        "date",
+        "command",
+        "pass tests",
+        "fail tests",
+        "total tests",
+        "pass rate",
+        "fail rate",
+    ]
+    table = create_table(
+        data=tdata,
+        columns=headers,
+        title="Build History",
+        header_style="blue",
+        column_style=consoleColor,
+        show_lines=True,
+    )
+
     if terse:
-        if pager:
-            with console.pager():
-                print_terse(table, no_header, consoleColor)
-            return
-        print_terse(table, no_header, consoleColor)
+        print_terse_format(
+            tdata=tdata,
+            headers=headers,
+            display_header=no_header,
+            color=consoleColor,
+            pager=pager,
+        )
         return
-    history_table = create_history_table(table, consoleColor)
-    if pager:
-        with console.pager():
-            console.print(history_table)
-        return
-    console.print(history_table)
+
+    print_table(table, pager=pager, row_count=row_count)
+
+
+def process_history_data(history_files):
+
+    tdata = []
+    for fname in history_files:
+        row = []
+        content = load_json(fname)
+
+        row.append(os.path.basename(os.path.dirname(fname)))
+
+        for field in ["user", "hostname", "system", "date", "command"]:
+            row.append(content[field])
+
+        row.append(str(content["test_summary"]["pass"]))
+        row.append(str(content["test_summary"]["fail"]))
+        row.append(str(content["test_summary"]["total"]))
+        row.append(str(content["test_summary"]["pass_rate"]))
+        row.append(str(content["test_summary"]["fail_rate"]))
+
+        tdata.append(row)
+
+    return tdata

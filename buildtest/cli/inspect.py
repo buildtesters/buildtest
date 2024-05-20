@@ -162,26 +162,6 @@ def print_builders(report, pager=None, color=None):
         console.print(f"[{color}]{name}")
 
 
-def print_terse(table, no_header=None, console_color=None):
-    """This method prints output of builders in terse mode which is run via command ``buildtest inspect list --terse``
-
-    Args:
-        table (dict): Table with columns required for the ``buildtest inspect list`` command.
-        no_header (bool, optional): Determine whether to print header in terse format.
-        console_color (bool, optional): Select desired color when displaying results
-    """
-
-    row_entry = [table[key] for key in table.keys()]
-    transpose_list = [list(i) for i in zip(*row_entry)]
-
-    # We print the table columns if --no-header is not specified
-    if not no_header:
-        console.print("|".join(table.keys()), style=console_color)
-
-    for row in transpose_list:
-        console.print("|".join(row), style=console_color)
-
-
 def inspect_list(
     report,
     terse=None,
