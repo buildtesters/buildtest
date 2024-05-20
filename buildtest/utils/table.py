@@ -25,3 +25,30 @@ def print_table(table, row_count=None, pager=None):
             console.print(table)
     else:
         console.print(table)
+
+
+def print_terse_format(tdata, headers, color=None, display_header=False):
+    """This method will print the output of ``buildtest buildspec find`` in terse format.
+
+    Args:
+        tdata (list): Table data to print in terse format
+        headers (list): List of headers to print in terse format
+    Returns:
+
+    """
+
+    # print terse output
+    if not display_header:
+        console.print("|".join(headers), style=color)
+
+    if not tdata:
+        return
+
+    for row in tdata:
+        if not isinstance(row, list):
+            continue
+
+        # if any entry contains None type we convert to empty string
+        row = ["" if item is None else item for item in row]
+        join_string = "|".join(row)
+        console.print(f"[{color}]{join_string}")

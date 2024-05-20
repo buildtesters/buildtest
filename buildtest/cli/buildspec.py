@@ -31,7 +31,7 @@ from buildtest.utils.file import (
     walk_tree,
 )
 from buildtest.utils.print import print_file_content
-from buildtest.utils.table import create_table, print_table
+from buildtest.utils.table import create_table, print_table, print_terse_format
 from buildtest.utils.tools import checkColor
 
 logger = logging.getLogger(__name__)
@@ -627,7 +627,12 @@ class BuildspecCache:
             data.append([buildspec])
 
         if terse:
-            self.print_terse_format(data, headers=["Buildspecs"])
+            print_terse_format(
+                data,
+                headers=["Buildspecs"],
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         table = create_table(
@@ -663,7 +668,9 @@ class BuildspecCache:
 
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
-            self.print_terse_format(tdata, headers=["Tags"])
+            print_terse_format(
+                tdata, headers=["Tags"], color=self.color, display_header=self.header
+            )
             return
 
         table = create_table(
@@ -692,7 +699,12 @@ class BuildspecCache:
         data = [[executor] for executor in display_executors]
 
         if self.terse:
-            self.print_terse_format(data, headers=["Executors"])
+            print_terse_format(
+                data,
+                headers=["Executors"],
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         table = create_table(
@@ -727,7 +739,12 @@ class BuildspecCache:
                 print_count += 1
 
         if self.terse:
-            self.print_terse_format(data, headers=["executor", "name", "description"])
+            print_terse_format(
+                data,
+                headers=["Executors", "Name", "Description"],
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         # Define the column names
@@ -765,7 +782,12 @@ class BuildspecCache:
                 print_count += 1
 
         if self.terse:
-            self.print_terse_format(data, headers=["Tags", "Name", "Description"])
+            print_terse_format(
+                data,
+                headers=["Tags", "Name", "Description"],
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         columns = ["Tags", "Name", "Description"]
@@ -777,31 +799,6 @@ class BuildspecCache:
             column_style=self.color,
         )
         print_table(table, row_count=row_count, pager=self.pager)
-
-    def print_terse_format(self, tdata, headers):
-        """This method will print the output of ``buildtest buildspec find`` in terse format.
-
-        Args:
-            tdata (list): Table data to print in terse format
-            headers (list): List of headers to print in terse format
-        Returns:
-
-        """
-        # print terse output
-        if not self.header:
-            console.print("|".join(headers), style=self.color)
-
-        if self.count == 0:
-            return
-
-        for row in tdata:
-            if not isinstance(row, list):
-                continue
-
-            # if any entry contains None type we convert to empty string
-            row = ["" if item is None else item for item in row]
-            join_string = "|".join(row)
-            console.print(f"[{self.color}]{join_string}")
 
     def print_buildspecs(
         self, terse=None, header=None, quiet=None, row_count=None, count=None
@@ -839,7 +836,12 @@ class BuildspecCache:
             display_data = raw_data
 
         if self.terse:
-            self.print_terse_format(display_data, headers=self.table.keys())
+            print_terse_format(
+                display_data,
+                headers=self.table.keys(),
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         table = create_table(
@@ -871,7 +873,12 @@ class BuildspecCache:
             tdata = tdata[:count]
 
         if self.terse:
-            self.print_terse_format(tdata, headers=["Maintainers"])
+            print_terse_format(
+                tdata,
+                headers=["Maintainers"],
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         table = create_table(
@@ -903,7 +910,12 @@ class BuildspecCache:
             tdata.append([maintainer, ":".join(buildspecs)])
 
         if self.terse:
-            self.print_terse_format(tdata, headers=["Maintainers"])
+            print_terse_format(
+                tdata,
+                headers=["Buildspecs"],
+                color=self.color,
+                display_header=self.header,
+            )
             return
 
         table = create_table(
@@ -945,7 +957,13 @@ class BuildspecCache:
 
         # implementation for machine readable format specified via --terse
         if terse:
-            self.print_terse_format(tdata, headers=["Buildspecs"])
+            tdata = [[buildspec] for buildspec in tdata]
+            print_terse_format(
+                tdata,
+                headers=["Buildspecs"],
+                color=self.color,
+                display_header=self.header,
+            )
             # will raise exit 1 to indicate error if there is any invalid buildspec which can be useful for scripting
             sys.exit(1)
 
