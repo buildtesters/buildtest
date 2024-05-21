@@ -78,6 +78,24 @@ which shows the name of captured metrics and its corresponding values.
 
    .. command-output:: buildtest inspect query metric_regex_example_with_re
 
+Extract line numbers in Metrics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can specify ``linenum`` property in metrics to capture text from a specific line.
+In the first example, we will define 2 metrics **second_line** and **without_linenum** using ``regex``
+The former metrics captures the text ``This is line: 2``, whereas the latter captures the text ``This is line: 1``.
+
+.. literalinclude:: ../tutorials/metrics/metrics_regex_with_linenum.yml
+    :language: yaml
+    :emphasize-lines: 6-23, 30-36
+
+
+``linenum`` property can also be applied to ``file_regex``.
+
+.. literalinclude:: ../tutorials/metrics/metrics_file_regex_with_linenum.yml
+    :language: yaml
+    :emphasize-lines: 6-28
+
 Invalid Metrics
 ~~~~~~~~~~~~~~~~~
 
