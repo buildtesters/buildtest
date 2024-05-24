@@ -21,12 +21,6 @@ buildspecs:
         regex:
           exp: 'This is line: \d'
           stream: stdout
-      linenum_to_stderr:
-        type: str
-        regex:
-          exp: 'This is line: \d'
-          stream: stderr
-          linenum: 2
     status:
       assert_eq:
         comparisons:
