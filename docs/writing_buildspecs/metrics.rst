@@ -87,7 +87,7 @@ The former metrics captures the text ``This is line: 2``, whereas the latter cap
 
 .. literalinclude:: ../tutorials/metrics/metrics_regex_with_linenum.yml
     :language: yaml
-    :emphasize-lines: 6-23, 30-36
+    :emphasize-lines: 6-30
 
 Let's build the test and take a look at the metrics for this test.
 
