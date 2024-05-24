@@ -46,14 +46,10 @@ from buildtest.utils.file import (
     resolve_path,
     write_file,
 )
+from buildtest.utils.print import print_content, print_file_content
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
-from buildtest.utils.tools import (
-    check_container_runtime,
-    deep_get,
-    print_content,
-    print_file_content,
-)
+from buildtest.utils.tools import check_container_runtime, deep_get
 
 
 class BuilderBase(ABC):
