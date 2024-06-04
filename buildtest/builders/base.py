@@ -71,6 +71,7 @@ class BuilderBase(ABC):
         numprocs=None,
         numnodes=None,
         compiler=None,
+        display=None,
     ):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
@@ -82,6 +83,7 @@ class BuilderBase(ABC):
             buildspec (str): Full path to buildspec file
             buildexecutor (:obj:`buildtest.executors.setup.BuildExecutor`): An instance of BuildExecutor class used for accessing executors
             testdir (str): Test directory where tests are written. Must be full path on filesystem.
+            display (list, optional):  Display content of output/error or test.
         """
 
         self.name = name
@@ -95,7 +97,7 @@ class BuilderBase(ABC):
         self.fflags = None
         self.ldflags = None
         self.cppflags = None
-
+        self.display = display or []
         self.metadata = {}
 
         self.duration = 0
@@ -378,21 +380,22 @@ class BuilderBase(ABC):
                 f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
             )
 
-            print_content(
-                output,
-                title=f"[blue]{self}[/]: Start of Post Run Output",
-                theme="monokai",
-                lexer="text",
-                show_last_lines=10,
-            )
+            if "output" in self.display:
+                print_content(
+                    output,
+                    title=f"[blue]{self}[/]: Start of Post Run Output",
+                    theme="monokai",
+                    lexer="text",
+                    show_last_lines=10,
+                )
 
-            print_content(
-                error,
-                title=f"[blue]{self}[/]: Start of Post Run Error",
-                theme="monokai",
-                lexer="text",
-                show_last_lines=10,
-            )
+                print_content(
+                    error,
+                    title=f"[blue]{self}[/]: Start of Post Run Error",
+                    theme="monokai",
+                    lexer="text",
+                    show_last_lines=10,
+                )
 
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
@@ -405,26 +408,28 @@ class BuilderBase(ABC):
         output_msg = "".join(command_result.get_output())
         err_msg = "".join(command_result.get_error())
 
-        print_content(
-            output_msg,
-            title=f"[blue]{self}[/]: Start of Output",
-            theme="monokai",
-            lexer="text",
-            show_last_lines=10,
-        )
+        if "output" in self.display:
+            print_content(
+                output_msg,
+                title=f"[blue]{self}[/]: Start of Output",
+                theme="monokai",
+                lexer="text",
+                show_last_lines=10,
+            )
 
         if not self._retry or ret == 0:
             return command_result
 
         console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
 
-        print_content(
-            err_msg,
-            title=f"[blue]{self}[/]: Start of Error",
-            theme="monokai",
-            lexer="text",
-            show_last_lines=30,
-        )
+        if "output" in self.display:
+            print_content(
+                err_msg,
+                title=f"[blue]{self}[/]: Start of Error",
+                theme="monokai",
+                lexer="text",
+                show_last_lines=30,
+            )
 
         console.print(
             f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
@@ -663,12 +668,14 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
-        print_file_content(
-            file_path=self.build_script,
-            title=f"[blue]{self}[/]: Start of Build Script",
-            lexer="bash",
-            theme="monokai",
-        )
+
+        if "test" in self.display:
+            print_file_content(
+                file_path=self.build_script,
+                title=f"[blue]{self}[/]: Start of Build Script",
+                lexer="bash",
+                theme="monokai",
+            )
 
     def _write_post_run_script(self):
         """This method will write the content of post run script that is run after the test is complete.
@@ -690,12 +697,13 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         console.print(
             f"[blue]{self}[/]: Writing Post Run Script: {self.post_run_script}"
         )
-        print_file_content(
-            file_path=self.post_run_script,
-            title=f"[blue]{self}[/]: Start of Post Run Script",
-            lexer="bash",
-            theme="monokai",
-        )
+        if "test" in self.display:
+            print_file_content(
+                file_path=self.post_run_script,
+                title=f"[blue]{self}[/]: Start of Post Run Script",
+                lexer="bash",
+                theme="monokai",
+            )
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
@@ -722,12 +730,13 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         shutil.copy2(
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
-        print_file_content(
-            file_path=self.testpath,
-            title=f"[blue]{self}[/]: Start of Test Script",
-            lexer="bash",
-            theme="monokai",
-        )
+        if "test" in self.display:
+            print_file_content(
+                file_path=self.testpath,
+                title=f"[blue]{self}[/]: Start of Test Script",
+                lexer="bash",
+                theme="monokai",
+            )
 
     def get_container_invocation(self):
         """This method returns a list of lines containing the container invocation"""

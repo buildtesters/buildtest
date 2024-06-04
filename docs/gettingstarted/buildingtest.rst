@@ -618,8 +618,8 @@ then proceed to next test.
 
     .. command-output:: buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2
 
-Strict Mode
-------------
+Strict Mode (``buildtest build --strict``)
+-------------------------------------------
 
 Buildtest has an option to enable strict mode for test execution which can be enabled via ``--strict`` option. If this
 is set, buildtest will instead ``set -eo pipefail`` in the generated test which will cause test to exit immediately if any
@@ -646,3 +646,18 @@ Now let's run the same test with strict mode enabled, we will see the test will 
     the generated test.
 
     .. command-output:: buildtest inspect query -t linux_strict_test
+
+Display Mode (``buildtest build --display``)
+---------------------------------------------
+
+Buildtest can display output of test content and stream outout and error file to console. This can be useful
+if you want to see how the test is generated for debugging purposes.
+
+In order to use this functionality, you can specify the ``--display`` option which takes either ``output`` or ``test``.
+When ``output`` is specified, buildtest will display output and error files to console. When ``test``
+is specified, buildtest will display the content of the test and build script. You can append the ``--display`` option
+if you want to specify both options. Shown below we run a test and display both output and test.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --display output --display test``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --display output --display test

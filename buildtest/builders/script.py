@@ -26,6 +26,7 @@ class ScriptBuilder(BuilderBase):
         numnodes=None,
         compiler=None,
         strict=None,
+        display=None,
     ):
         super().__init__(
             name=name,
@@ -37,6 +38,7 @@ class ScriptBuilder(BuilderBase):
             numprocs=numprocs,
             numnodes=numnodes,
             compiler=compiler,
+            display=display,
         )
         self.compiler_settings = {"vars": None, "env": None, "modules": None}
 

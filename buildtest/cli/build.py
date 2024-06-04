@@ -595,38 +595,39 @@ class BuildTest:
 
     def __init__(
         self,
-        configuration=None,
+        account=None,
         buildspecs=None,
+        configuration=None,
+        display=None,
+        dry_run=None,
         exclude_buildspecs=None,
-        tags=None,
-        name=None,
         exclude_tags=None,
         executors=None,
-        testdir=None,
-        validate=None,
-        dry_run=None,
-        filter_buildspecs=None,
-        rebuild=None,
-        report_file=None,
-        maxpendtime=None,
-        poll_interval=None,
-        remove_stagedir=None,
-        retry=None,
-        account=None,
-        helpfilter=None,
-        numprocs=None,
-        numnodes=None,
-        modules=None,
-        modulepurge=None,
-        unload_modules=None,
-        rerun=None,
         executor_type=None,
-        timeout=None,
+        filter_buildspecs=None,
+        helpfilter=None,
         limit=None,
-        save_profile=None,
-        profile=None,
         max_jobs=None,
+        maxpendtime=None,
+        modulepurge=None,
+        modules=None,
+        name=None,
+        numnodes=None,
+        numprocs=None,
+        poll_interval=None,
+        profile=None,
+        rebuild=None,
+        remove_stagedir=None,
+        report_file=None,
+        rerun=None,
+        retry=None,
+        save_profile=None,
         strict=None,
+        tags=None,
+        testdir=None,
+        timeout=None,
+        unload_modules=None,
+        validate=None,
         verbose=None,
         write_config_file=None,
     ):
@@ -635,40 +636,43 @@ class BuildTest:
         we assign the values and proceed with building the test.
 
         Args:
-            configuration (buildtest.config.SiteConfiguration, optional): Loaded configuration content which is an instance of SiteConfiguration
-            buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
-            exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
-            tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
-            name (list, optional): list of test names to run specified via command line ``buildtest build --name``
-            exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
-            executors (list, optional): list of executors passed from command line ``buildtest build --executors``
-            testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
-            validate (bool, optional): Validate given buildspecs and buildtest will stop after parse stage which can be configured via ``buildtest build --validate`` option
-            dry_run (bool, optional): Show a list of tests that will potentially be run without actually running them via ``buildtest build --dry-run``
-            filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
-            rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
-            report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
-            maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
-            poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
-            remove_stagedir (bool, optional): remove stage directory after job completion
-            retry (int, optional): Number of retry for failed jobs
+
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
-            helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
-            numprocs (list, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
-            numnodes (list, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
-            modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
-            modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
-            unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
-            rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
+            buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
+            configuration (buildtest.config.SiteConfiguration, optional): Loaded configuration content which is an instance of SiteConfiguration
+            display (list, optional): Display content of output or test. This is specified via ``buildtest build --display``
+            dry_run (bool, optional): Show a list of tests that will potentially be run without actually running them via ``buildtest build --dry-run``
+            exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
+            exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
-            timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
+            executors (list, optional): list of executors passed from command line ``buildtest build --executors``
+            filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
+            helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
-            save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
-            profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
             max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
+            maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
+            modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
+            modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
+            name (list, optional): list of test names to run specified via command line ``buildtest build --name``
+            numnodes (list, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
+            numprocs (list, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
+            poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
+            profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
+            rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
+            remove_stagedir (bool, optional): remove stage directory after job completion
+            report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
+            rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
+            retry (int, optional): Number of retry for failed jobs
+            save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
             strict (bool, optional): Enable strict mode for buildtest. This option is specified by ``buildtest build --strict``
+            tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
+            testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
+            timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
+            unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
+            validate (bool, optional): Validate given buildspecs and buildtest will stop after parse stage which can be configured via ``buildtest build --validate`` option
             verbose (bool, optional): Enable verbose output for buildtest that is specified by ``buildtest --verbose``
             write_config_file (str, optional): Write configuration file to specified location. This is specified by ``buildtest build --write-config-file``
+
         """
         self.verbose = verbose
 
@@ -689,6 +693,7 @@ class BuildTest:
             exclude_tags,
             executors,
             name,
+            display,
         ]:
             if arg_name and not isinstance(arg_name, list):
                 raise BuildTestError(f"{arg_name} is not of type list")
@@ -718,6 +723,7 @@ class BuildTest:
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
         self.buildspecs = buildspecs
+        self.display = display
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.name = name
@@ -869,8 +875,8 @@ class BuildTest:
         configuration.detect_system()
         configuration.validate()
         self.configuration = configuration
-
         self.buildspecs = content["buildspecs"]
+        self.display = content["display"]
         self.tags = content["tags"]
         self.exclude_tags = content["exclude_tags"]
         self.name = content["name"]
@@ -903,6 +909,7 @@ class BuildTest:
         buildtest_cmd = {
             "configuration": self.configuration.file,
             "buildspecs": self.buildspecs,
+            "display": self.display,
             "tags": self.tags,
             "exclude_tags": self.exclude_tags,
             "name": self.name,
@@ -969,6 +976,7 @@ class BuildTest:
         profile_configuration = {
             "buildspecs": resolved_buildspecs or None,
             "exclude-buildspecs": self.exclude_buildspecs,
+            "display": self.display,
             "tags": self.tags,
             "exclude-tags": self.exclude_tags,
             "name": self.name,
@@ -1053,6 +1061,7 @@ class BuildTest:
 
         self.buildspecs = profile_configuration.get("buildspecs")
         self.exclude_buildspecs = profile_configuration.get("exclude-buildspecs")
+        self.display = profile_configuration.get("display")
         self.tags = profile_configuration.get("tags")
         self.exclude_tags = profile_configuration.get("exclude-tags")
         self.name = profile_configuration.get("name")
@@ -1219,6 +1228,7 @@ class BuildTest:
                 executor_type=self.executor_type,
                 exclude_tags=self.exclude_tags,
                 strict=self.strict,
+                display=self.display,
             )
 
             if not builder.get_builders():

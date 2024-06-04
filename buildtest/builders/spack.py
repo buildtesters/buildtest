@@ -28,6 +28,7 @@ class SpackBuilder(BuilderBase):
         numprocs=None,
         numnodes=None,
         strict=None,
+        display=None,
     ):
         super().__init__(
             name=name,
@@ -38,6 +39,7 @@ class SpackBuilder(BuilderBase):
             testdir=testdir,
             numprocs=numprocs,
             numnodes=numnodes,
+            display=display,
         )
         self.strict = strict
         self.status = deep_get(

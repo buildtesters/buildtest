@@ -682,6 +682,7 @@
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
         "validate": {"type": "boolean", "description": "Validate given buildspecs and buildtest will stop after parse stage"},
+        "display": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
         "dry-run": {"type": "boolean", "description": "Show a list of tests that will potentially be run"},
         "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
         "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},

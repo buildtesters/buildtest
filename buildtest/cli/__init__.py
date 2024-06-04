@@ -900,6 +900,15 @@ class BuildTestParser:
             ],
             "extra": [
                 (
+                    ["--display"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Display content of output/error or test",
+                        "choices": ["output", "test"],
+                    },
+                ),
+                (
                     ["--dry-run"],
                     {
                         "action": "store_true",
