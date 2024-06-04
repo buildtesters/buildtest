@@ -976,6 +976,7 @@ class BuildTest:
         profile_configuration = {
             "buildspecs": resolved_buildspecs or None,
             "exclude-buildspecs": self.exclude_buildspecs,
+            "display": self.display,
             "tags": self.tags,
             "exclude-tags": self.exclude_tags,
             "name": self.name,
@@ -1060,6 +1061,7 @@ class BuildTest:
 
         self.buildspecs = profile_configuration.get("buildspecs")
         self.exclude_buildspecs = profile_configuration.get("exclude-buildspecs")
+        self.display = profile_configuration.get("display")
         self.tags = profile_configuration.get("tags")
         self.exclude_tags = profile_configuration.get("exclude-tags")
         self.name = profile_configuration.get("name")
