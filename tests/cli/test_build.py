@@ -416,6 +416,7 @@ class TestBuildTest:
         BuildTest(
             configuration=buildtest_configuration,
             buildspecs=buildspecs,
+            display=["output", "test"],
             exclude_buildspecs=buildspecs,
             tags=["python"],
             executors=["generic.local.csh"],
@@ -522,6 +523,15 @@ class TestBuildTest:
             )
         ]
         cmd = BuildTest(configuration=configuration, buildspecs=buildspecs, retry=2)
+        cmd.build()
+
+    def test_display(self):
+        buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "post_run.yml")]
+        cmd = BuildTest(
+            configuration=configuration,
+            buildspecs=buildspecs,
+            display=["output", "test"],
+        )
         cmd.build()
 
 
