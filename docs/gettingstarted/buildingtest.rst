@@ -646,3 +646,18 @@ Now let's run the same test with strict mode enabled, we will see the test will 
     the generated test.
 
     .. command-output:: buildtest inspect query -t linux_strict_test
+
+Display Mode
+-------------
+
+Buildtest can display output of test content and stream outout and error file to console. This can be useful
+if you want to see how the test is generated for debugging purposes.
+
+In order to use this functionality, you can specify the ``--display`` option which takes either ``output`` or ``test``.
+When ``output`` is specified, buildtest will display output and error files to console. When ``test``
+is specified, buildtest will display the content of the test and build script. You can append the ``--display`` option
+if you want to specify both options. Shown below we run a test and display both output and test.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --display output --display test``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --display output --display test
