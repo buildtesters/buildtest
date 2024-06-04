@@ -959,6 +959,7 @@ class BuildTestParser:
                         "help": "Enable strict mode for test by setting 'set -eo pipefail' in test script",
                     },
                 ),
+                (["--suppress"], {"type": str, "help": "Suppress output from test"}),
                 (
                     ["--testdir"],
                     {
