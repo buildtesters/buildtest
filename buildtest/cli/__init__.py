@@ -900,6 +900,15 @@ class BuildTestParser:
             ],
             "extra": [
                 (
+                    ["--display"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Display content of output/error or test",
+                        "choices": ["output", "test"],
+                    },
+                ),
+                (
                     ["--dry-run"],
                     {
                         "action": "store_true",
@@ -959,7 +968,6 @@ class BuildTestParser:
                         "help": "Enable strict mode for test by setting 'set -eo pipefail' in test script",
                     },
                 ),
-                (["--suppress"], {"type": str, "help": "Suppress output from test"}),
                 (
                     ["--testdir"],
                     {
