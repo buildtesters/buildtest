@@ -490,6 +490,9 @@ _buildtest ()
           -e|--executor)
               COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "${cur}" ) )
               ;;
+          -n|--name)
+              COMPREPLY=( $( compgen -W "$(_buildspec_test_names)" -- "${cur}" ) )
+              ;;
         esac
       ;;
       esac
