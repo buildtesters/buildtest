@@ -390,6 +390,7 @@ def handle_buildspec_command(args, configuration, report_file, buildtest_editor)
             excluded_buildspecs=args.exclude,
             tags=args.tag,
             executors=args.executor,
+            name=args.name,
             configuration=configuration,
         )
 
