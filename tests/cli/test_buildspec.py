@@ -43,6 +43,7 @@ def test_buildspec_validate():
         ],
         tags=["pass", "python"],
         executors=["generic.local.sh"],
+        name=["hello_world"],
         configuration=configuration,
     )
 
