@@ -267,7 +267,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(lsf_executors[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            if lsf_executors[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": lsf_executors[executor]
+                }
+                continue
             if not lsf.validate_queue(executor=lsf_executors[executor]):
                 self.invalid_executors.append(executor_name)
                 continue
@@ -388,7 +392,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(pbs_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            if pbs_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": pbs_executor[executor]
+                }
+                continue
             queue = pbs_executor[executor].get("queue")
             if not pbs.validate_queue(queue):
                 self.invalid_executors.append(executor_name)
@@ -423,7 +431,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(torque_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            if torque_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": torque_executor[executor]
+                }
+                continue
             if not torque.validate_queue(torque_executor[executor]):
                 self.invalid_executors.append(executor_name)
                 continue
