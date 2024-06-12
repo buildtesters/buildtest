@@ -329,7 +329,7 @@ Validate Buildspecs - ``buildtest buildspec validate``
 --------------------------------------------------------
 
 buildtest can validate buildspecs through the ``buildtest buildspec validate`` command which provides
-analogous options for ``buildtest build`` for selecting buildspecs such as ``-b``, ``-e``, ``-t`` and ``-e``.
+analogous options for ``buildtest build`` for selecting buildspecs such as ``-b``, ``-e``, ``-n``, ``-t`` and ``-x``.
 This command can be used to validate buildspecs with the JSON Schema which can be useful if you are writing a buildspec
 and want to validate the buildspec without running the test.
 
@@ -339,7 +339,7 @@ Shown below are the available command options.
 
     .. command-output:: buildtest buildspec validate --help
 
-The `-b` option can be used to specify path to buildspec file or directory to validate buildspecs. If its a directory,
+The **-b** option can be used to specify path to buildspec file or directory to validate buildspecs. If its a directory,
 buildtest will traverse all directories recursively and find any **.yml** file extensions and attempt to validate each buildspec.
 Shown below is an example output of what it may look like
 
@@ -362,6 +362,13 @@ will validate all buildspecs for **python** and **pass** tags.
 .. dropdown:: ``buildtest buildspec validate -t python -t pass``
 
     .. command-output:: buildtest buildspec validate -t python -t pass
+
+You can mix and match different options for searching buildspecs to validate. For example, we can
+search by buildspec, tags, and name in the following example
+
+.. dropdown:: ``buildtest buildspec validate -t python -n hello_world -b tutorials/vars.yml``
+
+    .. command-output:: buildtest buildspec validate -t python -n hello_world -b tutorials/vars.yml
 
 Show buildspec ``buildtest buildspec show``
 --------------------------------------------
