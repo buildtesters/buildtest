@@ -542,7 +542,11 @@
           "$ref": "#/definitions/account"
         },
         "disable": {"$ref":  "#/definitions/disable"},
-        "module": { "$ref": "#/definitions/module" }
+        "module": { "$ref": "#/definitions/module" },
+        "disable_check": {
+          "type": "boolean",
+          "description": "Disable check for partition or qos "
+        }
       }
     },
     "lsf": {

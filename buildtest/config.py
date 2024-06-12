@@ -311,6 +311,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
+            if slurm_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": slurm_executor[executor]
+                }
+                continue
             if slurm_executor[executor].get("partition"):
                 if not slurm.validate_partition(slurm_executor[executor]):
                     self.invalid_executors.append(executor_name)
