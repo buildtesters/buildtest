@@ -1151,6 +1151,14 @@ class BuildTestParser:
                             "help": "Specify buildspecs by tag name to validate",
                         },
                     ),
+                    (
+                        ["-n", "--name"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by name to validate",
+                        },
+                    ),
                 ],
             },
         ]

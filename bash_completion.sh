@@ -477,7 +477,7 @@ _buildtest ()
         esac
         ;;
       validate|val)
-        local opts="--buildspec --exclude --executor --tag -b -e -t -x "
+        local opts="--buildspec --exclude --executor --name --tag -b -e -n -t -x "
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
 
         case "${prev}" in
