@@ -4,8 +4,8 @@ gcc:
     cc: /usr/bin/gcc
     cxx: /usr/bin/g++
     fc: /usr/bin/gfortran
-  gcc_9.4.0:
-    cc: /usr/bin/gcc-9
-    cxx: /usr/bin/g++-9
-    fc: /usr/bin/gfortran-9
+  gcc_12.3.0:
+    cc: /usr/bin/gcc-12
+    cxx: /usr/bin/g++-12
+    fc: /usr/bin/gfortran-12
 

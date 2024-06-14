@@ -1,67 +1,68 @@
-$ buildtest build -b /home/ubuntu/buildtest/tutorials/containers/hello_world_singularity.yml 
-╭──────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮                                                                                                                              
-│                                                                                                                                           │                                                                                                                              
-│ User:               ubuntu                                                                                                                │                                                                                                                              
-│ Hostname:           ip-172-31-96-59                                                                                                       │                                                                                                                              
-│ Platform:           Linux                                                                                                                 │                                                                                                                              
-│ Current Time:       2024/02/28 21:58:10                                                                                                   │                                                                                                                              
-│ buildtest path:     /home/ubuntu/buildtest/bin/buildtest                                                                                  │                                                                                                                              
-│ buildtest version:  1.8                                                                                                                   │                                                                                                                              
-│ python path:        /usr/bin/python3                                                                                                      │                                                                                                                              
-│ python version:     3.8.10                                                                                                                │                                                                                                                              
-│ Configuration File: /home/ubuntu/buildtest/buildtest/settings/aws.yml                                                                     │                                                                                                                              
-│ Test Directory:     /home/ubuntu/buildtest/var/tests                                                                                      │                                                                                                                              
-│ Report File:        /home/ubuntu/buildtest/var/report.json                                                                                │                                                                                                                              
-│ Command:            /home/ubuntu/buildtest/bin/buildtest build -b /home/ubuntu/buildtest/tutorials/containers/hello_world_singularity.yml │                                                                                                                              
-│                                                                                                                                           │                                                                                                                              
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                              
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-                           Discovered buildspecs                           
-╔═════════════════════════════════════════════════════════════════════════╗
-║ buildspec                                                               ║
-╟─────────────────────────────────────────────────────────────────────────╢
-║ /home/ubuntu/buildtest/tutorials/containers/hello_world_singularity.yml ║
-╟─────────────────────────────────────────────────────────────────────────╢
-║ Total: 1                                                                ║
-╚═════════════════════════════════════════════════════════════════════════╝
+$ buildtest build -b /home/lbladmin/Documents/buildtest/tutorials/containers/hello_world_singularity.yml 
+╭──────────────────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────────────────╮                                                      
+│                                                                                                                                                                   │                                                      
+│ User:               lbladmin                                                                                                                                      │                                                      
+│ Hostname:           e4spro-cluster                                                                                                                                │                                                      
+│ Platform:           Linux                                                                                                                                         │                                                      
+│ Current Time:       2024/06/14 20:18:08                                                                                                                           │                                                      
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                              │                                                      
+│ buildtest version:  2.0                                                                                                                                           │                                                      
+│ python path:        /usr/bin/python3                                                                                                                              │                                                      
+│ python version:     3.10.12                                                                                                                                       │                                                      
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                 │                                                      
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                  │                                                      
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                            │                                                      
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest build -b /home/lbladmin/Documents/buildtest/tutorials/containers/hello_world_singularity.yml │                                                      
+│                                                                                                                                                                   │                                                      
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                      
+─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
+                                 Discovered buildspecs                                 
+╔═════════════════════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                                           ║
+╟─────────────────────────────────────────────────────────────────────────────────────╢
+║ /home/lbladmin/Documents/buildtest/tutorials/containers/hello_world_singularity.yml ║
+╟─────────────────────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                                            ║
+╚═════════════════════════════════════════════════════════════════════════════════════╝
 
 
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
-/home/ubuntu/buildtest/tutorials/containers/hello_world_singularity.yml: VALID
+/home/lbladmin/Documents/buildtest/tutorials/containers/hello_world_singularity.yml: VALID
 Total builder objects created: 1
-                                                                                               Builders by type=script                                                                                               
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ builder                          ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                 ┃ buildspecs                                                              ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_singularity/8c4c7c79 │ script │ generic.local.bash │ None     │ None  │ None  │ run hello-world container using singularity │ /home/ubuntu/buildtest/tutorials/containers/hello_world_singularity.yml │
-└──────────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴─────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_singularity/8c4c7c79: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Spawning 8 processes for processing builders
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_singularity/8c4c7c79 does not have any dependencies adding test to queue
+                                                                                                  Builders by type=script                                                                                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                          ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                 ┃ buildspecs                                                                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_world_singularity/30d7b876 │ script │ generic.local.bash │ None     │ None  │ None  │ run hello-world container using singularity │ /home/lbladmin/Documents/buildtest/tutorials/containers/hello_world_singulari │
+│                                  │        │                    │          │       │       │                                             │ ty.yml                                                                        │
+└──────────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴─────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_singularity/30d7b876: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876
+────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 4 processes for processing builders
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_singularity/30d7b876 does not have any dependencies adding test to queue
       Builders Eligible to Run      
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                          ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_singularity/8c4c7c79 │
+│ hello_world_singularity/30d7b876 │
 └──────────────────────────────────┘
-hello_world_singularity/8c4c7c79: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/stage
-hello_world_singularity/8c4c7c79: Running Test via command: bash hello_world_singularity_build.sh
-hello_world_singularity/8c4c7c79: Test completed in 0.443567 seconds with returncode: 0
-hello_world_singularity/8c4c7c79: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.out
-hello_world_singularity/8c4c7c79: Writing error file - /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.err
+hello_world_singularity/30d7b876: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/stage
+hello_world_singularity/30d7b876: Running Test via command: bash hello_world_singularity_build.sh
+hello_world_singularity/30d7b876: Test completed in 0.22026 seconds with returncode: 0
+hello_world_singularity/30d7b876: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/hello_world_singularity.out
+hello_world_singularity/30d7b876: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/hello_world_singularity.err
                                       Test Summary                                       
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                          ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ hello_world_singularity/8c4c7c79 │ generic.local.bash │ PASS   │ 0          │ 0.444   │
+│ hello_world_singularity/30d7b876 │ generic.local.bash │ PASS   │ 0          │ 0.220   │
 └──────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -70,5 +71,5 @@ Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Adding 1 test results to report file: /home/ubuntu/buildtest/var/report.json
-Writing Logfile to /home/ubuntu/buildtest/var/logs/buildtest_s78629tb.log
+Adding 1 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_0f19gr4p.log

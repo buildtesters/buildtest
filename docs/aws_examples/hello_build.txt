@@ -1,67 +1,69 @@
-$ buildtest build -b /home/ubuntu/buildtest/aws_tutorial/hello_world/hello.yml 
-╭───────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────╮                                                                                                                                            
-│                                                                                                                             │                                                                                                                                            
-│ User:               ubuntu                                                                                                  │                                                                                                                                            
-│ Hostname:           ip-172-31-96-59                                                                                         │                                                                                                                                            
-│ Platform:           Linux                                                                                                   │                                                                                                                                            
-│ Current Time:       2024/02/28 18:34:44                                                                                     │                                                                                                                                            
-│ buildtest path:     /home/ubuntu/buildtest/bin/buildtest                                                                    │                                                                                                                                            
-│ buildtest version:  1.8                                                                                                     │                                                                                                                                            
-│ python path:        /usr/bin/python3                                                                                        │                                                                                                                                            
-│ python version:     3.8.10                                                                                                  │                                                                                                                                            
-│ Configuration File: /home/ubuntu/buildtest/buildtest/settings/aws.yml                                                       │                                                                                                                                            
-│ Test Directory:     /home/ubuntu/buildtest/var/tests                                                                        │                                                                                                                                            
-│ Report File:        /home/ubuntu/buildtest/var/report.json                                                                  │                                                                                                                                            
-│ Command:            /home/ubuntu/buildtest/bin/buildtest build -b /home/ubuntu/buildtest/aws_tutorial/hello_world/hello.yml │                                                                                                                                            
-│                                                                                                                             │                                                                                                                                            
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                                            
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-                    Discovered buildspecs                    
-╔═══════════════════════════════════════════════════════════╗
-║ buildspec                                                 ║
-╟───────────────────────────────────────────────────────────╢
-║ /home/ubuntu/buildtest/aws_tutorial/hello_world/hello.yml ║
-╟───────────────────────────────────────────────────────────╢
-║ Total: 1                                                  ║
-╚═══════════════════════════════════════════════════════════╝
+$ buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml 
+Buildspec Paths: ['/home/lbladmin/Documents/buildtest/aws_tutorial']
+Updating buildspec cache file: /home/lbladmin/Documents/buildtest/var/buildspecs/cache.json
+╭───────────────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────────────╮                                                                    
+│                                                                                                                                                     │                                                                    
+│ User:               lbladmin                                                                                                                        │                                                                    
+│ Hostname:           e4spro-cluster                                                                                                                  │                                                                    
+│ Platform:           Linux                                                                                                                           │                                                                    
+│ Current Time:       2024/06/14 20:17:55                                                                                                             │                                                                    
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                │                                                                    
+│ buildtest version:  2.0                                                                                                                             │                                                                    
+│ python path:        /usr/bin/python3                                                                                                                │                                                                    
+│ python version:     3.10.12                                                                                                                         │                                                                    
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                   │                                                                    
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                    │                                                                    
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                              │                                                                    
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml │                                                                    
+│                                                                                                                                                     │                                                                    
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                    
+─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
+                          Discovered buildspecs                          
+╔═══════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                             ║
+╟───────────────────────────────────────────────────────────────────────╢
+║ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml ║
+╟───────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                              ║
+╚═══════════════════════════════════════════════════════════════════════╝
 
 
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
-/home/ubuntu/buildtest/aws_tutorial/hello_world/hello.yml: VALID
+/home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml: VALID
 Total builder objects created: 1
-                                                                              Builders by type=script                                                                               
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ builder                      ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                  ┃ buildspecs                                                ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_example/3626d4ed │ script │ generic.local.bash │ None     │ None  │ None  │ Hello world compilation in C │ /home/ubuntu/buildtest/aws_tutorial/hello_world/hello.yml │
-└──────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────┴───────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_example/3626d4ed: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello/hello_world_example/3626d4ed
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Spawning 8 processes for processing builders
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_example/3626d4ed does not have any dependencies adding test to queue
+                                                                                    Builders by type=script                                                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                      ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                  ┃ buildspecs                                                            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_world_example/d1f13f92 │ script │ generic.local.bash │ None     │ None  │ None  │ Hello world compilation in C │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml │
+└──────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────┴───────────────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_example/d1f13f92: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92
+────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 4 processes for processing builders
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_example/d1f13f92 does not have any dependencies adding test to queue
     Builders Eligible to Run    
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                      ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_example/3626d4ed │
+│ hello_world_example/d1f13f92 │
 └──────────────────────────────┘
-hello_world_example/3626d4ed: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.local.bash/hello/hello_world_example/3626d4ed/stage
-hello_world_example/3626d4ed: Running Test via command: bash hello_world_example_build.sh
-hello_world_example/3626d4ed: Test completed in 0.155718 seconds with returncode: 0
-hello_world_example/3626d4ed: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.local.bash/hello/hello_world_example/3626d4ed/hello_world_example.out
-hello_world_example/3626d4ed: Writing error file - /home/ubuntu/buildtest/var/tests/generic.local.bash/hello/hello_world_example/3626d4ed/hello_world_example.err
+hello_world_example/d1f13f92: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92/stage
+hello_world_example/d1f13f92: Running Test via command: bash hello_world_example_build.sh
+hello_world_example/d1f13f92: Test completed in 0.051875 seconds with returncode: 0
+hello_world_example/d1f13f92: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92/hello_world_example.out
+hello_world_example/d1f13f92: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92/hello_world_example.err
                                     Test Summary                                     
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                      ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ hello_world_example/3626d4ed │ generic.local.bash │ PASS   │ 0          │ 0.156   │
+│ hello_world_example/d1f13f92 │ generic.local.bash │ PASS   │ 0          │ 0.052   │
 └──────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -70,5 +72,5 @@ Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Adding 1 test results to report file: /home/ubuntu/buildtest/var/report.json
-Writing Logfile to /home/ubuntu/buildtest/var/logs/buildtest_e37i8a5i.log
+Adding 1 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_hd0uveof.log

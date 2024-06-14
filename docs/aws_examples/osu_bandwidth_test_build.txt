@@ -1,81 +1,81 @@
-$ buildtest build -b /home/ubuntu/buildtest/aws_tutorial/osu_bandwidth_test.yml 
-╭───────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────╮                                                                                                                                           
-│                                                                                                                              │                                                                                                                                           
-│ User:               ubuntu                                                                                                   │                                                                                                                                           
-│ Hostname:           ip-172-31-96-59                                                                                          │                                                                                                                                           
-│ Platform:           Linux                                                                                                    │                                                                                                                                           
-│ Current Time:       2024/02/28 18:35:07                                                                                      │                                                                                                                                           
-│ buildtest path:     /home/ubuntu/buildtest/bin/buildtest                                                                     │                                                                                                                                           
-│ buildtest version:  1.8                                                                                                      │                                                                                                                                           
-│ python path:        /usr/bin/python3                                                                                         │                                                                                                                                           
-│ python version:     3.8.10                                                                                                   │                                                                                                                                           
-│ Configuration File: /home/ubuntu/buildtest/buildtest/settings/aws.yml                                                        │                                                                                                                                           
-│ Test Directory:     /home/ubuntu/buildtest/var/tests                                                                         │                                                                                                                                           
-│ Report File:        /home/ubuntu/buildtest/var/report.json                                                                   │                                                                                                                                           
-│ Command:            /home/ubuntu/buildtest/bin/buildtest build -b /home/ubuntu/buildtest/aws_tutorial/osu_bandwidth_test.yml │                                                                                                                                           
-│                                                                                                                              │                                                                                                                                           
-╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                                           
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-                    Discovered buildspecs                     
-╔════════════════════════════════════════════════════════════╗
-║ buildspec                                                  ║
-╟────────────────────────────────────────────────────────────╢
-║ /home/ubuntu/buildtest/aws_tutorial/osu_bandwidth_test.yml ║
-╟────────────────────────────────────────────────────────────╢
-║ Total: 1                                                   ║
-╚════════════════════════════════════════════════════════════╝
+$ buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/osu_bandwidth_test.yml 
+╭───────────────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────────────────╮                                                                   
+│                                                                                                                                                      │                                                                   
+│ User:               lbladmin                                                                                                                         │                                                                   
+│ Hostname:           e4spro-cluster                                                                                                                   │                                                                   
+│ Platform:           Linux                                                                                                                            │                                                                   
+│ Current Time:       2024/06/14 20:18:02                                                                                                              │                                                                   
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                 │                                                                   
+│ buildtest version:  2.0                                                                                                                              │                                                                   
+│ python path:        /usr/bin/python3                                                                                                                 │                                                                   
+│ python version:     3.10.12                                                                                                                          │                                                                   
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                    │                                                                   
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                     │                                                                   
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                               │                                                                   
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/osu_bandwidth_test.yml │                                                                   
+│                                                                                                                                                      │                                                                   
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                   
+─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
+                          Discovered buildspecs                           
+╔════════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                              ║
+╟────────────────────────────────────────────────────────────────────────╢
+║ /home/lbladmin/Documents/buildtest/aws_tutorial/osu_bandwidth_test.yml ║
+╟────────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                               ║
+╚════════════════════════════════════════════════════════════════════════╝
 
 
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
-/home/ubuntu/buildtest/aws_tutorial/osu_bandwidth_test.yml: VALID
+/home/lbladmin/Documents/buildtest/aws_tutorial/osu_bandwidth_test.yml: VALID
 Total builder objects created: 2
-                                                                                 Builders by type=script                                                                                  
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ builder                     ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                        ┃ buildspecs                                                 ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ osu_bandwidth/87947870      │ script │ generic.local.bash │ None     │ None  │ None  │ Run OSU Bandwidth Test             │ /home/ubuntu/buildtest/aws_tutorial/osu_bandwidth_test.yml │
-├─────────────────────────────┼────────┼────────────────────┼──────────┼───────┼───────┼────────────────────────────────────┼────────────────────────────────────────────────────────────┤
-│ osu_bandwidth_perf/55a7f00a │ script │ generic.local.bash │ None     │ None  │ None  │ Run OSU Bandwidth Performance Test │ /home/ubuntu/buildtest/aws_tutorial/osu_bandwidth_test.yml │
-└─────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴────────────────────────────────────┴────────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-osu_bandwidth/87947870: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870
-osu_bandwidth_perf/55a7f00a: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Spawning 8 processes for processing builders
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-osu_bandwidth/87947870 does not have any dependencies adding test to queue
-osu_bandwidth_perf/55a7f00a does not have any dependencies adding test to queue
+                                                                                       Builders by type=script                                                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                     ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                        ┃ buildspecs                                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ osu_bandwidth/fe7f64c1      │ script │ generic.local.bash │ None     │ None  │ None  │ Run OSU Bandwidth Test             │ /home/lbladmin/Documents/buildtest/aws_tutorial/osu_bandwidth_test.yml │
+├─────────────────────────────┼────────┼────────────────────┼──────────┼───────┼───────┼────────────────────────────────────┼────────────────────────────────────────────────────────────────────────┤
+│ osu_bandwidth_perf/734f1cc8 │ script │ generic.local.bash │ None     │ None  │ None  │ Run OSU Bandwidth Performance Test │ /home/lbladmin/Documents/buildtest/aws_tutorial/osu_bandwidth_test.yml │
+└─────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴────────────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
+osu_bandwidth/fe7f64c1: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/fe7f64c1
+osu_bandwidth_perf/734f1cc8: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/734f1cc8
+────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 4 processes for processing builders
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+osu_bandwidth_perf/734f1cc8 does not have any dependencies adding test to queue
+osu_bandwidth/fe7f64c1 does not have any dependencies adding test to queue
    Builders Eligible to Run    
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                     ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ osu_bandwidth/87947870      │
-│ osu_bandwidth_perf/55a7f00a │
+│ osu_bandwidth_perf/734f1cc8 │
+│ osu_bandwidth/fe7f64c1      │
 └─────────────────────────────┘
-osu_bandwidth_perf/55a7f00a: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/stage
-osu_bandwidth/87947870: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/stage
-osu_bandwidth_perf/55a7f00a: Running Test via command: bash osu_bandwidth_perf_build.sh
-osu_bandwidth/87947870: Running Test via command: bash osu_bandwidth_build.sh
-osu_bandwidth/87947870: Test completed in 2.477132 seconds with returncode: 0
-osu_bandwidth/87947870: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth.out
-osu_bandwidth/87947870: Writing error file - /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth.err
-osu_bandwidth_perf/55a7f00a: Test completed in 2.625078 seconds with returncode: 0
-osu_bandwidth_perf/55a7f00a: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf.out
-osu_bandwidth_perf/55a7f00a: Writing error file - /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf.err
-osu_bandwidth_perf/55a7f00a: testing metric: osu_bw if 6267.26 >= 10000.0 - Check: False
-osu_bandwidth_perf/55a7f00a: ge check: False
+osu_bandwidth_perf/734f1cc8: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/734f1cc8/stage
+osu_bandwidth/fe7f64c1: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/fe7f64c1/stage
+osu_bandwidth/fe7f64c1: Running Test via command: bash osu_bandwidth_build.sh
+osu_bandwidth_perf/734f1cc8: Running Test via command: bash osu_bandwidth_perf_build.sh
+osu_bandwidth_perf/734f1cc8: Test completed in 1.159984 seconds with returncode: 0
+osu_bandwidth_perf/734f1cc8: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/734f1cc8/osu_bandwidth_perf.out
+osu_bandwidth_perf/734f1cc8: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/734f1cc8/osu_bandwidth_perf.err
+osu_bandwidth_perf/734f1cc8: testing metric: osu_bw if 9258.07 >= 10000.0 - Check: False
+osu_bandwidth_perf/734f1cc8: ge check: False
+osu_bandwidth/fe7f64c1: Test completed in 1.244933 seconds with returncode: 0
+osu_bandwidth/fe7f64c1: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/fe7f64c1/osu_bandwidth.out
+osu_bandwidth/fe7f64c1: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/fe7f64c1/osu_bandwidth.err
                                     Test Summary                                    
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                     ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ osu_bandwidth/87947870      │ generic.local.bash │ PASS   │ 0          │ 2.477   │
+│ osu_bandwidth_perf/734f1cc8 │ generic.local.bash │ FAIL   │ 0          │ 1.160   │
 ├─────────────────────────────┼────────────────────┼────────┼────────────┼─────────┤
-│ osu_bandwidth_perf/55a7f00a │ generic.local.bash │ FAIL   │ 0          │ 2.625   │
+│ osu_bandwidth/fe7f64c1      │ generic.local.bash │ PASS   │ 0          │ 1.245   │
 └─────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -84,5 +84,5 @@ Passed Tests: 1/2 Percentage: 50.000%
 Failed Tests: 1/2 Percentage: 50.000%
 
 
-Adding 2 test results to report file: /home/ubuntu/buildtest/var/report.json
-Writing Logfile to /home/ubuntu/buildtest/var/logs/buildtest_9zpt_39v.log
+Adding 2 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_x2r_sfc4.log
