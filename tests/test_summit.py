@@ -22,7 +22,7 @@ def test_summit():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate(moduletool="lmod")
+    bc.validate()
     BuildspecCache(rebuild=True, configuration=bc)
 
     examples_dir = os.path.join(here, "examples", "summit")
@@ -46,7 +46,7 @@ def test_compilers_find_ascent():
 
     config = SiteConfiguration(settings_file)
     config.detect_system()
-    config.validate(moduletool="lmod")
+    config.validate()
 
     # testing buildtest config compilers find
     bc = BuildtestCompilers(configuration=config)

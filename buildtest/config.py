@@ -130,12 +130,8 @@ class SiteConfiguration:
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
 
-    def validate(self, moduletool=None):
-        """This method validates the site configuration with schema.
-
-        Args:
-             moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
-        """
+    def validate(self):
+        """This method validates the site configuration with schema."""
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
         config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
@@ -151,16 +147,6 @@ class SiteConfiguration:
         logger.debug("Validation was successful")
 
         self._executor_check()
-
-        if (
-            self.target_config.get("moduletool") != "none"
-            and self.target_config.get("moduletool") != moduletool
-        ):
-            raise ConfigurationError(
-                self.config,
-                self.file,
-                f"There is a module tool mismatch, we have detected '{moduletool}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
-            )
 
     def _executor_check(self):
         """Validate executors"""
