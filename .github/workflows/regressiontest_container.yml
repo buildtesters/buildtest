@@ -21,8 +21,8 @@ jobs:
           # echo $HOME
           # cd $GITHUB_WORKSPACE
           # ls -la $GITHUB_WORKSPACE
-          # set +xe
-          # . /etc/profile
+          set +xe
+          . /etc/profile
           # module --version
           # module avail
           # spack --version
