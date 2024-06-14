@@ -40,7 +40,7 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
 
     else:
 
-        if getpass.getuser() != "ubuntu" or os.getenv("HOME") != "/home/ubuntu":
+        if getpass.getuser() not in ["ubuntu", "lbladmin"]:
             sys.exit(
                 "This script can only be run in AWS instance using E4SPro image. Please check the AWS Market Place: https://aws.amazon.com/marketplace for the image "
             )
@@ -52,7 +52,7 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
 
     config = SiteConfiguration(settings_file=settings_file)
     config.detect_system()
-    config.validate(moduletool=moduletool)
+    config.validate()
 
     if write:
 
