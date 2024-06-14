@@ -4,8 +4,8 @@ system:
     hostnames: ['.*']
     # system description
     description: Generic System
-    # specify module system to use. Supported module systems are lmod, environment-modules or set to N/A if not available
-    moduletool: N/A
+    # specify module system to use. Supported module systems are [lmod, environment-modules, none]
+    moduletool: none
 
     # specify size of job pool (https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool). This will configure the number of processes that can run in parallel.
     # If not specified then buildtest will use all available cores on the system.
@@ -26,10 +26,15 @@ system:
       rebuild: false
       # determine number of records to display
       count: 15
+
       # specify format fields
-      format: name,description
+      #format: name,description
+
       # display output in terse mode
       terse: false
+
+      # list of paths to search for buildspecs
+      #root: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
 
     # options for buildtest report command
     report:
@@ -39,12 +44,33 @@ system:
       terse: false
       # specify format fields
       format: name,id,state,runtime,returncode
-      # show latest test run
-      latest: false
-      # show oldest test run
-      oldest: false
 
+    # specify directory paths to search for binaries
+    #paths:
+      # directory path to search for slurm binaries.
+      #slurm: "/usr/bin"
+
+      # directory path to search for lsf binaries.
+      #lsf: "/usr/bin"
+
+      # directory path to search for pbs binaries.
+      #pbs: "/usr/bin"
+
+      # directory path to search for torque binaries.
+      #torque: "/usr/bin"
+
+      # path to docker directory
+      #docker: "/usr/local/bin"
+
+      # path to singularity directory
+      #singularity: "/usr/local/bin"
+
+      # path to podman directory
+      #podman: "/usr/local/bin"
+
+    # start of executor configuration
     executors:
+      # local executor is used to submit jobs on local machine. In this example we have 4 executors: bash, sh, csh, zsh that will submit jobs using bash, sh, csh, zsh shell respectively.
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -58,9 +84,12 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
+    # specify compiler declaration
     compilers:
       compiler:
+        # declaration of all gcc compilers
         gcc:
+          # name of compiler
           builtin_gcc:
             cc: gcc
             fc: gfortran

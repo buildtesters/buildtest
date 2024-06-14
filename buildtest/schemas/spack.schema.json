@@ -23,10 +23,7 @@
     "vars": { "$ref": "definitions.schema.json#/definitions/env" },
     "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
     "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
-    "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
     "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
-    "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
-    "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
     "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
     "tags": { "$ref": "definitions.schema.json#/definitions/tags" },
     "status": { "$ref": "definitions.schema.json#/definitions/status" },
@@ -40,6 +37,7 @@
       "type": "string",
       "description": "Shell commands run after spack"
     },
+    "post_run": { "$ref": "definitions.schema.json#/definitions/run" },
     "needs": {
       "$ref": "definitions.schema.json#/definitions/needs"
     },

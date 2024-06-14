@@ -1,0 +1,10 @@
+buildspecs:
+  mpiprocname:
+    type: script
+    executor: generic.local.bash
+    description: Run MPI Proc Name test
+    run: |
+      cd $HOME/examples/mpi-procname            
+      mpicc -o mpiprocname mpiprocname.c
+      mpirun -np 8 ./mpiprocname
+      rm mpiprocname

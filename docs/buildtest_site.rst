@@ -33,8 +33,7 @@ Writing Test
 -------------
 
 If you are going to write test, we assume you have read :ref:`buildspec_tutorial` section which covers
-how to write buildspecs. You should consider reviewing the Schema Documentation: https://buildtesters.github.io/buildtest/
-which goes in detail about each schema and buildspec attributes.
+how to write buildspecs.
 
 If you are writing tests, it's generally good practice to :ref:`define tags <define_tags>` in your
 test so you can group tests by a tagname and run them via ``buildtest build --tags``. If you plan

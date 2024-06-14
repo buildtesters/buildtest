@@ -1,0 +1,7 @@
+buildspecs:
+  python_container_example:
+    type: script
+    executor: generic.container.python
+    description: run test in a python container
+    run: |     
+     python -c "import sys; print(sys.version)"

@@ -35,13 +35,13 @@ _buildtest_commands()
 # get list of available tags
 _avail_tags ()
 {
-  buildtest buildspec find --tags --terse --no-header 2>/dev/null
+  buildtest buildspec find --tags --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of buildspecs in cache
 _avail_buildspecs ()
 {
-  buildtest buildspec find --buildspec --terse --no-header 2>/dev/null
+  buildtest buildspec find --buildspec --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of schemas
@@ -56,6 +56,11 @@ _avail_executors ()
   buildtest config executors list
 }
 
+_all_executors()
+{
+  buildtest config executors list --all
+}
+
 # list of available compilers
 _avail_compilers ()
 {
@@ -65,7 +70,7 @@ _avail_compilers ()
 # list of test ids from report
 _test_ids ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 1
+  buildtest inspect list --terse --no-header | cut -d '|' -f 1
 }
 # list of available test names from buildspec cache
 _buildspec_test_names()
@@ -76,7 +81,7 @@ _buildspec_test_names()
 # list of test names from report
 _test_name ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 2 | uniq | sort
+  buildtest inspect list --terse --no-header | cut -d '|' -f 2 | uniq | sort
 }
 
 _builder_names()
@@ -87,23 +92,23 @@ _builder_names()
 # list of buildspecs from report
 _test_buildspec ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 3 | uniq | sort
+  buildtest inspect list --terse --no-header | cut -d '|' -f 3 | uniq | sort
 }
 
 # list of history id
 _history_id ()
 {
-  buildtest history list --terse -n | cut -d '|' -f 1 | sort -g
+  buildtest history list --terse --no-header | cut -d '|' -f 1 | sort -g
 }
 
 _buildspec_cache_test_names()
 {
-  buildtest buildspec find --format name --terse -n | sort
+  buildtest buildspec find --format name --terse --no-header --count=-1 | sort
 }
 
 _failed_tests()
 {
-  buildtest rt --fail --format name --terse --no-header | uniq
+  buildtest report --fail --format name --terse --no-header --count=-1 | uniq
 }
 
 # list of available maintainers for tab completion for 'buildtest buildspec maintainers find'
@@ -146,7 +151,7 @@ _buildtest_show_commands()
 
 _buildtest_options()
 {
-  python -c "from buildtest.cli import BuildTestParser; print(' '.join(BuildTestParser().get_buildtest_options()))"
+  buildtest --listopts
 }
 #  entry point to buildtest bash completion function
 _buildtest ()
@@ -157,13 +162,13 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--help-all" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-H" "-V")
+  main_opts=($(_buildtest_options))
 
   commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
   for command in "${COMP_WORDS[@]}"
   do
-    for element in "${buildtest_opts[@]}"
+    for element in "${main_opts[@]}"
     do
 
         if [[ "$command" == "$element" ]]; then
@@ -185,7 +190,7 @@ _buildtest ()
   case "$next" in
     build|bd)
       local shortoption="-b -e -et -f -m -n -s -t -u -x -xt"
-      local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
+      local longoption="--account --buildspec --display --dry-run --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rebuild --rerun --remove-stagedir --retry --save-profile --strict --tags --testdir --timeout --unload-modules --validate --write-config-file"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- "${cur}" ) )
@@ -193,9 +198,6 @@ _buildtest ()
       case "${prev}" in
         -e|--executor)
             COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "${cur}" ) )
-            ;;
-        -s|--stage)
-            COMPREPLY=( $( compgen -W "stage parse" -- "${cur}" ) )
             ;;
         -et|--executor-type)
             COMPREPLY=( $( compgen -W "local batch" -- "${cur}" ) )
@@ -240,7 +242,7 @@ _buildtest ()
     report|rt)
       local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t"
       local cmds="clear list path summary"
-      local aliases="c l p sm"
+      local aliases="c ls p sm"
       COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- "${cur}" ) )
 
       if [[ $cur == -* ]] ; then
@@ -302,12 +304,15 @@ _buildtest ()
           esac
           ;;
         executors|ex)
-          local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
-          local cmds="list"
+          local cmds="list ls rm remove"
 
-          case "$prev" in
-              list)
+          case ${COMP_WORDS[3+offset]} in
+              list|ls)
+                  local opts="--help --all --disabled --invalid --json --yaml -a -d -h -i -j -y"
                   COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
+                  ;;
+              rm|remove)
+                  COMPREPLY=( $( compgen -W "$(_all_executors)" -- "${cur}" ) )
                   ;;
               *)
                   COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
@@ -326,10 +331,10 @@ _buildtest ()
             ;;
           esac
         ;;
-        profiles)
+        profiles|prof)
           local opts="--help -h"
           local cmds="list remove"
-          local aliases="rm"
+          local aliases="ls rm"
           COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- "${cur}" ) )
           if [[ $cur == -* ]] ; then
             COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
@@ -339,7 +344,7 @@ _buildtest ()
             remove|rm)
               COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- "${cur}" ) )
               ;;
-            list)
+            list|ls)
               local opts="--json --theme --yaml -j -y"
               COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
               ;;
@@ -351,19 +356,19 @@ _buildtest ()
         esac
       ;;
     inspect|it)
-      local cmds="--help -h b buildspec l list n name q query"
+      local cmds="--help -h b buildspec ls list n name q query"
       COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2+offset]}" in
-        list|l)
-          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n -t"
+        list|ls)
+          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n"
           COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
         name|n)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- "${cur}" ) )
 
           if [[ $cur == -* ]] ; then
-            local opts="--all --help --pager -a -h"
+            local opts="--help --pager -h"
             COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
           fi
           ;;
@@ -404,7 +409,7 @@ _buildtest ()
          case ${COMP_WORDS[3+offset]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
-           local opts="--error --help --row-count -e -h"
+           local opts="--error --help --pager --row-count --terse -e -h"
            COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
          # completion for rest of arguments
          *)
@@ -463,7 +468,7 @@ _buildtest ()
         esac
         ;;
       maintainers|m)
-        local opts="--breakdown --help --row-count --terse --no-header -b -h -n find"
+        local opts="--breakdown --count  --help --no-header --pager  --row-count --terse  -b -c -h -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
 
         case ${COMP_WORDS[3+offset]} in
@@ -472,7 +477,7 @@ _buildtest ()
         esac
         ;;
       validate|val)
-        local opts="--buildspec --exclude --executor --tag -b -e -t -x "
+        local opts="--buildspec --exclude --executor --name --tag -b -e -n -t -x "
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
 
         case "${prev}" in
@@ -484,6 +489,9 @@ _buildtest ()
               ;;
           -e|--executor)
               COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "${cur}" ) )
+              ;;
+          -n|--name)
+              COMPREPLY=( $( compgen -W "$(_buildspec_test_names)" -- "${cur}" ) )
               ;;
         esac
       ;;
@@ -547,8 +555,16 @@ _buildtest ()
       local opts="--help --with-aliases -a -h"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;
+    tutorial-examples)
+      local cmds="aws spack"
+      local opts="--help -h -d --dryrun --failfast -w --write"
+      COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
+      fi
+      ;;
     # options with only --help
-    debugreport|info|docs|schemadocs|tutorial-examples)
+    debugreport|info|docs)
       local opts="-h --help"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;

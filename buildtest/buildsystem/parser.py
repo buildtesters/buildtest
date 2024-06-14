@@ -113,7 +113,7 @@ class BuildspecParser:
         # must be associated to a schema which is controlled by 'type' key
         if not self.schema_type or self.schema_type not in schema_table["types"]:
             msg = f"Schema type must be one of the following: {schema_table['types']}. "
-            raise InvalidBuildspecSchemaType(self.buildspec, msg)
+            raise InvalidBuildspecSchemaType(buildspec=self.buildspec, msg=msg)
 
         self.logger.info(f"Test: '{test}' is using schema type: '{self.schema_type}'")
 

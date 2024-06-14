@@ -5,10 +5,8 @@ Defining Compilers
 
 buildtest provides a mechanism to declare compilers in your configuration file, this
 is defined in ``compilers`` top-level section. The compilers should reflect compilers
-installed at your site. The compilers are used if you are writing a buildspec
-with :ref:`compiler schema <compiler_schema>` that needs to reference a particular compiler.
-The compilers are declared within scope of a system since we assume compilers will vary across
-different HPC clusters.
+installed at your site. The compilers are declared within scope of a system since we assume
+compilers will vary across different HPC clusters.
 
 Compiler Declaration
 ---------------------
@@ -319,7 +317,7 @@ is the programming environment modulefile that will load the GNU compiler on Cra
 
 .. literalinclude:: ../tests/settings/nersc.yml
     :language: yaml
-    :emphasize-lines: 18-22
+    :emphasize-lines: 19-24
 
 Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
 compiler instance under the ``module``, ``load`` section. Furthermore, you will see the cray wrappers **cc**, **CC**, and **ftn** are used

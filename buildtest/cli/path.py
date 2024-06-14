@@ -12,6 +12,7 @@ def path_cmd(
     buildscript=None,
     stagedir=None,
     buildenv=None,
+    report_file=None,
 ):
     """This is the entry point for ``buildtest path`` command which will display path
     variables for a given test name. If no options are specified we retrieve the root
@@ -47,8 +48,9 @@ def path_cmd(
         buildscript (bool): Retrieve path to build script for a given test
         stagedir (bool): Retrieve path to stage directory for a given test
         buildenv (bool): Retrieve path to buildenv for a given test
+        report_file (str, optional): Path to report file
     """
-    report = Report(configuration=configuration)
+    report = Report(configuration=configuration, report_file=report_file)
 
     tid = None
     builders = report.builder_names()

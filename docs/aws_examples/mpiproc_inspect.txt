@@ -1,0 +1,25 @@
+$ buildtest inspect query -o mpiprocname 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── mpiprocname/cd40d34b-a3a8-4fe9-885e-b2a7b30b212b ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run MPI Proc Name test
+State: PASS
+Returncode: 0
+Runtime: 0.413352 sec
+Starttime: 2024/02/28 18:35:05
+Endtime: 2024/02/28 18:35:05
+Command: bash mpiprocname_build.sh
+Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/cd40d34b/mpiprocname.sh
+Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/cd40d34b/mpiprocname_build.sh
+Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/cd40d34b/mpiprocname.out
+Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/cd40d34b/mpiprocname.err
+Log File: /home/ubuntu/buildtest/var/logs/buildtest_dfq2ezbn.log
+────────────────────────────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/cd40d34b/mpiprocname.out ──────────────────────────────────────────────────────────────────────────────
+Hello, world.  I am 0 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 3 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 4 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 5 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 6 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 7 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 1 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+Hello, world.  I am 2 of 8 on ip-172-31-96-59                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                           

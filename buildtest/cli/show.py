@@ -111,6 +111,10 @@ def print_build_show():
         "buildtest build --profile=python-profile",
         "Run buildtest from profile name 'python-profile'",
     )
+    table.add_row(
+        "buildtest build --validate -b <file>",
+        "Test will validate buildspecs and stop after parsing stage",
+    )
     console.print(table)
 
 
@@ -296,6 +300,13 @@ def print_config_show():
     )
     table.add_row(
         "buildtest config executors list --json", "List all invalid executors"
+    )
+    table.add_row(
+        "buildtest config executors list --all", "List all available executors"
+    )
+    table.add_row(
+        "buildtest config executors remove generic.local.bash generic.local.sh",
+        "Remove executor names 'generic.local.bash' and 'generic.local.sh' from configuration file",
     )
     table.add_row("buildtest config path", "Show path to configuration file")
     table.add_row(

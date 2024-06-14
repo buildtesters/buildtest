@@ -3,8 +3,7 @@
 stages:
   - regression
 
-perlmutter_regression_test:
-  tags: [perlmutter-bdtest]
+.regression_test:
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
@@ -19,7 +18,7 @@ perlmutter_regression_test:
     - module load python/3.9-anaconda-2021.11
     - git branch
     - conda create -p $CI_PROJECT_DIR/.conda python=3.9 -y
-    - source activate $CI_PROJECT_DIR/.conda
+    - conda activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
@@ -27,6 +26,14 @@ perlmutter_regression_test:
     - curl -Os https://uploader.codecov.io/latest/linux/codecov
     - chmod +x codecov
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://software.nersc.gov/NERSC/buildtest/-/settings/ci_cd
-    - codecov -t $CODECOV_TOKEN
-    - source deactivate
+    - ./codecov --verbose -t $CODECOV_TOKEN
+    - conda deactivate
     - conda env remove -p $CI_PROJECT_DIR/.conda -y
+
+perlmutter_test:
+  extends: .regression_test
+  tags: [perlmutter-bdtest]
+
+muller_test:
+  extends: .regression_test
+  tags: [muller-bdtest]

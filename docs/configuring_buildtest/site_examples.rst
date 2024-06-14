@@ -5,52 +5,33 @@ NERSC
 -----
 
 `NERSC <http://nersc.gov/>`_ provides High Performance Computing system to support research in the Office of Science program
-offices. Currently, NERSC provides two HPC systems including `Perlmutter <https://docs.nersc.gov/systems/perlmutter/architecture/>`_ and
-`Cori <https://docs.nersc.gov/systems/cori/>`_. In example below we see the configuration for Cori and Perlmutter. Note that we can define a
-single configuration for both systems. Perlmutter is using `Lmod` while Cori is running `environment-modules`. We define Local executors and
-Slurm executors for each system which are mapped to qos provided by our Slurm cluster.
+offices. NERSC has one production HPC systems `Perlmutter <https://docs.nersc.gov/systems/perlmutter/architecture/>`_ and
+`muller` which is Test system for Perlmutter.
 
-In-order to use ``bigmem``, ``xfer``,
-or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
+Shown below is the buildtest configuration at NERSC. We have defined multiple slurm executors, along with settings for
+configuring compilers that is available on Perlmutter.
 
-.. dropdown:: NERSC buildtest configuration
+.. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-nersc/devel/config.yml
+   :language: yaml
 
-    .. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-nersc/devel/config.yml
-       :language: yaml
+Oak Ridge National Laboratory
+-----------------------------
 
-Ascent @ OLCF
----------------
+`Summit <https://docs.olcf.ornl.gov/systems/summit_user_guide.html>`_ is a IBM based system
+hosted at Oak Ridge Leadership Computing Facility (OLCF). The system uses IBM Load Sharing
+Facility (LSF) as their batch scheduler.
 
-`Ascent <https://docs.olcf.ornl.gov/systems/ascent_user_guide.html>`_ is a training
-system for Summit at OLCF, which is using a IBM Load Sharing
-Facility (LSF) as their batch scheduler. Ascent has two
-queues **batch** and **test**. To declare LSF executors we define them under ``lsf``
+The ``system`` keyword is used to define the name of system which in this example is named ``summit``. The
+``hostnames`` is used to specify a list of hostnames where buildtest can run in order to use this system configuration.
+
+The system comes with several queues, for the purposes of this example we define 3 executors
+that map to queues **batch** , **test** and **storage**. To declare LSF executors we define them under ``lsf``
 section within the ``executors`` section.
 
-The default launcher is `bsub` which can be defined under ``defaults``. The
-``pollinterval`` will poll LSF jobs every 10 seconds using ``bjobs``. The
-``pollinterval`` accepts a range between **10 - 300** seconds as defined in
-schema. In order to avoid polling scheduler excessively pick a number that is best
-suitable for your site
+The default batch configuration is defined in ``defaults``, for instance we set the fields ``pollinterval``, ``maxpendtime``
+and to **30s** and **300s** each. The field ``account`` is used to specify project account where all jobs will be charged. This can be
+customized to each site but and can be changed in the configuration file or overridden via command line ``buildtest build --account <ACCOUNT>``.
 
-.. dropdown:: Ascent buildtest configuration
-
-    .. literalinclude:: ../../tests/settings/ascent.yml
-       :language: yaml
-
-JLSE @ ANL
------------
-
-`Joint Laboratory for System Evaluation (JLSE) <https://www.jlse.anl.gov/>`_ provides
-a testbed of emerging HPC systems, the default scheduler is Cobalt, this is
-defined in the ``cobalt`` section defined in the executor field.
-
-We set default launcher to qsub defined with ``launcher: qsub``. This is inherited
-for all batch executors. In each cobalt executor the ``queue`` property will specify
-the queue name to submit job, for instance the executor ``yarrow`` with ``queue: yarrow``
-will submit job using ``qsub -q yarrow`` when using this executor.
-
-.. dropdown:: JLSE buildtest configuration
-
-    .. literalinclude:: ../../tests/settings/jlse.yml
-       :language: yaml
+.. literalinclude:: ../../tests/settings/summit.yml
+   :language: yaml
+   :emphasize-lines: 2-5,19-23,37-43

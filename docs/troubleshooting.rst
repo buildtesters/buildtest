@@ -66,7 +66,7 @@ file, the most convenient way is to run::
   buildtest buildspec validate -b <file>
 
 If your buildspec is valid, your next step is to run the test. You should check if test is generated properly,
-this can be done by running ``buildtest build -b <file> --stage=build`` which will generate
+this can be done by running ``buildtest build -b <file> --dry-run`` which will generate
 the test and stop execution. Next you can navigate to the generated test and inspect
 the content of test and run your test manually.
 
@@ -89,3 +89,69 @@ To view output of ``buildtest build`` command for a given build you can run::
 The build history is valid until files are removed, which could be done via ``buildtest clean`` or
 files are remove manually. The build history provides a means for accessing old builds along with logfile
 for each build.
+
+How to view all available tests in buildspec cache?
+----------------------------------------------------
+
+First, make sure your buildspec cache is built, you can run ``buildtest buildspec find --rebuild`` to rebuild the
+cache. Once buildspec cache is built, you can view query all tests in buildspec cache by running::
+
+    buildtest buildspec find --format name --terse --no-header
+
+Shown below is a sample output where we query 5 records from the buildspec cache
+
+.. command-output:: buildtest buildspec find --format name --terse --no-header --count=5
+
+To get all tests in buildspec cache, consider setting to any negative value ``--count=-1`` or a really high number.
+
+Unable to query test details
+------------------------------
+
+Let's say you are trying to query a test name ``hello_world``, and you get an error message such as following
+
+.. code-block:: console
+
+      buildtest it query hello_world
+    Unable to find any tests by name ['hello_world'], please select one of the following tests: ['returncode_list_mismatch', 'returncode_int_match', 'exit1_pass', 'exit1_fail', 'python_hello', 'circle_area']
+
+To address this issue, you will need to first build the test, so that buildtest can capture the results in the report file. This can be done
+in various ways, typically you can do ``buildtest build -b <file>`` to specify the buildspec file that will run the test ``hello_world``.
+You can also use ``buildtest build --name hello_world`` which will let buildtest find the buildspec that corresponds to test ``hello_world`` and then run the test.
+
+Once test is built, the test will be added to the report file and you can query the test by name.
+
+If you use ``buildtest --report`` to write test result to alternate report file, please make sure you specify the report path. You can run into
+issues if you don't the correct report path which could lead to error. You can query the current report file using ``buildtest report path`` or
+use ``buildtest report list`` to show all report files.
+
+Unable to query all test results
+---------------------------------
+
+If you run into situation where you are unable to query all test results,
+you should check the buildtest configuration file see :ref:`configuring_buildtest_report`. In this section, check if
+``count`` property is set in configuration file. For instance if you have ``count: 25``, everytime you run ``buildtest report`` it
+will query 25 records
+
+.. code-block:: yaml
+
+    report:
+      count: 25
+
+You will have a situation where buildtest will only show 25 records as shown below
+
+.. code-block:: console
+
+      buildtest report --terse --no-header | wc -l
+     25
+
+You can work around this issue by passing ``--count`` on command line and it will override the configuration.
+To retrieve all content you can specify a negative value and buildtest will fetch all records or alternatively you
+can specify a really high number
+
+.. code-block:: console
+
+      buildtest report --terse --no-header --count=-1 | wc -l
+    30
+
+If you want to make this change permanent, you can update the configuration file and set ``count`` to a high number
+

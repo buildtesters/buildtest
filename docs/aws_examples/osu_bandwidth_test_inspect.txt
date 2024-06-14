@@ -1,0 +1,91 @@
+$ buildtest inspect query -o osu_bandwidth osu_bandwidth_perf 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── osu_bandwidth/87947870-1953-46f0-8cd0-ea526092df8b ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run OSU Bandwidth Test
+State: PASS
+Returncode: 0
+Runtime: 2.477132 sec
+Starttime: 2024/02/28 18:35:07
+Endtime: 2024/02/28 18:35:09
+Command: bash osu_bandwidth_build.sh
+Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth.sh
+Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth_build.sh
+Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth.out
+Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth.err
+Log File: /home/ubuntu/buildtest/var/logs/buildtest_9zpt_39v.log
+────────────────────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/87947870/osu_bandwidth.out ───────────────────────────────────────────────────────────────────────
+# OSU MPI Bandwidth Test v7.3                                                                                                                                                                                                                                              
+# Size      Bandwidth (MB/s)                                                                                                                                                                                                                                               
+# Datatype: MPI_CHAR.                                                                                                                                                                                                                                                      
+1                       5.65                                                                                                                                                                                                                                               
+2                       3.57                                                                                                                                                                                                                                               
+4                       9.26                                                                                                                                                                                                                                               
+8                      33.72                                                                                                                                                                                                                                               
+16                     20.76                                                                                                                                                                                                                                               
+32                    161.53                                                                                                                                                                                                                                               
+64                    133.98                                                                                                                                                                                                                                               
+128                   705.10                                                                                                                                                                                                                                               
+256                   534.20                                                                                                                                                                                                                                               
+512                   708.01                                                                                                                                                                                                                                               
+1024                  390.97                                                                                                                                                                                                                                               
+2048                  899.16                                                                                                                                                                                                                                               
+4096                 5240.26                                                                                                                                                                                                                                               
+8192                 3275.13                                                                                                                                                                                                                                               
+16384                4527.77                                                                                                                                                                                                                                               
+32768                6407.88                                                                                                                                                                                                                                               
+65536                9635.86                                                                                                                                                                                                                                               
+131072              15361.67                                                                                                                                                                                                                                               
+262144              10873.81                                                                                                                                                                                                                                               
+524288              18213.85                                                                                                                                                                                                                                               
+1048576             10275.43                                                                                                                                                                                                                                               
+2097152             11507.50                                                                                                                                                                                                                                               
+4194304              4837.92                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────── osu_bandwidth_perf/55a7f00a-fcd9-42fb-88a9-5f616ad03d58 ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run OSU Bandwidth Performance Test
+State: FAIL
+Returncode: 0
+Runtime: 2.625078 sec
+Starttime: 2024/02/28 18:35:07
+Endtime: 2024/02/28 18:35:09
+Command: bash osu_bandwidth_perf_build.sh
+Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf.sh
+Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf_build.sh
+Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf.out
+Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf.err
+Log File: /home/ubuntu/buildtest/var/logs/buildtest_9zpt_39v.log
+      Metrics       
+┏━━━━━━━━┳━━━━━━━━━┓
+┃ Name   ┃ Value   ┃
+┡━━━━━━━━╇━━━━━━━━━┩
+│ osu_bw │ 6267.26 │
+└────────┴─────────┘
+───────────────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/55a7f00a/osu_bandwidth_perf.out ──────────────────────────────────────────────────────────────────
+# OSU MPI Bandwidth Test v7.3                                                                                                                                                                                                                                              
+# Size      Bandwidth (MB/s)                                                                                                                                                                                                                                               
+# Datatype: MPI_CHAR.                                                                                                                                                                                                                                                      
+1                       1.11                                                                                                                                                                                                                                               
+2                       1.10                                                                                                                                                                                                                                               
+4                      10.29                                                                                                                                                                                                                                               
+8                       3.58                                                                                                                                                                                                                                               
+16                      7.43                                                                                                                                                                                                                                               
+32                     40.57                                                                                                                                                                                                                                               
+64                    318.26                                                                                                                                                                                                                                               
+128                   121.58                                                                                                                                                                                                                                               
+256                   648.05                                                                                                                                                                                                                                               
+512                   996.95                                                                                                                                                                                                                                               
+1024                 3282.12                                                                                                                                                                                                                                               
+2048                 2766.76                                                                                                                                                                                                                                               
+4096                 2129.39                                                                                                                                                                                                                                               
+8192                 5918.99                                                                                                                                                                                                                                               
+16384                6267.26                                                                                                                                                                                                                                               
+32768                2773.79                                                                                                                                                                                                                                               
+65536               22293.99                                                                                                                                                                                                                                               
+131072              25997.02                                                                                                                                                                                                                                               
+262144              26964.82                                                                                                                                                                                                                                               
+524288              23820.10                                                                                                                                                                                                                                               
+1048576             17338.45                                                                                                                                                                                                                                               
+2097152             11510.47                                                                                                                                                                                                                                               
+4194304              4020.37                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                           

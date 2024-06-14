@@ -2,9 +2,12 @@
 This module contains all the methods related to "buildtest build" which is used
 for building test scripts from a Buildspec
 """
+
+import getpass
 import json
 import logging
 import os
+import platform
 import re
 import shutil
 import sys
@@ -20,7 +23,6 @@ from rich.panel import Panel
 from rich.table import Column, Table
 
 from buildtest import BUILDTEST_VERSION
-from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
 from buildtest.buildsystem.builders import Builder
@@ -46,7 +48,6 @@ from buildtest.exceptions import (
 from buildtest.executors.setup import BuildExecutor
 from buildtest.log import init_logfile
 from buildtest.schemas.defaults import custom_validator, schema_table
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import (
     create_dir,
     is_dir,
@@ -119,6 +120,7 @@ def discover_buildspecs(
     name: Optional[List[str]] = None,
     executors: Optional[List[str]] = None,
     tags: Optional[List[str]] = None,
+    verbose: Optional[bool] = False,
 ) -> Dict[str, List[str]]:
     """This method discovers all buildspecs based on --buildspecs, --tags, --executor
     and excluding buildspecs (--exclude).
@@ -129,6 +131,7 @@ def discover_buildspecs(
         name (list, optional): List of test names to discover buildspecs that are specified by ``buildtest build --name``
         tags (list, optional): List of input tags for discovering buildspecs by argument ``buildtest build --tags``
         executors (list, optional): List of input executors for discovering buildspecs by argument ``buildtest build --executor``
+        verbose (bool, optional): Enable verbose output for buildtest that is specified by ``buildtest --verbose``
 
     Returns:
         dict: A dictionary containing a list of included, excluded, detected buildspecs and buildspecs detected based on tags and executors
@@ -160,6 +163,12 @@ def discover_buildspecs(
         logger.debug(f"Discovered buildspecs based on tags: {tags}")
         logger.debug(found_buildspecs)
 
+        if verbose:
+            console.print(
+                f"Discovered {len(found_buildspecs)} buildspecs based on tag: {tags}",
+                style="bold blue",
+            )
+
     # discover buildspecs based on --executor
     if executors:
         found_buildspecs, buildspec_dict["executors"] = discover_buildspecs_by_executor(
@@ -170,6 +179,12 @@ def discover_buildspecs(
         logger.debug(f"Discovered buildspecs based on executors: {executors}")
         logger.debug(found_buildspecs)
 
+        if verbose:
+            console.print(
+                f"Discovered {len(found_buildspecs)} buildspecs based on executor: {executors}",
+                style="bold blue",
+            )
+
     if name:
         found_buildspecs, buildspec_dict["name"] = discover_buildspecs_by_name(
             buildspec_cache=cache, names=name
@@ -178,6 +193,12 @@ def discover_buildspecs(
         buildspec_dict["included"] += found_buildspecs
         logger.debug(f"Discovered buildspecs based on names: {name}")
         logger.debug(found_buildspecs)
+
+        if verbose:
+            console.print(
+                f"Discovered {len(found_buildspecs)} buildspecs based on names: {name}",
+                style="bold blue",
+            )
 
     # discover buildspecs based on --buildspec
     if buildspecs:
@@ -190,13 +211,19 @@ def discover_buildspecs(
             if bp:
                 buildspec_dict["included"] += bp
 
+            if verbose:
+                console.print(
+                    f"Discovered {len(bp)} buildspecs based on argument {option}",
+                    style="bold blue",
+                )
+
     # remove any duplicate Buildspec from list by converting list to set and then back to list
     buildspec_dict["included"] = list(set(buildspec_dict["included"]))
 
     # if no files discovered let's stop now
     if not buildspec_dict["included"]:
-        msg = "There are no config files to process."
-        sys.exit(msg)
+        console.print("[red]No buildspecs discovered based on input arguments.")
+        sys.exit(1)
 
     logger.debug(
         f"buildtest discovered the following Buildspecs: {buildspec_dict['included']}"
@@ -229,13 +256,13 @@ def discover_buildspecs(
         ]
 
         logger.debug(
-            f"Buildspec list after applying exclusion: {buildspec_dict['detected']}"
+            f"After excluding all buildspecs we found the following buildspecs that will be run: {buildspec_dict['detected']}"
         )
 
     # if no files remain after exclusion let's stop now.
     if not buildspec_dict["detected"]:
-        msg = "There are no Buildspec files to process."
-        sys.exit(msg)
+        console.print("[red]Unable to detect any buildspec files to process.")
+        sys.exit(1)
 
     return buildspec_dict
 
@@ -250,9 +277,17 @@ def print_discovered_buildspecs(buildspec_dict):
     console.rule("[bold red] Discovering Buildspecs")
 
     table = Table(
-        title="Discovered buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
+        title="Discovered buildspecs",
+        box=box.DOUBLE_EDGE,
+        header_style="blue",
+        show_footer=True,
     )
-    table.add_column("buildspec", style="green", overflow="fold")
+    table.add_column(
+        "buildspec",
+        style="green",
+        overflow="fold",
+        footer=f"[bold]Total: {len(buildspec_dict['included'])}",
+    )
 
     for i in buildspec_dict["included"]:
         table.add_row(i)
@@ -261,9 +296,17 @@ def print_discovered_buildspecs(buildspec_dict):
     # if any buildspecs removed due to -x option we print them to screen
     if buildspec_dict["excluded"]:
         table = Table(
-            title="Excluded buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
+            title="Excluded buildspecs",
+            box=box.DOUBLE_EDGE,
+            header_style="blue",
+            show_footer=True,
         )
-        table.add_column("buildspec", style="red", overflow="fold")
+        table.add_column(
+            "buildspec",
+            style="red",
+            overflow="fold",
+            footer=f"[bold]Total: {len(buildspec_dict['excluded'])}",
+        )
 
         for i in buildspec_dict["excluded"]:
             table.add_row(i)
@@ -276,8 +319,14 @@ def print_discovered_buildspecs(buildspec_dict):
                 title=f"Buildspecs By Tag={tagname}",
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
+                show_footer=True,
             )
-            table.add_column("buildspec", style="turquoise2", overflow="fold")
+            table.add_column(
+                "buildspec",
+                style="turquoise2",
+                overflow="fold",
+                footer=f"[bold]Total: {len(buildspec_dict['tags'][tagname])}",
+            )
             for row in buildspec_dict["tags"][tagname]:
                 table.add_row(row)
             console.print(table)
@@ -289,8 +338,14 @@ def print_discovered_buildspecs(buildspec_dict):
                 title=f"Buildspecs by Executor={executorname}",
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
+                show_footer=True,
             )
-            table.add_column("buildspecs", style="magenta1", overflow="fold")
+            table.add_column(
+                "buildspecs",
+                style="magenta1",
+                overflow="fold",
+                footer=f"[bold]Total: {len(buildspec_dict['executors'][executorname])}",
+            )
             for row in buildspec_dict["executors"][executorname]:
                 table.add_row(f"{row}")
             console.print(table)
@@ -302,8 +357,14 @@ def print_discovered_buildspecs(buildspec_dict):
                 title=f"Buildspecs by Name={name}",
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
+                show_footer=True,
             )
-            table.add_column("buildspecs", style="yellow2", overflow="fold")
+            table.add_column(
+                "buildspecs",
+                style="yellow2",
+                overflow="fold",
+                footer=f"[bold]Total: {len(buildspec_dict['name'][name])}",
+            )
             for row in buildspec_dict["name"][name]:
                 table.add_row(f"{row}")
             console.print(table)
@@ -534,75 +595,95 @@ class BuildTest:
 
     def __init__(
         self,
-        configuration=None,
+        account=None,
         buildspecs=None,
+        configuration=None,
+        display=None,
+        dry_run=None,
         exclude_buildspecs=None,
-        tags=None,
-        name=None,
         exclude_tags=None,
         executors=None,
-        testdir=None,
-        stage=None,
-        filter_buildspecs=None,
-        rebuild=None,
-        buildtest_system=None,
-        report_file=None,
-        maxpendtime=None,
-        poll_interval=None,
-        remove_stagedir=None,
-        retry=None,
-        account=None,
-        helpfilter=None,
-        numprocs=None,
-        numnodes=None,
-        modules=None,
-        modulepurge=None,
-        unload_modules=None,
-        rerun=None,
         executor_type=None,
-        timeout=None,
+        filter_buildspecs=None,
+        helpfilter=None,
         limit=None,
-        save_profile=None,
-        profile=None,
         max_jobs=None,
+        maxpendtime=None,
+        modulepurge=None,
+        modules=None,
+        name=None,
+        numnodes=None,
+        numprocs=None,
+        poll_interval=None,
+        profile=None,
+        rebuild=None,
+        remove_stagedir=None,
+        report_file=None,
+        rerun=None,
+        retry=None,
+        save_profile=None,
+        strict=None,
+        tags=None,
+        testdir=None,
+        timeout=None,
+        unload_modules=None,
+        validate=None,
+        verbose=None,
+        write_config_file=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
         we assign the values and proceed with building the test.
 
         Args:
-            configuration (buildtest.config.SiteConfiguration, optional): Loaded configuration content which is an instance of SiteConfiguration
-            buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
-            exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
-            tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
-            name (list, optional): list of test names to run specified via command line ``buildtest build --name``
-            exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
-            executors (list, optional): list of executors passed from command line ``buildtest build --executors``
-            testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
-            stage (str, optional): Stop build after parse or build stage which can be configured via ``buildtest build --stage`` option
-            filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
-            rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
-            buildtest_system (buildtest.system.BuildTestSystem, optional): Instance of BuildTestSystem class
-            report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
-            maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
-            poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
-            remove_stagedir (bool, optional): remove stage directory after job completion
-            retry (int, optional): Number of retry for failed jobs
+
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
-            helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
-            numprocs (list, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
-            numnodes (list, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
-            modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
-            modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
-            unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
-            rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
+            buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
+            configuration (buildtest.config.SiteConfiguration, optional): Loaded configuration content which is an instance of SiteConfiguration
+            display (list, optional): Display content of output or test. This is specified via ``buildtest build --display``
+            dry_run (bool, optional): Show a list of tests that will potentially be run without actually running them via ``buildtest build --dry-run``
+            exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
+            exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
-            timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
+            executors (list, optional): list of executors passed from command line ``buildtest build --executors``
+            filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
+            helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
-            save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
-            profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
             max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
+            maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
+            modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
+            modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
+            name (list, optional): list of test names to run specified via command line ``buildtest build --name``
+            numnodes (list, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
+            numprocs (list, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
+            poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
+            profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
+            rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
+            remove_stagedir (bool, optional): remove stage directory after job completion
+            report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
+            rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
+            retry (int, optional): Number of retry for failed jobs
+            save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
+            strict (bool, optional): Enable strict mode for buildtest. This option is specified by ``buildtest build --strict``
+            tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
+            testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
+            timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
+            unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
+            validate (bool, optional): Validate given buildspecs and buildtest will stop after parse stage which can be configured via ``buildtest build --validate`` option
+            verbose (bool, optional): Enable verbose output for buildtest that is specified by ``buildtest --verbose``
+            write_config_file (str, optional): Write configuration file to specified location. This is specified by ``buildtest build --write-config-file``
+
         """
+        self.verbose = verbose
+
+        # variable used to determine if buildtest build command was successful. We initially start with False and if method runs to completion we set to True
+        self.success = False
+
+        if self.verbose:
+            console.print("[blue]Starting buildtest build")
+            console.print(
+                "[blue]Performing type check on all arguments to buildtest build"
+            )
 
         # check for input arguments that are expected to be a list
         for arg_name in [
@@ -612,12 +693,13 @@ class BuildTest:
             exclude_tags,
             executors,
             name,
+            display,
         ]:
             if arg_name and not isinstance(arg_name, list):
                 raise BuildTestError(f"{arg_name} is not of type list")
 
         # check for input arguments that are expected to be a string
-        for arg_name in [testdir, stage, save_profile, profile]:
+        for arg_name in [testdir, save_profile, profile, write_config_file]:
             if arg_name and not isinstance(arg_name, str):
                 raise BuildTestError(f"{arg_name} is not of type str")
 
@@ -641,6 +723,7 @@ class BuildTest:
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
         self.buildspecs = buildspecs
+        self.display = display
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.name = name
@@ -652,7 +735,8 @@ class BuildTest:
         self.retry = retry
         self.rerun = rerun
         self.account = account
-        self.stage = stage
+        self.validate = validate
+        self.dry_run = dry_run
         self.filter_buildspecs = filter_buildspecs
         self.rebuild = rebuild
         self.modules = modules
@@ -666,6 +750,8 @@ class BuildTest:
         self.save_profile = save_profile
         self.profile = profile
         self.max_jobs = max_jobs
+        self.strict = strict
+        self.write_config_file = write_config_file
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -673,8 +759,7 @@ class BuildTest:
         self.builders = None
         self.finished_builders = None
 
-        # This command should just print available filters and exit
-        # buildtest build --helpfilter
+        # This command should will print available filters (buildtest build --helpfilter) and exit
         if self.helpfilter:
             print_filters()
             return
@@ -745,24 +830,24 @@ class BuildTest:
             timeout=self.timeout,
             max_jobs=self.max_jobs,
         )
-
+        """
         self.system = buildtest_system
 
         if not isinstance(self.system, BuildTestSystem):
             self.system = BuildTestSystem()
-
+        """
         if self.filter_buildspecs:
             self._validate_filters()
 
         msg = f"""
-[magenta]User:[/]               [cyan]{self.system.system['user']}
-[magenta]Hostname:[/]           [cyan]{self.system.system['host']}
-[magenta]Platform:[/]           [cyan]{self.system.system['platform']}
+[magenta]User:[/]               [cyan]{getpass.getuser()}
+[magenta]Hostname:[/]           [cyan]{platform.node()}
+[magenta]Platform:[/]           [cyan]{platform.system()}
 [magenta]Current Time:[/]       [cyan]{datetime.now().strftime('%Y/%m/%d %X')}
 [magenta]buildtest path:[/]     [cyan]{shutil.which('buildtest')}
 [magenta]buildtest version:[/]  [cyan]{BUILDTEST_VERSION}    
-[magenta]python path:[/]        [cyan]{self.system.system['python']}
-[magenta]python version:[/]     [cyan]{self.system.system['pyver']}[/]
+[magenta]python path:[/]        [cyan]{os.getenv("BUILDTEST_PYTHON")}
+[magenta]python version:[/]     [cyan]{platform.python_version()}[/]
 [magenta]Configuration File:[/] [cyan]{self.configuration.file}[/]
 [magenta]Test Directory:[/]     [cyan]{self.testdir}[/]
 [magenta]Report File:[/]        [cyan]{self.report_file}[/]
@@ -790,8 +875,8 @@ class BuildTest:
         configuration.detect_system()
         configuration.validate()
         self.configuration = configuration
-
         self.buildspecs = content["buildspecs"]
+        self.display = content["display"]
         self.tags = content["tags"]
         self.exclude_tags = content["exclude_tags"]
         self.name = content["name"]
@@ -799,7 +884,8 @@ class BuildTest:
         self.exclude_buildspecs = content["exclude_buildspecs"]
         self.executors = content["executors"]
         self.report_file = content["report_file"]
-        self.stage = content["stage"]
+        self.validate = content["validate"]
+        self.dry_run = content["dry_run"]
         self.remove_stagedir = content["remove_stagedir"]
         self.testdir = content["testdir"]
         self.maxpendtime = content["maxpendtime"]
@@ -816,12 +902,14 @@ class BuildTest:
         self.timeout = content["timeout"]
         self.limit = content["limit"]
         self.max_jobs = content["max_jobs"]
+        self.strict = content["strict"]
 
     def save_rerun_file(self):
         """Record buildtest command options and save them into rerun file which is read when invoking ``buildtest build --rerun``."""
         buildtest_cmd = {
             "configuration": self.configuration.file,
             "buildspecs": self.buildspecs,
+            "display": self.display,
             "tags": self.tags,
             "exclude_tags": self.exclude_tags,
             "name": self.name,
@@ -829,7 +917,8 @@ class BuildTest:
             "exclude_buildspecs": self.exclude_buildspecs,
             "executors": self.executors,
             "report_file": self.report_file,
-            "stage": self.stage,
+            "dry_run": self.dry_run,
+            "validate": self.validate,
             "remove_stagedir": self.remove_stagedir,
             "testdir": self.testdir,
             "maxpendtime": self.maxpendtime,
@@ -846,6 +935,7 @@ class BuildTest:
             "timeout": self.timeout,
             "limit": self.limit,
             "max_jobs": self.max_jobs,
+            "strict": self.strict,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -855,7 +945,28 @@ class BuildTest:
         """This method will save profile to configuration file. This method is called when ``buildtest build --save-profile`` is invoked. We will open the configuration
         file and update the profile section, if profile already exist we will override it, otherwise we will insert into the configuration file.
         """
+        config_file_path = None
+        if self.write_config_file:
+            config_file_path = resolve_path(self.write_config_file, exist=False)
+            if not config_file_path:
+                raise BuildTestError(
+                    f"Unable to resolve path for {self.write_config_file}"
+                )
+            if is_dir(config_file_path):
+                raise BuildTestError(
+                    f"{config_file_path} is a directory, please specify a file path"
+                )
 
+            if os.path.exists(config_file_path):
+                raise BuildTestError(
+                    f"[red]Configuration file {config_file_path} already exists. Please specify a new file path"
+                )
+            if not os.path.splitext(config_file_path)[1] == ".yml":
+                raise BuildTestError(
+                    f"[red]Configuration file {config_file_path} must end in .yml extension"
+                )
+
+        config_file_path = config_file_path or self.configuration.file
         resolved_buildspecs = []
         if self.buildspecs:
             for file in self.buildspecs:
@@ -865,6 +976,7 @@ class BuildTest:
         profile_configuration = {
             "buildspecs": resolved_buildspecs or None,
             "exclude-buildspecs": self.exclude_buildspecs,
+            "display": self.display,
             "tags": self.tags,
             "exclude-tags": self.exclude_tags,
             "name": self.name,
@@ -872,6 +984,8 @@ class BuildTest:
             "module": self.modules,
             "unload-modules": self.unload_modules,
             "module-purge": self.modulepurge,
+            "validate": self.validate,
+            "dry-run": self.dry_run,
             "rebuild": self.rebuild,
             "limit": self.limit,
             "account": self.account,
@@ -883,11 +997,19 @@ class BuildTest:
             "executor-type": self.executor_type,
             "max_jobs": self.max_jobs,
             "remove-stagedir": self.remove_stagedir,
+            "strict": self.strict,
         }
         # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
         profile_configuration["module-purge"] = (
             None if self.modulepurge is False else True
         )
+
+        if self.verbose:
+            console.print(
+                f"Showing Profile Configuration in JSON format for profile name: {self.save_profile}",
+                style="bold blue",
+            )
+            console.print(json.dumps(profile_configuration, indent=2))
 
         # iterate over profile configuration and remove keys that are None
         remove_keys = []
@@ -918,10 +1040,10 @@ class BuildTest:
         )
 
         console.print(
-            f"Saved profile {self.save_profile} to configuration file {self.configuration.file}"
+            f"Saved profile {self.save_profile} to configuration file {config_file_path}"
         )
 
-        with open(self.configuration.file, "w") as fd:
+        with open(config_file_path, "w") as fd:
             yaml.safe_dump(
                 self.configuration.config, fd, default_flow_style=False, sort_keys=False
             )
@@ -930,10 +1052,16 @@ class BuildTest:
         """This method will load profile from configuration file and update class variables used for ``buildtest build`` command.
         This method is called when ``buildtest build --profile`` is invoked."""
 
+        if self.verbose:
+            console.print(
+                f"[blue]Loading profile {self.profile} from configuration file"
+            )
+
         profile_configuration = self.configuration.get_profile(self.profile)
 
         self.buildspecs = profile_configuration.get("buildspecs")
         self.exclude_buildspecs = profile_configuration.get("exclude-buildspecs")
+        self.display = profile_configuration.get("display")
         self.tags = profile_configuration.get("tags")
         self.exclude_tags = profile_configuration.get("exclude-tags")
         self.name = profile_configuration.get("name")
@@ -947,11 +1075,14 @@ class BuildTest:
         self.modules = profile_configuration.get("module")
         self.unload_modules = profile_configuration.get("unload-modules")
         self.modulepurge = profile_configuration.get("module-purge")
+        self.validate = profile_configuration.get("validate")
+        self.dry_run = profile_configuration.get("dry-run")
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
         self.executor_type = profile_configuration.get("executor-type")
         self.max_jobs = profile_configuration.get("max_jobs")
         self.remove_stagedir = profile_configuration.get("remove-stagedir")
+        self.strict = profile_configuration.get("strict")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -978,10 +1109,6 @@ class BuildTest:
                         f"Invalid value for filter 'type': '{self.filter_buildspecs[key]}', valid schema types are : {schema_table['types']}"
                     )
 
-    def discovered_buildspecs(self):
-        """Return all discovered buildspecs which includes included buildspecs, excluded buildspecs and detected buildspecs."""
-        return self.discovered_bp
-
     def build(self):
         """This method is responsible for discovering buildspecs based on input argument. Then we parse
         the buildspecs and retrieve builder objects for each test. Each builder object will invoke :func:`buildtest.buildsystem.base.BuilderBase.build`
@@ -998,6 +1125,7 @@ class BuildTest:
             name=self.name,
             tags=self.tags,
             executors=self.executors,
+            verbose=self.verbose,
         )
 
         print_discovered_buildspecs(buildspec_dict=self.discovered_bp)
@@ -1010,8 +1138,8 @@ class BuildTest:
         # is a builder object used for building test.
         self.parse_buildspecs()
 
-        # if no builders found or  --stage=parse set we return from method
-        if not self.builders or self.stage == "parse":
+        # if no builders found or buildtest build --validate set we return from method
+        if not self.builders or self.validate:
             return
 
         if self.limit:
@@ -1022,8 +1150,8 @@ class BuildTest:
 
         self.build_phase()
 
-        # if --stage=build is set  we return from method
-        if self.stage == "build":
+        # if --dry-run is specified we return from method
+        if self.dry_run:
             return
 
         self.finished_builders = self.run_phase()
@@ -1037,13 +1165,16 @@ class BuildTest:
             for builder in self.finished_builders:
                 shutil.rmtree(builder.stage_dir)
 
-        # only update report if we have a list of valid builders returned from run_phase
-        if self.finished_builders:
-            update_report(self.finished_builders, self.report_file)
+        update_report(
+            valid_builders=self.finished_builders,
+            report_file=self.report_file,
+            verbose=self.verbose,
+        )
 
-        print(f"Writing Logfile to: {self.logfile.name}")
+        print(f"Writing Logfile to {self.logfile.name}")
 
         self._update_build_history(self.finished_builders)
+        self.success = True
 
     def parse_buildspecs(self):
         """Parse all buildspecs by passing buildspec file to :class:`buildtest.buildsystem.parser.BuildspecParser` class.
@@ -1091,12 +1222,13 @@ class BuildTest:
                 filters=self.filter_buildspecs,
                 testdir=self.testdir,
                 rebuild=self.rebuild,
-                buildtest_system=self.system,
                 configuration=self.configuration,
                 numprocs=self.numprocs,
                 numnodes=self.numnodes,
                 executor_type=self.executor_type,
                 exclude_tags=self.exclude_tags,
+                strict=self.strict,
+                display=self.display,
             )
 
             if not builder.get_builders():
@@ -1109,14 +1241,12 @@ class BuildTest:
         console.print(f"[red]Invalid Buildspecs: {len(self.invalid_buildspecs)}")
 
         for buildspec in valid_buildspecs:
-            msg = f"[green]{buildspec}: VALID"
-            console.print(msg)
+            console.print(f"[green]{buildspec}: VALID")
 
         # print any skipped buildspecs if they failed to validate during build stage
         if self.invalid_buildspecs:
             for buildspec in self.invalid_buildspecs:
-                msg = f"[red]{buildspec}: INVALID"
-                console.print(msg)
+                console.print(f"[red]{buildspec}: INVALID")
 
         if filtered_buildspecs:
             table = Table(
@@ -1142,7 +1272,6 @@ class BuildTest:
         console.print("Total builder objects created:", len(self.builders))
 
         script_builders = []
-        compiler_builder = []
         spack_builder = []
         batch_builders = []
 
@@ -1150,18 +1279,13 @@ class BuildTest:
             if isinstance(builder, ScriptBuilder):
                 script_builders.append(builder)
 
-            if isinstance(builder, CompilerBuilder):
-                compiler_builder.append(builder)
-
             if isinstance(builder, SpackBuilder):
                 spack_builder.append(builder)
 
             if not builder.is_local_executor():
                 batch_builders.append(builder)
 
-        self.print_builders(
-            compiler_builder, spack_builder, script_builders, batch_builders
-        )
+        self.print_builders(spack_builder, script_builders, batch_builders)
 
     def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
@@ -1223,6 +1347,7 @@ class BuildTest:
         """
 
         console.rule("[bold red]Running Tests")
+
         self.buildexecutor.run(self.builders)
 
         builders = self.buildexecutor.get_validbuilders()
@@ -1230,15 +1355,16 @@ class BuildTest:
         if not builders:
             sys.exit("Unable to run any tests")
 
-        self._print_test_summary(builders)
+        self.print_test_summary(builders)
 
         return builders
 
     def build_success(self):
-        """Returns True if build was successful otherwise returns False"""
-        return True if self.finished_builders else False
+        """Returns status of build whether it was successful or not. The return value is a boolean where ``True``
+        indicates build was successful and ``False`` indicates build failed."""
+        return self.success
 
-    def _print_test_summary(self, builders):
+    def print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.
 
         Args:
@@ -1249,7 +1375,6 @@ class BuildTest:
         table.add_column("builder", overflow="fold")
         table.add_column("executor", overflow="fold")
         table.add_column("status", overflow="fold")
-        table.add_column("checks (ReturnCode, Regex, Runtime)", overflow="fold")
         table.add_column("returncode", overflow="fold")
         table.add_column("runtime", overflow="fold")
 
@@ -1268,9 +1393,8 @@ class BuildTest:
                 f"[{color_row}]{builder}",
                 f"[{color_row}]{builder.executor}",
                 f"[{color_row}]{builder.metadata['result']['state']}",
-                f"[{color_row}]{builder.metadata['check']['returncode']} [{color_row}]{builder.metadata['check']['regex']} [{color_row}]{builder.metadata['check']['runtime']}",
                 f"[{color_row}]{builder.metadata['result']['returncode']}",
-                f"[{color_row}]{builder.metadata['result']['runtime']}",
+                f"[{color_row}]{format(builder.metadata['result']['runtime'],'.3f')}",
             )
 
             total_tests += 1
@@ -1283,13 +1407,12 @@ class BuildTest:
         fail_rate = failed_tests * 100 / total_tests
         fail_rate = format(fail_rate, ".3f")
 
-        msg1 = f"[green]Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate}%"
-        msg2 = (
+        console.print(
+            f"[green]Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate}%"
+        )
+        console.print(
             f"[red]Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate}%"
         )
-
-        console.print(msg1)
-        console.print(msg2)
         print("\n")
 
         self.test_summary = {
@@ -1341,15 +1464,27 @@ class BuildTest:
             os.path.join(self.build_history_dir, os.path.basename(self.logfile.name)),
         )
 
+        if self.verbose:
+            console.print(
+                f"Creating build history directory: {BUILD_HISTORY_DIR}",
+                style="bold blue",
+            )
+            console.print(
+                f"Creating build history file: {build_history_file}", style="bold blue"
+            )
+            console.print(
+                "Copying log file to build history directory", style="bold blue"
+            )
+
         history_data = {
             "command": " ".join(sys.argv),
-            "user": self.system.system["user"],
-            "hostname": self.system.system["host"],
-            "platform": self.system.system["platform"],
+            "user": getpass.getuser(),
+            "hostname": platform.node(),
+            "platform": platform.system(),
             "date": datetime.now().strftime("%Y/%m/%d %X"),
             "buildtest": shutil.which("buildtest"),
-            "python": self.system.system["python"],
-            "python_version": self.system.system["pyver"],
+            "python": os.getenv("BUILDTEST_PYTHON"),
+            "python_version": platform.python_version(),
             "testdir": self.testdir,
             "configuration": self.configuration.file,
             "system": self.configuration.name(),
@@ -1530,18 +1665,15 @@ class BuildTest:
 
             console.print(batch_builders_numnodes_table)
 
-    def print_builders(
-        self, compiler_builder, spack_builder, script_builder, batch_builder
-    ):
+    def print_builders(self, spack_builder, script_builder, batch_builder):
         """Print detected builders during build phase"""
 
         self.print_builders_by_type(script_builder, builder_type="script")
         self.print_builders_by_type(spack_builder, builder_type="spack")
-        self.print_builders_by_type(compiler_builder, builder_type="compiler")
         self.print_batch_builders(batch_builder)
 
 
-def update_report(valid_builders, report_file):
+def update_report(valid_builders, report_file, verbose=None):
     """This method will update BUILD_REPORT after every test run performed
     by ``buildtest build``. If BUILD_REPORT is not created, we will create
     file and update json file by extracting contents from builder metadata
@@ -1559,13 +1691,21 @@ def update_report(valid_builders, report_file):
     if is_file(report_file):
         report = load_json(report_file)
 
+        if verbose:
+            console.print(f"Loading report file: {report_file}", style="bold blue")
+
+    if verbose:
+        console.print(
+            "Attempting to upload test results to report file", style="bold blue"
+        )
+
     for builder in valid_builders:
         buildspec = builder.buildspec
         name = builder.name
         entry = {}
 
         report[buildspec] = report.get(buildspec) or {}
-        # report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+
         report[buildspec][name] = report[buildspec].get(name) or []
 
         # query over attributes found in builder.metadata, we only assign
@@ -1619,7 +1759,9 @@ def update_report(valid_builders, report_file):
         json.dump(report, fd, indent=2)
 
     logger.debug(f"Updating report file: {report_file}")
-    console.print(f"Adding {len(valid_builders)} test results to {report_file}")
+    console.print(
+        f"Adding {len(valid_builders)} test results to report file: {report_file}"
+    )
     #  BUILDTEST_REPORTS file keeps track of all report files which
     #  contains a single line that denotes path to report file. This file only contains unique report files
 

@@ -49,6 +49,10 @@
         }
       ]
     },
+    "file": {
+      "type": "string",
+      "description": "Specify a file name to read"
+    },
     "file_regex": {
       "type": "array",
       "description": "Specify a list of regular expressions to match files in the current working directory. The regular expression is matched using ``re.search`` python module. ",
@@ -61,12 +65,25 @@
         ],
         "properties": {
           "file": {
-              "type": "string",
-              "description": "Specify a file name to match with regular expression"
+            "$ref": "#/definitions/file"
           },
           "exp": {
-              "type": "string",
-              "description": "Specify a regular expression to run on the selected file name"
+            "type": "string",
+            "description": "Specify a regular expression to run on the selected file name"
+          },
+          "item": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+          },
+          "re": {
+            "type": "string",
+            "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",
+            "enum": [
+                "re.search",
+                "re.match",
+                "re.fullmatch"
+            ]
           }
         }
       }
@@ -82,17 +99,29 @@
       "properties": {
         "additionalProperties": false,
         "file": {
-            "type": "string",
-            "description": "Specify a file name to match with regular expression"
+          "$ref": "#/definitions/file"
         },
         "exp": {
-            "type": "string",
-            "description": "Specify a regular expression to run on the selected file name"
+          "type": "string",
+          "description": "Specify a regular expression to run on the selected file name"
         },
         "item": {
           "type": "integer",
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        },
+        "linenum": {
+          "type": "integer",
+          "description": "Specify the line number used to extract from the file content where regex is applied"
+        },
+        "re": {
+          "type": "string",
+          "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",
+          "enum": [
+              "re.search",
+              "re.match",
+              "re.fullmatch"
+          ]
         }
       }
     },
@@ -121,6 +150,19 @@
           "type": "integer",
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        },
+        "linenum": {
+          "type": "integer",
+          "description": "Specify the line number used to extract from the content where regex is applied"
+        },
+        "re": {
+          "type": "string",
+          "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",
+          "enum": [
+              "re.search",
+              "re.match",
+              "re.fullmatch"
+          ]
         }
       }
     },
@@ -163,15 +205,21 @@
       "items": [
         {
           "oneOf": [
-            { "type": "string" },
+            {
+              "type": "string"
+            },
             {
               "type": "object",
               "patternProperties": {
                 "^.*$": {
                   "additionalProperties": false,
                   "properties": {
-                    "state": {"$ref": "#/definitions/state"},
-                    "returncode": {"$ref": "#/definitions/returncode"}
+                    "state": {
+                      "$ref": "#/definitions/state"
+                    },
+                    "returncode": {
+                      "$ref": "#/definitions/returncode"
+                    }
                   }
                 }
               }
@@ -203,10 +251,18 @@
           "$ref": "#/definitions/file_regex_in_metrics"
         }
       },
-        "oneOf": [
-          { "required": ["regex" ] },
-          { "required": [ "file_regex"] }
-        ]
+      "oneOf": [
+        {
+          "required": [
+            "regex"
+          ]
+        },
+        {
+          "required": [
+            "file_regex"
+          ]
+        }
+      ]
     },
     "metrics": {
       "type": "object",
@@ -245,8 +301,7 @@
           ],
           "description": "This field can be used to pass test based on Slurm Job State, if there is a match buildtest will report as ``PASS`` "
         },
-        "pbs_job_state":
-        {
+        "pbs_job_state": {
           "type": "string",
           "description": "This field can be used to pass test based on PBS Job State, if there is a match buildtest will report as ``PASS`` ",
           "enum": [
@@ -263,7 +318,9 @@
             "EXIT"
           ]
         },
-        "returncode": { "$ref": "#/definitions/returncode" },
+        "returncode": {
+          "$ref": "#/definitions/returncode"
+        },
         "regex": {
           "$ref": "#/definitions/regex",
           "description": "Determine state (PASS/FAIL) of test based on regular expression on output or error stream"
@@ -272,7 +329,6 @@
           "$ref": "#/definitions/file_regex",
           "description": "Perform a regular expression search on a list of arbitrary files, if expression matches for any file buildtest will report as ``PASS``. This field is useful for checking output of a test that is not captured in stdout or stderr. "
         },
-
         "runtime": {
           "type": "object",
           "description": "The runtime section will pass test based on min and max values and compare with actual runtime. ",
@@ -290,225 +346,75 @@
           }
         },
         "assert_ge": {
-          "type": "array",
           "description": "Perform assertion of greater and equal (>=) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_le": {
-          "type": "array",
-          "description": "Perform assertion of less than and equal (<=) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "description": "Perform assertion of greater and equal (>=) with reference value",
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_gt": {
-          "type": "array",
           "description": "Perform assertion of greater than (>) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_lt": {
-          "type": "array",
           "description": "Perform assertion of less than (<) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
-        "assert_eq":
-        {
+        "assert_eq": {
           "description": "Perform assertion of equality (=) with reference value",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "description": "Specify reference value (str, int,float) for comparison",
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_eq_ne"
         },
-        "assert_ne":
-        {
-          "description": "Perform assertion of not equal with reference value",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "description": "Specify reference value (str, int, float) for comparison",
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              }
-            }
-          }
+        "assert_ne": {
+          "description": "Perform assertion of not equal (!=) with reference value",
+          "$ref": "#/definitions/status_check_eq_ne"
         },
-        "assert_range":
-        {
+        "assert_range": {
+          "type": "object",
           "description": "Perform assertion based on lower and upper bound",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "lower",
-              "upper"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "lower": {
-                "description": "Specify reference value for lower bound",
-                "type": "number"
-              },
-              "upper": {
-                "description": "Specify reference value for upper bound",
-                "type": "number"
+          "additionalProperties": false,
+          "required": [
+            "comparisons"
+          ],
+          "properties": {
+            "mode": {
+              "$ref": "#/definitions/mode"
+            },
+            "comparisons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "lower",
+                  "upper"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of metric to use for comparison"
+                  },
+                  "lower": {
+                    "description": "Specify reference value for lower bound",
+                    "type": "number"
+                  },
+                  "upper": {
+                    "description": "Specify reference value for upper bound",
+                    "type": "number"
+                  }
+                }
               }
-
             }
           }
         },
         "contains": {
-          "description": "Check if metric value is in a list of reference values ",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "array",
-                "minItems": 1,
-                "description": "Specify a list of reference value"
-              }
-            }
-          }
+          "description": "Check if metric value is in a list of reference values",
+          "$ref": "#/definitions/status_check_contains_not_contains"
         },
         "not_contains": {
           "description": "Check if metric value not in a list of reference values ",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "array",
-                "minItems": 1,
-                "description": "Specify a list of reference value"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_contains_not_contains"
         },
         "is_symlink": {
           "description": "Check for list of files or directory paths that are symbolic links",
@@ -583,11 +489,172 @@
           "description": "explicitly mark state of test regardless of status calculation"
         },
         "mode": {
-          "type": "string",
-          "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
-          "enum": ["any", "all"]
+          "$ref": "#/definitions/mode"
+        },
+        "linecount": {
+          "type": "object",
+          "description": "Check for number of lines in stdout or stderr stream. If linecount is set, buildtest will check for number of lines in stdout or stderr stream and compare with linecount. If linecount matches buildtest will report as ``PASS``",
+          "additionalProperties": false,
+          "required": [
+            "stream",
+            "count"
+          ],
+          "properties": {
+            "stream": {
+              "type": "string",
+              "enum": [
+                "stdout",
+                "stderr"
+              ],
+              "description": "The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if linecount matches"
+            },
+            "count": {
+              "type": "integer",
+              "description": "Specify number of lines as reference value to compare with actual output",
+              "minimum": 0
+            }
+          }
+        },
+        "file_linecount": {
+          "type": "array",
+          "description": "Specify a list of files to perform line count comparison by reading the file and comparing the line count with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "file",
+              "count"
+            ],
+            "properties": {
+              "file": {
+                "$ref": "#/definitions/file"
+              },
+              "count": {
+                "type": "integer",
+                "description": "Specify number of lines as reference value to compare with actual output",
+                "minimum": 0
+              }
+            }
+          }
         }
       }
+    },
+    "status_check_ge_gt_le_lt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "comparisons"
+      ],
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/mode"
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        }
+      }
+    },
+    "status_check_eq_ne": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "comparisons"
+      ],
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/mode"
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "description": "Specify reference value (str, int, float) for comparison",
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "status_check_contains_not_contains": {
+      "type": "object",
+      "required": [
+        "comparisons"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/mode"
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Specify a list of reference value"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mode": {
+      "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
+      "type": "string",
+      "enum": [
+        "or",
+        "and",
+        "OR",
+        "AND"
+      ]
     },
     "BB": {
       "$ref": "#/definitions/list_of_strings",
@@ -604,10 +671,6 @@
     "bsub": {
       "$ref": "#/definitions/list_of_strings",
       "description": "This field is used for specifying #BSUB options in test script."
-    },
-    "cobalt": {
-      "$ref": "#/definitions/list_of_strings",
-      "description": "This field is used for specifying #COBALT options in test script."
     },
     "pbs": {
       "$ref": "#/definitions/list_of_strings",
@@ -634,9 +697,6 @@
               "$ref": "#/definitions/list_of_strings"
             },
             "pbs": {
-              "$ref": "#/definitions/list_of_strings"
-            },
-            "cobalt": {
               "$ref": "#/definitions/list_of_strings"
             },
             "BB": {
@@ -695,29 +755,30 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-         "purge": {
-           "type": "boolean",
-            "description": "Run ``module purge`` if purge is set"
-         },
-         "load": {
-           "$ref": "definitions.schema.json#/definitions/list_of_strings",
-           "description": "Load one or more modules via ``module load``"
-         },
-         "restore": {
-           "description": "Load a collection name via ``module restore``",
-           "type": "string"
-         },
-         "swap": {
-           "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
-           "type": "array",
-           "uniqueItems": true,
-           "minItems": 2,
-           "maxItems": 2,
-           "items": {
-             "type": "string"
-           }
-         }
-       }
+        "purge": {
+          "type": "boolean",
+          "description": "Run ``module purge`` if purge is set"
+        },
+        "load": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings",
+          "description": "Load one or more modules via ``module load``"
+        },
+        "restore": {
+          "description": "Load a collection name via ``module restore``",
+          "type": "string"
+        },
+        "swap": {
+          "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   }
 }
+

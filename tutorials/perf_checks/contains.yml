@@ -16,9 +16,11 @@ buildspecs:
           item: 1
     status:
       contains:
+        comparisons:
         - name: x
           ref: [1, 2, 4, 8]
       not_contains:
+        comparisons:
         - name: x
           ref: [2, 4]
   assert_contains_fail:
@@ -38,5 +40,6 @@ buildspecs:
           item: 1
     status:
       contains:
+        comparisons:
         - name: x
           ref: ['1', 2, 4, 8]

@@ -179,7 +179,7 @@ Let's take a look at the generated test, take note of the ``spack env deactivate
 We run ``spack env create``, followed by ``spack env deactivate`` and finally we activate the environment
 using ``spack env activate``.
 
-.. dropdown:: ``buildtest inspect query --testpath spack_env_deactivate_first``
+.. dropdown:: ``buildtest inspect query -t spack_env_deactivate_first``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_env_deactivate.txt
 
@@ -343,7 +343,7 @@ Specifying Scheduler Directives
 ---------------------------------
 
 The spack schema supports all of the :ref:`scheduler scheduler directives <batch_support>` such
-as ``sbatch``, ``bsub``, ``pbs``, ``cobalt``, and ``batch`` property in the buildspec.
+as ``sbatch``, ``bsub`` and ``pbs`` property in the buildspec.
 
 The directives are applied at top of script. Shown below is a toy example that will define
 directives using **sbatch** property. Note, this test won't submit job to scheduler
@@ -424,6 +424,7 @@ Let's build this by running the following
     .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_load.txt
 
 Let's take a look at the generated test, take note of the `spack load` command
-.. dropdown:: ``buildtest inspect query -t spack_load_example``
+
+.. dropdown:: ``buildtest inspect query -o -t spack_load_example``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_load.txt

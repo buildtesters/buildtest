@@ -34,11 +34,6 @@ class BaseExecutor:
             maxpendtime (int, optional): Maximum Pending Time until job is cancelled. The default is 1 day (86400s)
         """
 
-        self._bashopts = "--norc --noprofile -eo pipefail"
-        self._shopts = "--norc --noprofile -eo pipefail"
-        self._cshopts = "-ef"
-        self._zshopts = "-f"
-        self.cmd = None
         self.shell = "bash"
         self.logger = logging.getLogger(__name__)
         self.name = name
@@ -131,7 +126,8 @@ class BaseExecutor:
 
         builder.record_endtime()
 
-        builder.metadata["job"] = builder.job.gather()
+        builder.job.retrieve_jobdata()
+        builder.metadata["job"] = builder.job.jobdata()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         self.logger.debug(
@@ -162,14 +158,12 @@ class BaseExecutor:
     def _cancel_job_if_pendtime_exceeds_maxpendtime(self, builder):
         builder.job.pendtime = time.time() - builder.job.submittime
         builder.job.pendtime = round(builder.job.pendtime, 2)
-
         if builder.job.pendtime > self.maxpendtime:
             builder.job.cancel()
             builder.failed()
             console.print(
                 f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.job.pendtime} sec[/red] "
             )
-            return
 
     def __str__(self):
         return self.name

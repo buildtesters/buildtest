@@ -1,7 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: N/A
+    moduletool: none
     poolsize: 1
     buildspecs:
       # whether to rebuild cache file automatically when running `buildtest buildspec find`
@@ -12,16 +12,16 @@ system:
       format: "name,description"
       # enable terse mode
       terse: False
-
     report:
       count: 25
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
+    paths:
+      pbs: /usr/bin
+      torque: /usr/bin
+      lsf: /usr/bin
+      slurm: /usr/bin
     executors:
       local:
         bash:
@@ -29,18 +29,27 @@ system:
           shell: bash -v
       slurm:
         haswell:
-          launcher: sbatch
+          partition: haswell
           options: ["-p haswell", "-t 00:10"]
       lsf:
         batch:
-          launcher: bsub
           queue: batch
           options: ["-q batch", "-t 00:10"]
-      cobalt:
-        normal:
-          launcher: qsub
-          queue: normal
-          options: ["-n 1", "-t 10"]
+      pbs:
+        dev:
+          queue: development
+          options: ["-l walltime 00:10:00"]
+      torque:
+        dev:
+          queue: development
+          options: ["-l walltime 00:10:00"]
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          mounts: "/tmp:/tmp"
+          options: "--rm"
+          description: submit jobs on ubuntu container
     compilers:
       compiler:
         gcc:

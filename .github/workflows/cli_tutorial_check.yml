@@ -1,0 +1,26 @@
+name: regressiontest
+
+on:
+  pull_request:
+    branches: [devel]
+
+jobs:
+
+  commandline_tutorial_check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.0.0
+        with:
+          python-version: 3.8
+
+      - name: Buildtest CLI Check
+        shell: bash
+        run: |
+          sudo apt-get install -y csh tcsh zsh
+          source setup.sh
+          # tutorial check
+          bash .github/workflows/cli.sh

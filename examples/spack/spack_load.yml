@@ -8,9 +8,9 @@ buildspecs:
       root: $HOME/spack
       load:
         options: '--only package'
-        specs: [m4]
+        specs: ['m4%gcc@12']
       test:
         run:
-          specs: ['m4']
+          specs: ['m4%gcc@12']
         results:
           option: "-l"

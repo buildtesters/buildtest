@@ -1,0 +1,73 @@
+$ buildtest inspect query -o -t hello_world_openmp_custom_compiler/ 
+───────────────────────────────────────────────────────────────────────────────────────────────── hello_world_openmp_custom_compiler/265d3928-c872-4ae0-8c21-4fd8268315f1 ─────────────────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Hello World OpenMP example with custom compiler settings
+State: PASS
+Returncode: 0
+Runtime: 0.200693 sec
+Starttime: 2024/02/28 21:07:52
+Endtime: 2024/02/28 21:07:52
+Command: bash hello_world_openmp_custom_compiler_build.sh
+Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/265d3928/hello_world_openmp_custom_compiler.sh
+Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/265d3928/hello_world_openmp_custom_compiler_build.sh
+Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/265d3928/hello_world_openmp_custom_compiler.out
+Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/265d3928/hello_world_openmp_custom_compiler.err
+Log File: /home/ubuntu/buildtest/var/logs/buildtest_h0h25cyv.log
+─────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/265d3928/hello_world_openmp_custom_compiler.out ────────────────────────────────────────────
+Hello World... from thread = 0                                                                                                                                                                                                                                             
+Hello World... from thread = 3                                                                                                                                                                                                                                             
+Hello World... from thread = 4                                                                                                                                                                                                                                             
+Hello World... from thread = 5                                                                                                                                                                                                                                             
+Hello World... from thread = 2                                                                                                                                                                                                                                             
+Hello World... from thread = 1                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                           
+───────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/265d3928/hello_world_openmp_custom_compiler.sh ─────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                                                                            
+set -eo pipefail                                                                                                                                                                                                                                                           
+BUILDTEST_CC="/usr/bin/gcc"                                                                                                                                                                                                                                                
+BUILDTEST_CXX="/usr/bin/g++"                                                                                                                                                                                                                                               
+BUILDTEST_FC="/usr/bin/gfortran"                                                                                                                                                                                                                                           
+BUILDTEST_CFLAGS="-O2 -fopenmp"                                                                                                                                                                                                                                            
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                                                        
+BUILDTEST_FFLAGS=                                                                                                                                                                                                                                                          
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                                                        
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                                                                         
+export OMP_NUM_THREADS="6"                                                                                                                                                                                                                                                 
+# Content of run section                                                                                                                                                                                                                                                   
+$BUILDTEST_CC $BUILDTEST_CFLAGS -o openmp_hello openmp_hello.c                                                                                                                                                                                                             
+./openmp_hello                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────── hello_world_openmp_custom_compiler/10a8dbc6-68e6-440e-9844-fa095136edf6 ─────────────────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Hello World OpenMP example with custom compiler settings
+State: PASS
+Returncode: 0
+Runtime: 0.133897 sec
+Starttime: 2024/02/28 21:07:52
+Endtime: 2024/02/28 21:07:52
+Command: bash hello_world_openmp_custom_compiler_build.sh
+Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/10a8dbc6/hello_world_openmp_custom_compiler.sh
+Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/10a8dbc6/hello_world_openmp_custom_compiler_build.sh
+Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/10a8dbc6/hello_world_openmp_custom_compiler.out
+Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/10a8dbc6/hello_world_openmp_custom_compiler.err
+Log File: /home/ubuntu/buildtest/var/logs/buildtest_h0h25cyv.log
+─────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/10a8dbc6/hello_world_openmp_custom_compiler.out ────────────────────────────────────────────
+Hello World... from thread = 0                                                                                                                                                                                                                                             
+Hello World... from thread = 1                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                           
+───────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/10a8dbc6/hello_world_openmp_custom_compiler.sh ─────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                                                                            
+set -eo pipefail                                                                                                                                                                                                                                                           
+BUILDTEST_CC="/usr/bin/gcc-9"                                                                                                                                                                                                                                              
+BUILDTEST_CXX="/usr/bin/g++-9"                                                                                                                                                                                                                                             
+BUILDTEST_FC="/usr/bin/gfortran-9"                                                                                                                                                                                                                                         
+BUILDTEST_CFLAGS="-O1 -fopenmp"                                                                                                                                                                                                                                            
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                                                        
+BUILDTEST_FFLAGS=                                                                                                                                                                                                                                                          
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                                                        
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                                                                         
+export OMP_NUM_THREADS="2"                                                                                                                                                                                                                                                 
+# Content of run section                                                                                                                                                                                                                                                   
+$BUILDTEST_CC $BUILDTEST_CFLAGS -o openmp_hello openmp_hello.c                                                                                                                                                                                                             
+./openmp_hello                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                           

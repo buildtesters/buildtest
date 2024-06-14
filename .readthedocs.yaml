@@ -5,15 +5,16 @@ version: 2
 sphinx:
     builder: html
     configuration: docs/conf.py
-    #fail_on_warning: true
+    fail_on_warning: true
 
 build:
   os: "ubuntu-20.04"
   tools:
-    python: "3.8"
+    python: "3.9"
   apt_packages:
     - iputils-ping
     - build-essential
+    - curl
     - gfortran
     - csh
     - zsh

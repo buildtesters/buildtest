@@ -18,10 +18,8 @@ system:
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
+    paths:
+      lsf: /usr/bin
     executors:
       defaults:
         pollinterval: 10
@@ -41,7 +39,6 @@ system:
             echo "commands run before job"
         test:
           description: "LSF Executor name 'test' that submits jobs to 'test' queue"
-          launcher: bsub
           queue: test
           account: qa
           options: ["-W 20"]

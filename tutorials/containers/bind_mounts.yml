@@ -1,0 +1,12 @@
+buildspecs:
+  bind_mount_in_container:
+    type: script
+    executor: generic.local.bash
+    description: run a python script in container
+    container:
+      platform: "docker"
+      image: ubuntu:latest
+      mounts: "/tmp:/tmp"
+      command: bash -c "echo 'hello world' > /tmp/hello.txt"
+    run: |
+      cat /tmp/hello.txt

@@ -1,32 +1,41 @@
-$ buildtest inspect query --testpath spack_env_deactivate_first 
-─────────────────────────────────────────────────── spack_env_deactivate_first/bb6f8295-ee09-4f6d-b164-5e6bf6bd4ae0 ───────────────────────────────────────────────────
+$ buildtest inspect query -t spack_env_deactivate_first 
+─────────────────────────────────────────────────────────────────────────────────── spack_env_deactivate_first/8be22b89-4db1-438d-aac2-7138796bdbb3 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: deactivate a spack environment first prior to activating it
 State: PASS
 Returncode: 0
-Runtime: 3.870062 sec
-Starttime: 2023/08/11 16:03:30
-Endtime: 2023/08/11 16:03:34
-Command: bash --norc --noprofile -eo pipefail spack_env_deactivate_first_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/bb6f8295/spack_env_deactivate_first.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/bb6f8295/spack_env_deactivate_first_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/bb6f8295/spack_env_deactivate_first.out
-Error File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/bb6f8295/spack_env_deactivate_first.err
-Log File: /home/spack/buildtest/var/logs/buildtest_s9w5kx1s.log
-──────────────── Test File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/bb6f8295/spack_env_deactivate_first.sh ────────────────
-#!/bin/bash                                                                                                                                                            
-source /home/spack/spack/share/spack/setup-env.sh                                                                                                                      
-spack env create  -d /home/spack/spack-envs/m4                                                                                                                         
-spack env deactivate                                                                                                                                                   
-spack env activate  -d /home/spack/spack-envs/m4                                                                                                                       
-spack add m4                                                                                                                                                           
-spack install                                                                                                                                                          
-                                                                                                                                                                       
-                                                                                                                                                                       
-######## START OF POST COMMANDS ########                                                                                                                               
-spack find                                                                                                                                                             
-rm -rf $HOME/spack-envs/m4                                                                                                                                             
-                                                                                                                                                                       
-######## END OF POST COMMANDS   ########                                                                                                                               
-                                                                                                                                                                       
-                                                                                                                                                                       
+Runtime: 16.525284 sec
+Starttime: 2024/02/08 19:01:41
+Endtime: 2024/02/08 19:01:58
+Command: bash spack_env_deactivate_first_build.sh
+Test Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.out
+Error File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.err
+Log File: /home/spack/buildtest/var/logs/buildtest_sjwfw_5j.log
+──────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.sh ─────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                             
+set -eo pipefail                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF PRE COMMANDS ########                                                                                                                                                                                                 
+rm -rf $HOME/spack-envs/m4                                                                                                                                                                                                              
+                                                                                                                                                                                                                                        
+######## END OF PRE COMMANDS   ########                                                                                                                                                                                                 
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
+spack env create  -d /home/spack/spack-envs/m4                                                                                                                                                                                          
+spack env deactivate || true                                                                                                                                                                                                            
+spack env activate  -d /home/spack/spack-envs/m4                                                                                                                                                                                        
+spack add m4                                                                                                                                                                                                                            
+spack install                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF POST COMMANDS ########                                                                                                                                                                                                
+spack find                                                                                                                                                                                                                              
+rm -rf $HOME/spack-envs/m4                                                                                                                                                                                                              
+                                                                                                                                                                                                                                        
+######## END OF POST COMMANDS   ########                                                                                                                                                                                                
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        

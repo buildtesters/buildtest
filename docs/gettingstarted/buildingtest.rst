@@ -23,8 +23,8 @@ Build Usage
     .. command-output:: buildtest build --help
        :shell:
 
-Building a Test
-----------------
+Building a Test (``buildtest build --buildspec``)
+---------------------------------------------------
 
 To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
 path to buildspec file. Let's see some examples, first we specify a full path to buildspec file.
@@ -66,8 +66,8 @@ a buildspec file and all buildspecs in a directory path.
 
 .. _exclude_buildspecs:
 
-Excluding Buildspecs
----------------------
+Excluding Buildspecs (``buildtest build --exclude``)
+------------------------------------------------------
 
 So far we learned how to build buildspecs by file and directory path using the ``-b``
 option. Next, we will discuss how one may exclude buildspecs which behaves similar to
@@ -103,8 +103,8 @@ The ``-x`` can be a file or a directory and behaves similar to ``-b`` option.
 
 .. _build_by_tags:
 
-Building By Tags
------------------
+Building By Tags (``buildtest build --tags``)
+-----------------------------------------------
 
 buildtest can perform builds by tags by using ``--tags`` or short option (``-t``).
 In order to use this feature, buildtest must load buildspecs in :ref:`cache <find_buildspecs>` which can be run
@@ -157,8 +157,8 @@ As you may see, there are several ways to build buildspecs with buildtest. Tags 
 great way to build a whole collection of tests if you don't know path to all the files. You can
 specify multiple tags per buildspecs to classify how test can be run.
 
-Exclude by tags
-----------------
+Exclude by tags (``buildtest build --exclude-tags``)
+------------------------------------------------------
 
 You can exclude tests by tagname using ``--exclude-tags`` option or
 short option (``-xt``). Any tests that contains the ``tags`` field
@@ -192,8 +192,8 @@ where no test are eligible to run after exclusion has been applied.
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass,fail
         :returncode: 1
 
-Building by Test Names
------------------------
+Building by Test Names (``buildtest build --name``)
+-----------------------------------------------------
 
 You can discover buildspecs by test names using the ``--name`` option or short option ``-n``. This feature can be used if
 you want to run a particular test and not worrying about the buildspec file that is belongs to. Note we have tab
@@ -236,8 +236,8 @@ A buildspec file may include several tests and by default all of them are run. T
 
 .. _build_by_executor:
 
-Building by Executors
----------------------
+Building by Executors (``buildtest build --executor``)
+-------------------------------------------------------
 
 Every buildspec is associated to an executor which is responsible for running the test.
 You can instruct buildtest to run all tests by given executor via ``--executor`` option or short option ``-e``.
@@ -263,8 +263,8 @@ In this example we run all tests that are associated to ``generic.local.csh`` ex
 
 .. _filter_buildspecs_with_buildtest_build:
 
-Filtering Buildspecs
----------------------
+Filtering Buildspecs (``buildtest build --filter``)
+-----------------------------------------------------
 
 buildtest has support for filtering buildspecs based on certain attributes defined in buildspec file. Upon :ref:`discover_buildspecs`, buildtest
 will filter out tests or entire buildspec files. The ``buildtest build --filter`` option can be used to filter tests where the format is ``key1=val1;key2=val2,val3``.
@@ -296,11 +296,11 @@ the buildspec will be filtered out if ``--filter maintainers`` is specified. In 
 Please see :ref:`buildspec_maintainers` on list of maintainers and breakdown of buildspecs by maintainers.
 
 We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by script schema type by
-passing option ``--filter type=script``. We inform buildtest to stop after build stage (``--stage=build``) for more details see :ref:`build_stage`.
+passing option ``--filter type=script``.
 
-.. dropdown:: ``buildtest build -b tutorials --filter type=script --stage=build``
+.. dropdown:: ``buildtest build -b tutorials --filter type=script --dry-run``
 
-    .. command-output:: buildtest build -b tutorials --filter type=script --stage=build
+    .. command-output:: buildtest build -b tutorials --filter type=script --dry-run
 
 Filter By Executor Type
 -------------------------
@@ -337,26 +337,16 @@ Configure Build Stages
 -----------------------
 
 We can control behavior of ``buildtest build`` command to stop at certain phase
-using ``--stage`` option. The **--stage** option accepts ``parse`` or ``build``, which
-will instruct buildtest to stop at parse or build phase of the pipeline.
+using ``--validate`` and ``--dry-run`` options.
 
 Buildtest will validate all the buildspecs in the parse stage, so you can
-instruct buildtest to stop at parse stage via ``--stage=parse``. This can be useful
+instruct buildtest to stop at parse stage via ``--validate``. This can be useful
 when debugging buildspecs that are invalid. In this example below, we instruct
 buildtest to stop after parse stage.
 
-.. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=parse``
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --validate``
 
-    .. command-output:: buildtest build -b tutorials/vars.yml --stage=parse
-
-Likewise, if you want to troubleshoot your test script without running them you can
-use ``--stage=build`` which will stop after build phase. This can
-be used when you are writing buildspec to troubleshoot how test is generated.
-In this next example, we inform buildtest to stop after build stage.
-
-.. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=build``
-
-    .. command-output:: buildtest build -b tutorials/vars.yml --stage=build
+    .. command-output:: buildtest build -b tutorials/vars.yml --validate
 
 .. _invalid_buildspecs:
 
@@ -384,8 +374,36 @@ where test failed to run since we provided invalid executor.
     .. command-output:: buildtest build -b tutorials/invalid_executor.yml
         :returncode: 1
 
-Rebuild Tests
---------------
+Validate Tests (``buildtest build --validate``)
+------------------------------------------------
+
+When you use the **buildtest build** command, you have the option to enter a validate mode by
+adding the ``--validate`` option. In this mode, the command will validate given buildspecs 
+and stop after the parse stage. It's particularly useful when you're creating or editing a
+buildspec file and want to check its validity before entering the build stage.
+For instance, in the following example, we demonstrate how to instruct buildtest to halt after
+the parse stage.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --validate``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --validate
+
+Dry Run (``buildtest build --dry-run``)
+----------------------------------------
+
+When you use the **buildtest build** command, you have the option to enter a dry run mode by
+adding the ``--dry-run`` option. In this mode, the command will simulate the build process
+but won't execute the tests. It's particularly useful when you're creating or editing a
+buildspec file and want to see how the test script is generated without actually running the tests.
+For instance, in the following example, we demonstrate how to instruct buildtest to halt after
+the build stage.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --dry-run``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --dry-run
+
+Rebuild Tests (``buildtest build --rebuild``)
+----------------------------------------------
 
 buildtest can rebuild tests using the ``--rebuild`` option which can be useful if
 you want to test a particular test multiple times. The rebuild option works across
@@ -417,8 +435,8 @@ If you try to exceed this bound you will get an error such as
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51
         :returncode: 1
 
-Limit Number of Tests
-----------------------
+Limit Number of Tests (``buildtest build --limit``)
+-----------------------------------------------------
 
 The `buildtest build` command can limit the number of tests that can run via ``--limit`` option. This
 can be useful when running large number of tests and you have no idea
@@ -449,8 +467,8 @@ If you specify 0 or negative number you will get an error as follows
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --limit=0
         :returncode: 2
 
-Rerun Last command
--------------------
+Rerun Last Command (``buildtest build --rerun``)
+-------------------------------------------------
 
 The ``buildtest build --rerun`` command can be used to rerun **last successful** ``buildtest build`` command, this can be useful if you want to repeat a certain
 build without having to remember the command or going through your command history to find the command you ran. When using this option all other options passed
@@ -469,12 +487,12 @@ Next let's rerun the same command via ``buildtest build --rerun`` and take note 
 
     .. command-output:: buildtest build --rerun
 
-If you pass additional options with ``--rerun`` it will simply be ignored. In this case ``-t python --stage=build`` will not be read by buildtest instead we will
+If you pass additional options with ``--rerun`` it will simply be ignored. In this case ``-t python --dry-run`` will not be read by buildtest instead we will
 rerun same command.
 
-.. dropdown:: ``buildtest build --rerun -t python --stage=build``
+.. dropdown:: ``buildtest build --rerun -t python --dry-run``
 
-    .. command-output:: buildtest build --rerun -t python --stage=build
+    .. command-output:: buildtest build --rerun -t python --dry-run
 
 .. Note::
     The ``buildtest clean`` will erase all history of builds and if you run ``buildtest build --rerun`` will raise an exception
@@ -509,8 +527,8 @@ Removing Stage Directory
 buildtest will write the tests in `stage` directory where test will be executed, typically buildtest will keep the
 stage directory but if you want to remove the directory you can use ``buildtest build --remove-stagedir``.
 
-Specify Project Account for batch jobs
-----------------------------------------
+Specify Project Account for batch jobs (``buildtest build --account``)
+------------------------------------------------------------------------
 
 For batch jobs you typically require one to specify a project account in order to charge jobs depending on your
 scheduler you can use ``buildtest build --account`` option and specify an account name. The command line
@@ -518,8 +536,8 @@ argument ``--account`` will override configuration setting. For more details see
 
 .. _test_timeout:
 
-Test Timeout
---------------
+Test Timeout (``buildtest build --timeout``)
+--------------------------------------------
 
 Buildtest can terminate test based on timeout value specified via ``--timeout`` option which can be used to terminate
 long running test. The timeout is in seconds and value must be a positive integer which is applied to all
@@ -541,8 +559,8 @@ run until completion.
 
 .. _using_profiles:
 
-Using Profiles
----------------
+Using Profiles (``buildtest build --profile``)
+-----------------------------------------------
 
 Buildtest has a concept of profiles, which allows one to run a set of ``buildtest build`` options without having to remember
 all the options. This can be useful if you are running a set of tests repeatedly. In-order to use profiles you must first,
@@ -568,10 +586,26 @@ Next, let's build the tests via newly created profile and take note that it will
 
     .. command-output:: buildtest build --profile=python-tests
 
+
+You can also specify an alternate location to write configuration file via ``--write-config-file`` when saving profile configuration.
+This can be useful if one wants to use a new configuration file without overwriting the current file for testing purposes.
+To demonstrate this, we will save the profile to configuration file ``/tmp/my_config.yml``
+
+.. dropdown:: ``buildtest build -t python --save-profile=python --write-config-file=/tmp/my_config.yml``
+
+    .. command-output:: buildtest build -t python --save-profile=python --write-config-file=/tmp/my_config.yml
+
+    We can view the profile configuration file by specifying the path to the configuration file.
+
+    .. command-output:: buildtest --config /tmp/my_config.yml config view
+
+Please note that when using ``-write-config-file``, the path must be a file path and file must not exist. If you specify
+a directory path or file already exists you will get an error message.
+
 .. _limit_max_jobs:
 
-Limit Maximum Jobs that can run concurrently
----------------------------------------------
+Limit Maximum Jobs that can run concurrently (``buildtest build --max-jobs``)
+-----------------------------------------------------------------------------
 
 Buildtest can cap a limit on number of tests that can run concurrently. This can be set in configuration file via :ref:`max_jobs <configuring_max_jobs>`
 field or overridden on command line option via ``--max-jobs``. By default, buildtest will run all jobs concurrently, however with
@@ -583,3 +617,47 @@ then proceed to next test.
 .. dropdown:: ``buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2``
 
     .. command-output:: buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2
+
+Strict Mode (``buildtest build --strict``)
+-------------------------------------------
+
+Buildtest has an option to enable strict mode for test execution which can be enabled via ``--strict`` option. If this
+is set, buildtest will instead ``set -eo pipefail`` in the generated test which will cause test to exit immediately if any
+commands fail. To demonstrate this we have the following buildspec, which runs an **ls** command for an invalid path followed by
+an **echo** command.
+
+.. literalinclude:: ../tutorials/strict_example.yml
+    :language: yaml
+    :emphasize-lines: 8
+
+If we were to run this test without strict mode, we see the test will pass.
+
+.. dropdown:: ``buildtest build -b tutorials/strict_example.yml``
+
+    .. command-output:: buildtest build -b tutorials/strict_example.yml
+
+Now let's run the same test with strict mode enabled, we will see the test will fail with a different return code.
+
+.. dropdown:: ``buildtest build -b tutorials/strict_example.yml --strict``
+
+    .. command-output:: buildtest build -b tutorials/strict_example.yml --strict
+
+    We can see the generated test using **buildtest inspect query -t** and we will see the test script has **set -eo pipefail** in
+    the generated test.
+
+    .. command-output:: buildtest inspect query -t linux_strict_test
+
+Display Mode (``buildtest build --display``)
+---------------------------------------------
+
+Buildtest can display output of test content and stream outout and error file to console. This can be useful
+if you want to see how the test is generated for debugging purposes.
+
+In order to use this functionality, you can specify the ``--display`` option which takes either ``output`` or ``test``.
+When ``output`` is specified, buildtest will display output and error files to console. When ``test``
+is specified, buildtest will display the content of the test and build script. You can append the ``--display`` option
+if you want to specify both options. Shown below we run a test and display both output and test.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --display output --display test``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --display output --display test

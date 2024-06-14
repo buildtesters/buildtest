@@ -2,6 +2,7 @@
 buildtest cli: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
+
 import argparse
 import datetime
 import sys
@@ -204,7 +205,6 @@ class BuildTestParser:
 
     _github = "https://github.com/buildtesters/buildtest"
     _docs = "https://buildtest.readthedocs.io/en/latest/index.html"
-    _schemadocs = "https://buildtesters.github.io/buildtest/"
     _slack = "http://hpcbuildtest.slack.com/"
     _issues = "https://github.com/buildtesters/buildtest/issues"
     _progname = "buildtest"
@@ -216,7 +216,6 @@ class BuildTestParser:
 
     GitHub:                  {_github}
     Documentation:           {_docs}
-    Schema Documentation:    {_schemadocs}
     Slack:                   {_slack}
 
     Please report issues at {_issues}
@@ -283,18 +282,6 @@ class BuildTestParser:
             "commands": {"help": "List all buildtest commands", "aliases": ["cmds"]},
         }
 
-        self.hidden_subcommands = {
-            "docs": {},
-            "tutorial-examples": {},
-            "schemadocs": {},
-            "unittests": {"aliases": ["test"]},
-            "stylecheck": {"aliases": ["style"]},
-        }
-
-        self.buildtest_subcommands = list(self.subcommands.keys()) + list(
-            self.hidden_subcommands.keys()
-        )
-
         self.parser = argparse.ArgumentParser(
             prog=self._progname,
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -308,15 +295,34 @@ class BuildTestParser:
         )
 
         self._build_options()
-        self._build_subparsers()
 
-        # list used to store all main options for buildtest
-        self.main_options = self.get_buildtest_options()
+        self.hidden_subcommands = {
+            "docs": {},
+            "tutorial-examples": {},
+            "unittests": {"aliases": ["test"]},
+            "stylecheck": {"aliases": ["style"]},
+        }
 
         # Variables needed to show all sub commands and their help message
         show_all_help = any(arg in ["-H", "--help-all"] for arg in sys.argv)
         if show_all_help:
-            self.help_all()
+            self.hidden_subcommands = {
+                "tutorial-examples": {
+                    "help": "Generate documentation examples for Buildtest Tutorial"
+                },
+                "docs": {"help": "Open buildtest docs in browser"},
+                "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+                "stylecheck": {
+                    "help": "Run buildtest style checks",
+                    "aliases": ["style"],
+                },
+            }
+
+        self.buildtest_subcommands = list(self.subcommands.keys()) + list(
+            self.hidden_subcommands.keys()
+        )
+
+        self._build_subparsers()
 
         self.build_menu()
         self.buildspec_menu()
@@ -329,6 +335,7 @@ class BuildTestParser:
         self.cdash_menu()
         self.unittest_menu()
         self.stylecheck_menu()
+        self.tutorial_menu()
         self.misc_menu()
 
     def parse(self):
@@ -337,6 +344,18 @@ class BuildTestParser:
 
     def get_subparsers(self):
         return self.subparsers
+
+    def retrieve_main_options(self):
+        """This method retrieves all options for buildtest command line interface. This is invoked by ``buildtest --listopts`` command and useful when user
+        wants to see all options."""
+        options_list = []
+
+        # Iterate over the actions of the parser to extract short and long options
+        for action in self.parser._actions:
+            option_strings = action.option_strings
+            options_list.extend(option_strings)
+
+        return sorted(options_list)
 
     def _build_subparsers(self):
         """This method builds subparsers for buildtest command line interface."""
@@ -417,42 +436,19 @@ class BuildTestParser:
                 ["-H", "--help-all"],
                 {"help": "List all commands and options", "action": "help"},
             ),
+            (
+                ["--listopts"],
+                {"action": "store_true", "help": "List all options for buildtest"},
+            ),
+            (["--verbose"], {"action": "store_true", "help": "Enable verbose output"}),
         ]
 
         for args, kwargs in self.buildtest_options:
             self.parser.add_argument(*args, **kwargs)
 
-    def get_buildtest_options(self):
-        """This method is used to return all main options for buildtest command line interface. This is useful for bash completion script
-        where we need to return all options for buildtest command line interface for tab completion.
-        """
-        main_options = set()
-        for args, kwargs in self.buildtest_options:
-            for name in args:
-                main_options.add(name)
-
-        # adding -h and --help options
-        main_options.add("-h")
-        main_options.add("--help")
-        return list(sorted(main_options))
-
-    def help_all(self):
-        """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
-
-        hidden_parser = {
-            "tutorial-examples": {
-                "help": "Generate documentation examples for Buildtest Tutorial"
-            },
-            "docs": {"help": "Open buildtest docs in browser"},
-            "schemadocs": {"help": "Open buildtest schema docs in browser"},
-            "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
-            "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
-        }
-
-        for name, subcommand in hidden_parser.items():
-            self.subparsers.add_parser(
-                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
-            )
+    def get_subcommands(self):
+        """Return a list of buildtest commands. This is useful for ``buildtest commands`` command to show a list of buildtest commands"""
+        return list(self.subcommands.keys()) + list(self.hidden_subcommands.keys())
 
     def get_parent_parser(self):
         parent_parser = {}
@@ -594,6 +590,37 @@ class BuildTestParser:
         ]
 
         for args, kwargs in stylecheck_args:
+            parser.add_argument(*args, **kwargs)
+
+    def tutorial_menu(self):
+        parser = self.subparsers.choices["tutorial-examples"]
+
+        tutorial = [
+            (
+                ["examples"],
+                {
+                    "help": "Select which tutorial examples to build",
+                    "choices": ["aws", "spack"],
+                },
+            ),
+            (
+                ["-d", "--dryrun"],
+                {
+                    "action": "store_true",
+                    "help": "Just print commands that will be generated without running them",
+                },
+            ),
+            (
+                ["-w", "--write"],
+                {
+                    "action": "store_true",
+                    "help": "Write the content of each command to file",
+                },
+            ),
+            (["--failfast"], {"action": "store_true", "help": "Stop on first failure"}),
+        ]
+
+        for args, kwargs in tutorial:
             parser.add_argument(*args, **kwargs)
 
     def unittest_menu(self):
@@ -873,6 +900,22 @@ class BuildTestParser:
             ],
             "extra": [
                 (
+                    ["--display"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Display content of output/error or test",
+                        "choices": ["output", "test"],
+                    },
+                ),
+                (
+                    ["--dry-run"],
+                    {
+                        "action": "store_true",
+                        "help": "Show a list of tests that will potentially be run without actually running them.",
+                    },
+                ),
+                (
                     ["--limit"],
                     {
                         "type": positive_number,
@@ -885,6 +928,10 @@ class BuildTestParser:
                         "type": positive_number,
                         "help": "Maximum number of jobs that can be run concurrently.",
                     },
+                ),
+                (
+                    ["--profile"],
+                    {"help": "Specify a profile to load from configuration file"},
                 ),
                 (
                     ["--remove-stagedir"],
@@ -909,10 +956,16 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["-s", "--stage"],
+                    ["--save-profile"],
                     {
-                        "choices": ["parse", "build"],
-                        "help": "Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
+                        "help": "Save buildtest command options into a profile and update configuration file"
+                    },
+                ),
+                (
+                    ["--strict"],
+                    {
+                        "action": "store_true",
+                        "help": "Enable strict mode for test by setting 'set -eo pipefail' in test script",
                     },
                 ),
                 (
@@ -929,14 +982,18 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--save-profile"],
+                    ["--validate"],
                     {
-                        "help": "Save buildtest command options into a profile and update configuration file"
+                        "action": "store_true",
+                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
                     },
                 ),
                 (
-                    ["--profile"],
-                    {"help": "Specify a profile to load from configuration file"},
+                    ["--write-config-file"],
+                    {
+                        "type": str,
+                        "help": "Specify path to configuration file to write changes when saving profile",
+                    },
                 ),
             ],
         }
@@ -966,7 +1023,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on filename",
                 "parents": [],
                 "aliases": ["ef"],
-                "args": [
+                "arguments": [
                     (["file"], {"help": "Edit buildspec file in editor", "nargs": "*"})
                 ],
             },
@@ -975,7 +1032,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on test name",
                 "parents": [],
                 "aliases": ["et"],
-                "args": [
+                "arguments": [
                     (
                         ["name"],
                         {
@@ -990,11 +1047,11 @@ class BuildTestParser:
                 "help": "Query information from buildspecs cache",
                 "aliases": ["f"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
                     self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
-                    self.parent_parser["count"],
                 ],
                 " args": [],
             },
@@ -1003,9 +1060,11 @@ class BuildTestParser:
                 "help": "Query maintainers from buildspecs cache",
                 "aliases": ["m"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
                 ],
                 "arguments": [
                     (
@@ -1050,7 +1109,7 @@ class BuildTestParser:
             {
                 "name": "summary",
                 "help": "Print summary of buildspec cache",
-                "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
+                "parents": [self.parent_parser["pager"]],
                 "arguments": [],
                 "aliases": ["sm"],
             },
@@ -1090,6 +1149,14 @@ class BuildTestParser:
                             "type": str,
                             "action": "append",
                             "help": "Specify buildspecs by tag name to validate",
+                        },
+                    ),
+                    (
+                        ["-n", "--name"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by name to validate",
                         },
                     ),
                 ],
@@ -1176,35 +1243,42 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--helpfilter"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
-                    },
-                ),
-                (
-                    ["--helpformat"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Format fields for --format option for formatting buildspec cache output",
-                    },
-                ),
-                (
                     ["--filterfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Filter fields for --filter option for filtering buildspec cache output",
+                        "help": "Print raw filter fields for --filter option for filtering buildspec cache output",
                     },
                 ),
                 (
                     ["--formatfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Format fields for --format option for formatting buildspec cache output",
+                        "help": "Print raw format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpformat"],
+                    {
+                        "action": "store_true",
+                        "help": "Show format fields for --format option for formatting buildspec cache output",
                     },
                 ),
             ],
             "extra": [
+                (
+                    ["-q", "--quiet"],
+                    {
+                        "action": "store_true",
+                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                    },
+                ),
                 (
                     ["-r", "--rebuild"],
                     {
@@ -1218,13 +1292,6 @@ class BuildTestParser:
                         "type": str,
                         "action": "append",
                         "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
-                    },
-                ),
-                (
-                    ["-q", "--quiet"],
-                    {
-                        "action": "store_true",
-                        "help": "Don't print output of buildspec cache when rebuilding cache",
                     },
                 ),
             ],
@@ -1242,7 +1309,11 @@ class BuildTestParser:
             {
                 "name": "invalid",
                 "help": "Show invalid buildspecs",
-                "parents": [self.parent_parser["row-count"]],
+                "parents": [
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["pager"],
+                ],
                 "arguments": [
                     (
                         ["-e", "--error"],
@@ -1303,10 +1374,12 @@ class BuildTestParser:
             },
             {
                 "name": "profiles",
+                "aliases": ["prof"],
                 "help": "Query profile from buildtest configuration",
                 "subcommands": [
                     {
                         "name": "list",
+                        "aliases": ["ls"],
                         "help": "List all profiles",
                         "parents": [self.parent_parser["theme"]],
                         "arguments": [
@@ -1342,6 +1415,7 @@ class BuildTestParser:
                 "subcommands": [
                     {
                         "name": "list",
+                        "aliases": ["ls"],
                         "help": "List all executors",
                         "mutually_exclusive_group": True,
                         "arguments": [
@@ -1373,8 +1447,26 @@ class BuildTestParser:
                                     "help": "Show invalid executors",
                                 },
                             ),
+                            (
+                                ("-a", "--all"),
+                                {"action": "store_true", "help": "Show all executors"},
+                            ),
                         ],
-                    }
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove executor from configuration",
+                        "arguments": [
+                            (
+                                ("executor_names",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify an executor name to remove",
+                                },
+                            )
+                        ],
+                    },
                 ],
             },
             {
@@ -1587,7 +1679,7 @@ class BuildTestParser:
 
         subcommands = [
             ("clear", ["c"], "Remove all report files"),
-            ("list", ["l"], "List all report files"),
+            ("list", ["ls"], "List all report files"),
             ("path", ["p"], "Print full path to the report file being used"),
             ("summary", ["sm"], "Summarize test report"),
         ]
@@ -1717,7 +1809,7 @@ class BuildTestParser:
                 ],
             },
             "list": {
-                "aliases": ["l"],
+                "aliases": ["ls"],
                 "help": "List all test names, ids, and corresponding buildspecs",
                 "parents": [
                     self.parent_parser["pager"],

@@ -7,6 +7,7 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.config import (
     list_profiles,
+    remove_executors,
     remove_profiles,
     validate_config,
     view_configuration,
@@ -26,7 +27,7 @@ pytest_root = os.path.dirname(os.path.dirname(__file__))
 
 system = BuildTestSystem()
 
-configuration = SiteConfiguration()
+configuration = SiteConfiguration(verbose=True)
 configuration.detect_system()
 configuration.validate(moduletool=system.system["moduletool"])
 
@@ -41,6 +42,33 @@ def test_config_systems():
         fname = os.path.join(schema_files, config_examples)
         configuration = SiteConfiguration(fname)
         view_system(configuration)
+
+
+def test_container_executor():
+    settings_file = os.path.join(
+        pytest_root, "configuration", "container_executors.yml"
+    )
+    config = SiteConfiguration(settings_file=settings_file)
+    config.detect_system()
+    config.validate(moduletool=system.system["moduletool"])
+
+
+def test_remove_executors():
+    temp_config_file = tempfile.NamedTemporaryFile(suffix=".yml")
+    shutil.copy(configuration.file, temp_config_file.name)
+
+    print(temp_config_file.name)
+    config = SiteConfiguration(settings_file=temp_config_file.name)
+    config.detect_system()
+    configuration.validate(moduletool=system.system["moduletool"])
+
+    remove_executors(config, executor_names=["generic.local.bash", "generic.local.sh"])
+
+    # remove an invalid executor type
+    remove_executors(config, executor_names=["generic.XYZ.bash"])
+
+    # remove an invalid executor name
+    remove_executors(config, executor_names=["generic.local.bash1234"])
 
 
 @pytest.mark.cli
@@ -81,10 +109,7 @@ class TestProfiles:
     buildtest_config.validate(moduletool=system.system["moduletool"])
 
     cmd = BuildTest(
-        configuration=buildtest_config,
-        buildtest_system=system,
-        tags=["python"],
-        save_profile="python",
+        configuration=buildtest_config, tags=["python"], save_profile="python"
     )
     cmd.build()
 
@@ -118,51 +143,33 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=True,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
+        display_in_json_format=True,
     )
 
     # buildtest config executors list --yaml
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=True,
-        disabled=False,
-        invalid=False,
+        display_in_yaml_format=True,
+    )
+
+    # buildtest config executors list --all
+    view_executors(
+        configuration=configuration, buildexecutor=buildexecutor, display_all=True
     )
 
     # buildtest config executors list --disabled
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=True,
-        invalid=False,
+        configuration=configuration, buildexecutor=buildexecutor, display_disabled=True
     )
 
     # buildtest config executors list --invalid
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=True,
+        configuration=configuration, buildexecutor=buildexecutor, display_invalid=True
     )
 
     # buildtest config executors list
-    view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-    )
+    view_executors(configuration=configuration, buildexecutor=buildexecutor)
 
 
 def test_disabled_invalid_executors():
@@ -176,21 +183,7 @@ def test_disabled_invalid_executors():
     print("reading config file:", configfile)
     be = BuildExecutor(configuration)
     # buildtest config executors list --disabled
-    view_executors(
-        configuration=configuration,
-        buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
-        disabled=True,
-        invalid=False,
-    )
+    view_executors(configuration=configuration, buildexecutor=be, display_disabled=True)
 
     # buildtest config executors list --invalid
-    view_executors(
-        configuration=configuration,
-        buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=True,
-    )
+    view_executors(configuration=configuration, buildexecutor=be, display_invalid=True)

@@ -1,0 +1,9 @@
+buildspecs:
+  hello_world_docker:
+    type: script
+    executor: generic.local.bash
+    description: run hello-world container with docker
+    container:
+      platform: "docker"
+      image: hello-world
+    run: echo 'Test Complete!'

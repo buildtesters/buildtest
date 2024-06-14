@@ -7,12 +7,11 @@ from buildtest.schemas.utils import load_schema
 here = os.path.dirname(os.path.abspath(__file__))
 
 schema_table = {}
-schema_table["types"] = ["script", "compiler", "spack"]
+schema_table["types"] = ["script", "spack"]
 schema_table["names"] = [
     "global.schema.json",
     "definitions.schema.json",
     "settings.schema.json",
-    "compiler.schema.json",
     "spack.schema.json",
     "script.schema.json",
 ]
@@ -26,13 +25,6 @@ schema_table["script.schema.json"] = {}
 schema_table["script.schema.json"]["path"] = os.path.join(here, "script.schema.json")
 schema_table["script.schema.json"]["recipe"] = load_schema(
     schema_table["script.schema.json"]["path"]
-)
-schema_table["compiler.schema.json"] = {}
-schema_table["compiler.schema.json"]["path"] = os.path.join(
-    here, "compiler.schema.json"
-)
-schema_table["compiler.schema.json"]["recipe"] = load_schema(
-    schema_table["compiler.schema.json"]["path"]
 )
 
 
@@ -64,9 +56,6 @@ schema_table["settings.schema.json"]["recipe"] = load_schema(
 schema_store = {
     schema_table["global.schema.json"]["recipe"]["$id"]: schema_table[
         "global.schema.json"
-    ]["recipe"],
-    schema_table["compiler.schema.json"]["recipe"]["$id"]: schema_table[
-        "compiler.schema.json"
     ]["recipe"],
     schema_table["script.schema.json"]["recipe"]["$id"]: schema_table[
         "script.schema.json"
