@@ -1,20 +1,20 @@
-$ buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml 
-╭──────────────────────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────────────────────╮                                                     
-│                                                                                                                                                                    │                                                     
-│ User:               lbladmin                                                                                                                                       │                                                     
-│ Hostname:           e4spro-cluster                                                                                                                                 │                                                     
-│ Platform:           Linux                                                                                                                                          │                                                     
-│ Current Time:       2024/06/14 20:17:57                                                                                                                            │                                                     
-│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                               │                                                     
-│ buildtest version:  2.0                                                                                                                                            │                                                     
-│ python path:        /usr/bin/python3                                                                                                                               │                                                     
-│ python version:     3.10.12                                                                                                                                        │                                                     
-│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                  │                                                     
-│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                   │                                                     
-│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                             │                                                     
-│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml │                                                     
-│                                                                                                                                                                    │                                                     
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                     
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml 
+╭─────────────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                                                         │
+│ User:               lbladmin                                                                                                                                                                                            │
+│ Hostname:           e4spro-cluster                                                                                                                                                                                      │
+│ Platform:           Linux                                                                                                                                                                                               │
+│ Current Time:       2024/06/17 18:50:22                                                                                                                                                                                 │
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                                                                                    │
+│ buildtest version:  2.0                                                                                                                                                                                                 │
+│ python path:        /usr/bin/python3                                                                                                                                                                                    │
+│ python version:     3.10.12                                                                                                                                                                                             │
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                                                                       │
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                                                                        │
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                                                                                  │
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/multi_compil │
+│                                                                                                                                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
                                  Discovered buildspecs                                  
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
@@ -38,44 +38,44 @@ Total builder objects created: 2
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder                             ┃ type   ┃ executor           ┃ compiler   ┃ nodes ┃ procs ┃ description                                               ┃ buildspecs                                                 ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_multi_compiler/8009312c │ script │ generic.local.bash │ gcc_11.4.0 │ None  │ None  │ Hello world compilation in C, C++ and Fortran with        │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_worl │
+│ hello_world_multi_compiler/9b1c9f5b │ script │ generic.local.bash │ gcc_11.4.0 │ None  │ None  │ Hello world compilation in C, C++ and Fortran with        │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_worl │
 │                                     │        │                    │            │       │       │ multiple compilers                                        │ d/multi_compiler_hello.yml                                 │
 ├─────────────────────────────────────┼────────┼────────────────────┼────────────┼───────┼───────┼───────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────┤
-│ hello_world_multi_compiler/74b67768 │ script │ generic.local.bash │ gcc_12.3.0 │ None  │ None  │ Hello world compilation in C, C++ and Fortran with        │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_worl │
+│ hello_world_multi_compiler/b43967d7 │ script │ generic.local.bash │ gcc_12.3.0 │ None  │ None  │ Hello world compilation in C, C++ and Fortran with        │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_worl │
 │                                     │        │                    │            │       │       │ multiple compilers                                        │ d/multi_compiler_hello.yml                                 │
 └─────────────────────────────────────┴────────┴────────────────────┴────────────┴───────┴───────┴───────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┘
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_multi_compiler/8009312c: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/8009312c
-hello_world_multi_compiler/74b67768: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/74b67768
+hello_world_multi_compiler/9b1c9f5b: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b
+hello_world_multi_compiler/b43967d7: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
 ─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_multi_compiler/74b67768 does not have any dependencies adding test to queue
-hello_world_multi_compiler/8009312c does not have any dependencies adding test to queue
+hello_world_multi_compiler/b43967d7 does not have any dependencies adding test to queue
+hello_world_multi_compiler/9b1c9f5b does not have any dependencies adding test to queue
        Builders Eligible to Run        
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                             ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_multi_compiler/8009312c │
-│ hello_world_multi_compiler/74b67768 │
+│ hello_world_multi_compiler/b43967d7 │
+│ hello_world_multi_compiler/9b1c9f5b │
 └─────────────────────────────────────┘
-hello_world_multi_compiler/8009312c: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/8009312c/stage
-hello_world_multi_compiler/74b67768: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/74b67768/stage
-hello_world_multi_compiler/74b67768: Running Test via command: bash hello_world_multi_compiler_build.sh
-hello_world_multi_compiler/8009312c: Running Test via command: bash hello_world_multi_compiler_build.sh
-hello_world_multi_compiler/8009312c: Test completed in 0.51444 seconds with returncode: 0
-hello_world_multi_compiler/8009312c: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/8009312c/hello_world_multi_compiler.out
-hello_world_multi_compiler/8009312c: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/8009312c/hello_world_multi_compiler.err
-hello_world_multi_compiler/74b67768: Test completed in 0.604557 seconds with returncode: 0
-hello_world_multi_compiler/74b67768: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/74b67768/hello_world_multi_compiler.out
-hello_world_multi_compiler/74b67768: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/74b67768/hello_world_multi_compiler.err
+hello_world_multi_compiler/b43967d7: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/stage
+hello_world_multi_compiler/9b1c9f5b: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/stage
+hello_world_multi_compiler/b43967d7: Running Test via command: bash hello_world_multi_compiler_build.sh
+hello_world_multi_compiler/9b1c9f5b: Running Test via command: bash hello_world_multi_compiler_build.sh
+hello_world_multi_compiler/9b1c9f5b: Test completed in 0.494109 seconds with returncode: 0
+hello_world_multi_compiler/9b1c9f5b: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/hello_world_multi_compiler.out
+hello_world_multi_compiler/9b1c9f5b: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/hello_world_multi_compiler.err
+hello_world_multi_compiler/b43967d7: Test completed in 0.574126 seconds with returncode: 0
+hello_world_multi_compiler/b43967d7: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/hello_world_multi_compiler.out
+hello_world_multi_compiler/b43967d7: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/hello_world_multi_compiler.err
                                         Test Summary                                        
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                             ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ hello_world_multi_compiler/74b67768 │ generic.local.bash │ PASS   │ 0          │ 0.605   │
+│ hello_world_multi_compiler/b43967d7 │ generic.local.bash │ PASS   │ 0          │ 0.574   │
 ├─────────────────────────────────────┼────────────────────┼────────┼────────────┼─────────┤
-│ hello_world_multi_compiler/8009312c │ generic.local.bash │ PASS   │ 0          │ 0.514   │
+│ hello_world_multi_compiler/9b1c9f5b │ generic.local.bash │ PASS   │ 0          │ 0.494   │
 └─────────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -85,4 +85,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 Adding 2 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
-Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_6jy2pp4r.log
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_e7uu69js.log

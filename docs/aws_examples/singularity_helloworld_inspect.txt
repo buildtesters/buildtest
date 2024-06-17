@@ -1,18 +1,18 @@
 $ buildtest inspect query -o -t hello_world_singularity 
-────────────────────────────────────────────────────────────────────────────── hello_world_singularity/30d7b876-39a9-45f8-a9eb-88eba553322f ───────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────── hello_world_singularity/ce01e347-6fc9-4df9-aa6d-cbd278c79ad7 ───────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: run hello-world container using singularity
 State: PASS
 Returncode: 0
-Runtime: 0.22026 sec
-Starttime: 2024/06/14 20:18:09
-Endtime: 2024/06/14 20:18:09
+Runtime: 0.20001 sec
+Starttime: 2024/06/17 18:50:32
+Endtime: 2024/06/17 18:50:32
 Command: bash hello_world_singularity_build.sh
-Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/hello_world_singularity.sh
-Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/hello_world_singularity_build.sh
-Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/hello_world_singularity.out
-Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/hello_world_singularity.err
-Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_0f19gr4p.log
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/ce01e347/hello_world_singularity.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/ce01e347/hello_world_singularity_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/ce01e347/hello_world_singularity.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/ce01e347/hello_world_singularity.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_2937xdzg.log
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
 Hello from Docker!                                                                                                                                                                                                         
 This message shows that your installation appears to be working correctly.                                                                                                                                                 
@@ -36,6 +36,6 @@ Test Complete!
 ─────────────────────────────────────────────────────────────────────────────────────────────────────── Test File:  ───────────────────────────────────────────────────────────────────────────────────────────────────────
 #!/usr/bin/bash                                                                                                                                                                                                            
 # Content of run section                                                                                                                                                                                                   
-/usr/local/bin/singularity run -B /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/30d7b876/stage:/buildtest docker://hello-world                           
+/usr/local/bin/singularity run -B /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/ce01e347/stage:/buildtest docker://hello-world                           
 echo 'Test Complete!'                                                                                                                                                                                                      
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

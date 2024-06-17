@@ -21,9 +21,10 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
         failfast (bool, optional): If set to True, we will exit on first failure. Default is None.
     """
 
-    settings_file = None
     autogen_examples_dir = None
-    moduletool = "none"
+
+    aws_settings = os.path.join(BUILDTEST_ROOT, "buildtest", "settings", "aws.yml")
+    settings_file = TUTORIALS_SETTINGS_FILE if examples == "spack" else aws_settings
 
     if examples == "spack":
 
@@ -35,8 +36,6 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
         autogen_examples_dir = os.path.join(
             BUILDTEST_ROOT, "docs", "buildtest_tutorial_examples"
         )
-        settings_file = TUTORIALS_SETTINGS_FILE
-        moduletool = "none"
 
     else:
 
@@ -46,9 +45,6 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
             )
 
         autogen_examples_dir = os.path.join(BUILDTEST_ROOT, "docs", "aws_examples")
-        settings_file = os.path.join(BUILDTEST_ROOT, "buildtest", "settings", "aws.yml")
-
-        moduletool = "environment-modules"
 
     config = SiteConfiguration(settings_file=settings_file)
     config.detect_system()
@@ -72,7 +68,11 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
         )
     else:
         build_aws_examples(
-            autogen_examples_dir, dryrun=dryrun, write=write, failfast=failfast
+            build_dir=autogen_examples_dir,
+            settings_file=settings_file,
+            dryrun=dryrun,
+            write=write,
+            failfast=failfast,
         )
 
 
@@ -85,9 +85,17 @@ def run(query):
     """
 
     console.print(f"Executing Command: {query}")
-    command = subprocess.run(
-        [query], shell=True, check=True, universal_newlines=True, capture_output=True
-    )
+    try:
+        command = subprocess.run(
+            [query],
+            shell=True,
+            check=True,
+            universal_newlines=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError as err:
+        console.print(f"[red]Error: {err}")
+        return (err.stdout, err.returncode)
 
     return (command.stdout, command.returncode)
 
@@ -118,7 +126,9 @@ def write_example(fname, command, content):
     console.print(firstNlines)
 
 
-def build_aws_examples(build_dir, dryrun=None, write=None, failfast=None):
+def build_aws_examples(
+    build_dir, settings_file, dryrun=None, write=None, failfast=None
+):
     """This method will build AWS examples for the tutorial
 
     Args:
@@ -131,24 +141,25 @@ def build_aws_examples(build_dir, dryrun=None, write=None, failfast=None):
     AWS_EXAMPLE_DIR = os.path.join(BUILDTEST_ROOT, "aws_tutorial")
 
     commands_to_run = {
-        f"{build_dir}/hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello_world/hello.yml",
+        f"{build_dir}/hello_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/hello_world/hello.yml",
         f"{build_dir}/hello_inspect.txt": "buildtest inspect query -o -t hello_world_example",
-        f"{build_dir}/multi_compiler_hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello_world/multi_compiler_hello.yml",
+        f"{build_dir}/multi_compiler_hello_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/hello_world/multi_compiler_hello.yml",
         f"{build_dir}/multi_compiler_hello_inspect.txt": "buildtest inspect query -o -t hello_world_multi_compiler/",
-        f"{build_dir}/compiler_list_yaml.txt": "buildtest config compilers list --yaml",
-        f"{build_dir}/mpiproc_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/mpiproc.yml",
+        f"{build_dir}/compiler_list_yaml.txt": f"buildtest -c {settings_file} config compilers list --yaml",
+        f"{build_dir}/mpiproc_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/mpiproc.yml",
         f"{build_dir}/mpiproc_inspect.txt": "buildtest inspect query -o mpiprocname",
-        f"{build_dir}/osu_bandwidth_test_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/osu_bandwidth_test.yml",
+        f"{build_dir}/osu_bandwidth_test_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/osu_bandwidth_test.yml",
         f"{build_dir}/osu_bandwidth_test_inspect.txt": "buildtest inspect query -o osu_bandwidth osu_bandwidth_perf",
-        f"{build_dir}/openmp_example_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/openmp_example_custom_compiler.yml",
+        f"{build_dir}/openmp_example_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/openmp_example_custom_compiler.yml",
         f"{build_dir}/openmp_example_inspect.txt": "buildtest inspect query -o -t hello_world_openmp_custom_compiler/",
-        f"{build_dir}/docker_helloworld_build.txt": f"buildtest build -b {BUILDTEST_ROOT}/tutorials/containers/hello_world.yml",
+        f"{build_dir}/docker_helloworld_build.txt": f"buildtest -c {settings_file} build -b {BUILDTEST_ROOT}/tutorials/containers/hello_world.yml",
         f"{build_dir}/docker_helloworld_inspect.txt": "buildtest inspect query -o -t hello_world_docker",
-        f"{build_dir}/singularity_helloworld_build.txt": f"buildtest build -b {BUILDTEST_ROOT}/tutorials/containers/hello_world_singularity.yml",
+        f"{build_dir}/singularity_helloworld_build.txt": f"buildtest -c {settings_file} build -b {BUILDTEST_ROOT}/tutorials/containers/hello_world_singularity.yml",
         f"{build_dir}/singularity_helloworld_inspect.txt": "buildtest inspect query -o -t hello_world_singularity",
         f"{build_dir}/container_executor_list.txt": "buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml config executors list --yaml",
         f"{build_dir}/container_executor_build.txt": "buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml build -b $BUILDTEST_ROOT/tutorials/containers/container_executor/ubuntu.yml",
         f"{build_dir}/container_executor_inspect.txt": "buildtest inspect query -o -t -b ubuntu_container_example",
+        f"{build_dir}/mpi_job_submission_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/mpi_job_submission.yml --pollinterval=10 --display output --display test",
     }
 
     if dryrun:
@@ -164,6 +175,7 @@ def build_aws_examples(build_dir, dryrun=None, write=None, failfast=None):
             console.print(f"[red]Returncode: {retcode}")
             if failfast:
                 sys.exit(1)
+            continue
 
         console.print(f"[green]Returncode: {retcode}")
 

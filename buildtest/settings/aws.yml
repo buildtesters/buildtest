@@ -21,6 +21,9 @@ system:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
+      torque:
+        e4spro-cluster:
+          queue: e4spro-cluster
     compilers:
       find:
         gcc: ^(gcc)

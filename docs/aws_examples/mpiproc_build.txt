@@ -1,20 +1,20 @@
-$ buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/mpiproc.yml 
-╭──────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮                                                                              
-│                                                                                                                                           │                                                                              
-│ User:               lbladmin                                                                                                              │                                                                              
-│ Hostname:           e4spro-cluster                                                                                                        │                                                                              
-│ Platform:           Linux                                                                                                                 │                                                                              
-│ Current Time:       2024/06/14 20:18:00                                                                                                   │                                                                              
-│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                      │                                                                              
-│ buildtest version:  2.0                                                                                                                   │                                                                              
-│ python path:        /usr/bin/python3                                                                                                      │                                                                              
-│ python version:     3.10.12                                                                                                               │                                                                              
-│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                         │                                                                              
-│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                          │                                                                              
-│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                    │                                                                              
-│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/mpiproc.yml │                                                                              
-│                                                                                                                                           │                                                                              
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                              
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/mpiproc.yml 
+╭──────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────────────────────────────────────────╮             
+│                                                                                                                                                                                                            │             
+│ User:               lbladmin                                                                                                                                                                               │             
+│ Hostname:           e4spro-cluster                                                                                                                                                                         │             
+│ Platform:           Linux                                                                                                                                                                                  │             
+│ Current Time:       2024/06/17 18:50:24                                                                                                                                                                    │             
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                                                                       │             
+│ buildtest version:  2.0                                                                                                                                                                                    │             
+│ python path:        /usr/bin/python3                                                                                                                                                                       │             
+│ python version:     3.10.12                                                                                                                                                                                │             
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                                                          │             
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                                                           │             
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                                                                     │             
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/mpiproc.yml │             
+│                                                                                                                                                                                                            │             
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯             
 ─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
                      Discovered buildspecs                     
 ╔═════════════════════════════════════════════════════════════╗
@@ -38,30 +38,30 @@ Total builder objects created: 1
 ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder              ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description            ┃ buildspecs                                                  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ mpiprocname/6ea5dc74 │ script │ generic.local.bash │ None     │ None  │ None  │ Run MPI Proc Name test │ /home/lbladmin/Documents/buildtest/aws_tutorial/mpiproc.yml │
+│ mpiprocname/7801542b │ script │ generic.local.bash │ None     │ None  │ None  │ Run MPI Proc Name test │ /home/lbladmin/Documents/buildtest/aws_tutorial/mpiproc.yml │
 └──────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴────────────────────────┴─────────────────────────────────────────────────────────────┘
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
-mpiprocname/6ea5dc74: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/6ea5dc74
+mpiprocname/7801542b: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
 ─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
-mpiprocname/6ea5dc74 does not have any dependencies adding test to queue
+mpiprocname/7801542b does not have any dependencies adding test to queue
 Builders Eligible to Run
 ┏━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder              ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━┩
-│ mpiprocname/6ea5dc74 │
+│ mpiprocname/7801542b │
 └──────────────────────┘
-mpiprocname/6ea5dc74: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/6ea5dc74/stage
-mpiprocname/6ea5dc74: Running Test via command: bash mpiprocname_build.sh
-mpiprocname/6ea5dc74: Test completed in 0.76342 seconds with returncode: 0
-mpiprocname/6ea5dc74: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/6ea5dc74/mpiprocname.out
-mpiprocname/6ea5dc74: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/6ea5dc74/mpiprocname.err
+mpiprocname/7801542b: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/stage
+mpiprocname/7801542b: Running Test via command: bash mpiprocname_build.sh
+mpiprocname/7801542b: Test completed in 0.844294 seconds with returncode: 0
+mpiprocname/7801542b: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/mpiprocname.out
+mpiprocname/7801542b: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/mpiprocname.err
                                 Test Summary                                 
 ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder              ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ mpiprocname/6ea5dc74 │ generic.local.bash │ PASS   │ 0          │ 0.763   │
+│ mpiprocname/7801542b │ generic.local.bash │ PASS   │ 0          │ 0.844   │
 └──────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -71,4 +71,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
-Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_79xaptm2.log
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_kbnu_bz5.log

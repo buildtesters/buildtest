@@ -1,18 +1,18 @@
 $ buildtest inspect query -o -t -b ubuntu_container_example 
-────────────────────────────────────────────────────────────────────────────── ubuntu_container_example/b69772f1-3713-4649-8550-a7db3f276283 ──────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────── ubuntu_container_example/abf3ecf3-af0c-44c9-bbed-e70ecf3277fe ──────────────────────────────────────────────────────────────────────────────
 Executor: generic.container.ubuntu
 Description: run test in a container executor
 State: PASS
 Returncode: 0
-Runtime: 0.448513 sec
-Starttime: 2024/06/14 20:18:11
-Endtime: 2024/06/14 20:18:11
+Runtime: 0.242506 sec
+Starttime: 2024/06/17 18:50:34
+Endtime: 2024/06/17 18:50:34
 Command: bash ubuntu_container_example_build.sh
-Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1/ubuntu_container_example.sh
-Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1/ubuntu_container_example_build.sh
-Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1/ubuntu_container_example.out
-Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1/ubuntu_container_example.err
-Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_hax9vi02.log
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/ubuntu_container_example.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/ubuntu_container_example_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/ubuntu_container_example.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/ubuntu_container_example.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_voydqejz.log
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
 USER:  root                                                                                                                                                                                                                
 HOMEDIR:  /root                                                                                                                                                                                                            
@@ -21,15 +21,15 @@ Filesystem      Size  Used Avail Use% Mounted on
 overlay         146G  117G   30G  80% /                                                                                                                                                                                    
 /dev/root       146G  117G   30G  80% /buildtest                                                                                                                                                                           
 tmpfs            64M     0   64M   0% /dev                                                                                                                                                                                 
-tmpfs           1.6G  164K  1.6G   1% /etc/hosts                                                                                                                                                                           
+tmpfs           1.6G  168K  1.6G   1% /etc/hosts                                                                                                                                                                           
 shm              63M     0   63M   0% /dev/shm                                                                                                                                                                             
 devtmpfs        7.9G     0  7.9G   0% /dev/tty                                                                                                                                                                             
 ************************                                                                                                                                                                                                   
 total 16                                                                                                                                                                                                                   
 -rw-rw-r-- 1 root root  208 Jun 14 16:32 python_container.yml                                                                                                                                                              
 -rw-rw-r-- 1 root root  379 Jun 14 16:32 ubuntu.yml                                                                                                                                                                        
--rwxr-xr-x 1 root root  216 Jun 14 20:18 ubuntu_container_example.sh                                                                                                                                                       
--rwxr-xr-x 1 root root 1320 Jun 14 20:18 ubuntu_container_example_build.sh                                                                                                                                                 
+-rwxr-xr-x 1 root root  216 Jun 17 18:50 ubuntu_container_example.sh                                                                                                                                                       
+-rwxr-xr-x 1 root root 1320 Jun 17 18:50 ubuntu_container_example_build.sh                                                                                                                                                 
 ************************                                                                                                                                                                                                   
 NAME="Ubuntu"                                                                                                                                                                                                              
 VERSION="20.04.6 LTS (Focal Fossa)"                                                                                                                                                                                        
@@ -74,13 +74,13 @@ function cleanup() {
 trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU                                                                                                                 
                                                                                                                                                                                                                            
 export BUILDTEST_TEST_NAME=ubuntu_container_example                                                                                                                                                                        
-export BUILDTEST_TEST_ROOT=/home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1                                                                                  
+export BUILDTEST_TEST_ROOT=/home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3                                                                                  
 export BUILDTEST_BUILDSPEC_DIR=/home/lbladmin/Documents/buildtest/tutorials/containers/container_executor                                                                                                                  
-export BUILDTEST_STAGE_DIR=/home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1/stage                                                                            
+export BUILDTEST_STAGE_DIR=/home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/stage                                                                            
 # source executor startup script                                                                                                                                                                                           
 source /home/lbladmin/Documents/buildtest/var/executor/generic.container.ubuntu/before_script.sh                                                                                                                           
 # Run generated script                                                                                                                                                                                                     
-/usr/bin/docker run -it --rm -v /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/b69772f1/stage:/buildtest -w /buildtest ubuntu:20.04 bash -c /buildtest/ubuntu_contai
+/usr/bin/docker run -it --rm -v /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/stage:/buildtest -w /buildtest ubuntu:20.04 bash -c /buildtest/ubuntu_contai
 # Get return code                                                                                                                                                                                                          
 returncode=$?                                                                                                                                                                                                              
 # Exit with return code                                                                                                                                                                                                    

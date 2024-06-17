@@ -1,18 +1,18 @@
 $ buildtest inspect query -o -t hello_world_openmp_custom_compiler/ 
-───────────────────────────────────────────────────────────────────────── hello_world_openmp_custom_compiler/4968ccb5-feb0-4087-9b1c-c508afd8c364 ─────────────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────────────── hello_world_openmp_custom_compiler/bedcd5b5-5820-4c7e-830a-4997cb27d4f2 ─────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello World OpenMP example with custom compiler settings
 State: PASS
 Returncode: 0
-Runtime: 0.072118 sec
-Starttime: 2024/06/14 20:18:05
-Endtime: 2024/06/14 20:18:05
+Runtime: 0.070316 sec
+Starttime: 2024/06/17 18:50:29
+Endtime: 2024/06/17 18:50:29
 Command: bash hello_world_openmp_custom_compiler_build.sh
-Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/4968ccb5/hello_world_openmp_custom_compiler.sh
-Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/4968ccb5/hello_world_openmp_custom_compiler_build.sh
-Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/4968ccb5/hello_world_openmp_custom_compiler.out
-Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/4968ccb5/hello_world_openmp_custom_compiler.err
-Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_i2tw7uzm.log
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/hello_world_openmp_custom_compiler.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/hello_world_openmp_custom_compiler_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/hello_world_openmp_custom_compiler.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/hello_world_openmp_custom_compiler.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_x83ex5kh.log
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
 Hello World... from thread = 0                                                                                                                                                                                             
 Hello World... from thread = 1                                                                                                                                                                                             
@@ -34,27 +34,27 @@ $BUILDTEST_CC $BUILDTEST_CFLAGS -o openmp_hello openmp_hello.c
 ./openmp_hello                                                                                                                                                                                                             
                                                                                                                                                                                                                            
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-───────────────────────────────────────────────────────────────────────── hello_world_openmp_custom_compiler/09512642-c509-4e51-b6db-e384fd1e27d9 ─────────────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────────────── hello_world_openmp_custom_compiler/2e7a2ed5-465d-4d27-885a-58c7800a0e3e ─────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello World OpenMP example with custom compiler settings
 State: PASS
 Returncode: 0
-Runtime: 0.068217 sec
-Starttime: 2024/06/14 20:18:05
-Endtime: 2024/06/14 20:18:05
+Runtime: 0.066805 sec
+Starttime: 2024/06/17 18:50:29
+Endtime: 2024/06/17 18:50:29
 Command: bash hello_world_openmp_custom_compiler_build.sh
-Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/09512642/hello_world_openmp_custom_compiler.sh
-Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/09512642/hello_world_openmp_custom_compiler_build.sh
-Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/09512642/hello_world_openmp_custom_compiler.out
-Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/09512642/hello_world_openmp_custom_compiler.err
-Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_i2tw7uzm.log
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/hello_world_openmp_custom_compiler.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/hello_world_openmp_custom_compiler_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/hello_world_openmp_custom_compiler.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/hello_world_openmp_custom_compiler.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_x83ex5kh.log
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
-Hello World... from thread = 1                                                                                                                                                                                             
 Hello World... from thread = 3                                                                                                                                                                                             
+Hello World... from thread = 5                                                                                                                                                                                             
 Hello World... from thread = 2                                                                                                                                                                                             
 Hello World... from thread = 4                                                                                                                                                                                             
+Hello World... from thread = 1                                                                                                                                                                                             
 Hello World... from thread = 0                                                                                                                                                                                             
-Hello World... from thread = 5                                                                                                                                                                                             
                                                                                                                                                                                                                            
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────────────────────────────────────────────── Test File:  ───────────────────────────────────────────────────────────────────────────────────────────────────────

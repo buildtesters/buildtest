@@ -124,6 +124,27 @@ We can run this test using the following command
 
     .. program-output:: cat aws_examples/mpiproc_inspect.txt
 
+MPI Job Submission
+------------------
+
+This cluster comes with PBS/Torque scheduler. We can run the MPI test to batch scheduler. Shown below is an example
+buildspec. We will use an executor named a torque executor named ``generic.torque.e4spro-cluster`` that is mapped to
+a queue named ``e4spro-cluster``. The ``pbs`` property is used to specify PBS directives. We will run this test
+on a single node using 2 processors with a wall time of 1hr.
+
+.. literalinclude: ../../aws_tutorial/mpi_job_submission.yml
+    :emphasis: 4,6
+
+We can run this test by running the following commands. The ``--pollinterval 10`` will be used to poll job every 10 sec and
+retrieve job status. Buildtest will keep polling job until job is complete. The ``--display output --display test`` will show
+content of output, error and generated test files during the build phase. You will notice the generated build script (**_build.sh**)
+will invoke ``qsub`` command to a generated test.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/aws_tutorial/mpi_job_submission.yml --pollinterval 10 --display output --display test``
+
+    .. program-output:: cat aws_examples/mpi_job_submission_build.txt
+
+
 OSU Microbenchmark
 -------------------
 

@@ -1,4 +1,4 @@
-$ buildtest config compilers list --yaml 
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml config compilers list --yaml 
 gcc:
   gcc_11.4.0:
     cc: /usr/bin/gcc

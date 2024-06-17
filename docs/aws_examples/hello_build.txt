@@ -1,22 +1,22 @@
-$ buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml 
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml 
 Buildspec Paths: ['/home/lbladmin/Documents/buildtest/aws_tutorial']
 Updating buildspec cache file: /home/lbladmin/Documents/buildtest/var/buildspecs/cache.json
-╭───────────────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────────────╮                                                                    
-│                                                                                                                                                     │                                                                    
-│ User:               lbladmin                                                                                                                        │                                                                    
-│ Hostname:           e4spro-cluster                                                                                                                  │                                                                    
-│ Platform:           Linux                                                                                                                           │                                                                    
-│ Current Time:       2024/06/14 20:17:55                                                                                                             │                                                                    
-│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                │                                                                    
-│ buildtest version:  2.0                                                                                                                             │                                                                    
-│ python path:        /usr/bin/python3                                                                                                                │                                                                    
-│ python version:     3.10.12                                                                                                                         │                                                                    
-│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                   │                                                                    
-│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                    │                                                                    
-│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                              │                                                                    
-│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml │                                                                    
-│                                                                                                                                                     │                                                                    
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                    
+╭───────────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────────────────────────────────────────────────╮   
+│                                                                                                                                                                                                                      │   
+│ User:               lbladmin                                                                                                                                                                                         │   
+│ Hostname:           e4spro-cluster                                                                                                                                                                                   │   
+│ Platform:           Linux                                                                                                                                                                                            │   
+│ Current Time:       2024/06/17 18:50:20                                                                                                                                                                              │   
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                                                                                 │   
+│ buildtest version:  2.0                                                                                                                                                                                              │   
+│ python path:        /usr/bin/python3                                                                                                                                                                                 │   
+│ python version:     3.10.12                                                                                                                                                                                          │   
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                                                                    │   
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                                                                     │   
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                                                                               │   
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml │   
+│                                                                                                                                                                                                                      │   
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯   
 ─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
                           Discovered buildspecs                          
 ╔═══════════════════════════════════════════════════════════════════════╗
@@ -40,30 +40,30 @@ Total builder objects created: 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder                      ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                  ┃ buildspecs                                                            ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_example/d1f13f92 │ script │ generic.local.bash │ None     │ None  │ None  │ Hello world compilation in C │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml │
+│ hello_world_example/516718ee │ script │ generic.local.bash │ None     │ None  │ None  │ Hello world compilation in C │ /home/lbladmin/Documents/buildtest/aws_tutorial/hello_world/hello.yml │
 └──────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────┴───────────────────────────────────────────────────────────────────────┘
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_example/d1f13f92: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92
+hello_world_example/516718ee: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee
 ────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
 ─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
-hello_world_example/d1f13f92 does not have any dependencies adding test to queue
+hello_world_example/516718ee does not have any dependencies adding test to queue
     Builders Eligible to Run    
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                      ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_world_example/d1f13f92 │
+│ hello_world_example/516718ee │
 └──────────────────────────────┘
-hello_world_example/d1f13f92: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92/stage
-hello_world_example/d1f13f92: Running Test via command: bash hello_world_example_build.sh
-hello_world_example/d1f13f92: Test completed in 0.051875 seconds with returncode: 0
-hello_world_example/d1f13f92: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92/hello_world_example.out
-hello_world_example/d1f13f92: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/d1f13f92/hello_world_example.err
+hello_world_example/516718ee: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/stage
+hello_world_example/516718ee: Running Test via command: bash hello_world_example_build.sh
+hello_world_example/516718ee: Test completed in 0.050824 seconds with returncode: 0
+hello_world_example/516718ee: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/hello_world_example.out
+hello_world_example/516718ee: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/hello_world_example.err
                                     Test Summary                                     
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                      ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ hello_world_example/d1f13f92 │ generic.local.bash │ PASS   │ 0          │ 0.052   │
+│ hello_world_example/516718ee │ generic.local.bash │ PASS   │ 0          │ 0.051   │
 └──────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -73,4 +73,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
-Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_hd0uveof.log
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_k4_6t_re.log
