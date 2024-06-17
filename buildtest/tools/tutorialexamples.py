@@ -64,7 +64,11 @@ def generate_tutorial_examples(examples, dryrun=None, write=None, failfast=None)
 
     if examples == "spack":
         build_spack_examples(
-            autogen_examples_dir, dryrun=dryrun, write=write, failfast=failfast
+            autogen_dir=autogen_examples_dir,
+            settings_file=settings_file,
+            dryrun=dryrun,
+            write=write,
+            failfast=failfast,
         )
     else:
         build_aws_examples(
@@ -133,6 +137,7 @@ def build_aws_examples(
 
     Args:
         build_dir (str): Directory where auto generated documentation examples will be written.
+        settings_file (str): Path to settings file
         dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
         write (bool, optional): If True we write output to file. Defaults to None.
         failfast (bool, optional): If True we exit on first failure. Defaults to None.
@@ -161,33 +166,17 @@ def build_aws_examples(
         f"{build_dir}/container_executor_inspect.txt": "buildtest inspect query -o -t -b ubuntu_container_example",
         f"{build_dir}/mpi_job_submission_build.txt": f"buildtest -c {settings_file} build -b {AWS_EXAMPLE_DIR}/mpi_job_submission.yml --pollinterval=10 --display output --display test",
     }
-
-    if dryrun:
-        for command in commands_to_run.values():
-            console.print(command)
-        return
-
-    for fname, command in commands_to_run.items():
-        content, retcode = run(command)
-
-        # for non-negative returncode
-        if retcode != 0:
-            console.print(f"[red]Returncode: {retcode}")
-            if failfast:
-                sys.exit(1)
-            continue
-
-        console.print(f"[green]Returncode: {retcode}")
-
-        if write:
-            write_example(fname=fname, command=command, content=content)
+    execute_commands(commands_to_run, dryrun=dryrun, write=write, failfast=failfast)
 
 
-def build_spack_examples(autogen_dir, dryrun=None, write=None, failfast=None):
+def build_spack_examples(
+    autogen_dir, settings_file, dryrun=None, write=None, failfast=None
+):
     """This method will build spack examples for the tutorial
 
     Args:
         autogen_dir (str): Directory where auto generated documentation examples will be written.
+        settings_file (str): Path to settings file
         dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
         write (bool, optional): If True we write output to file. Defaults to None.
         failfast (bool, optional): If True we exit on first failure. Defaults to None.
@@ -230,6 +219,18 @@ def build_spack_examples(autogen_dir, dryrun=None, write=None, failfast=None):
         f"{inspect_dir}/clone_spack.txt": "buildtest inspect query -o -t clone_spack_automatically clone_spack_and_specify_root",
         f"{inspect_dir}/e4s_testsuite_mpich.txt": "buildtest inspect query -o -e -t mpich_e4s_testsuite",
     }
+    execute_commands(commands_to_run, dryrun=dryrun, write=write, failfast=failfast)
+
+
+def execute_commands(commands_to_run, dryrun=None, write=None, failfast=None):
+    """This method will execute a list of commands and handle the results.
+
+    Args:
+        commands_to_run (dict): A dictionary where keys are file names and values are commands to be executed.
+        dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
+        write (bool, optional): If True we write output to file. Defaults to None.
+        failfast (bool, optional): If True we exit on first failure. Defaults to None.
+    """
 
     if dryrun:
         for command in commands_to_run.values():
@@ -244,6 +245,7 @@ def build_spack_examples(autogen_dir, dryrun=None, write=None, failfast=None):
             console.print(f"[red]Returncode: {retcode}")
             if failfast:
                 sys.exit(1)
+            continue
 
         console.print(f"[green]Returncode: {retcode}")
 
