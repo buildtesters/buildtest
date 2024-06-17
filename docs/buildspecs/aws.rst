@@ -132,7 +132,7 @@ buildspec. We will use an executor named a torque executor named ``generic.torqu
 a queue named ``e4spro-cluster``. The ``pbs`` property is used to specify PBS directives. We will run this test
 on a single node using 2 processors with a wall time of 1hr.
 
-.. literalinclude: ../../aws_tutorial/mpi_job_submission.yml
+.. literalinclude:: ../../aws_tutorial/mpi_job_submission.yml
     :emphasis: 4,6
 
 We can run this test by running the following commands. The ``--pollinterval 10`` will be used to poll job every 10 sec and
