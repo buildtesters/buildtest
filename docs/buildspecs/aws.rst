@@ -133,7 +133,7 @@ a queue named ``e4spro-cluster``. The ``pbs`` property is used to specify PBS di
 on a single node using 2 processors with a wall time of 1hr.
 
 .. literalinclude:: ../../aws_tutorial/mpi_job_submission.yml
-    :emphasis: 4,6
+    :emphasize-lines: 4,6
 
 We can run this test by running the following commands. The ``--pollinterval 10`` will be used to poll job every 10 sec and
 retrieve job status. Buildtest will keep polling job until job is complete. The ``--display output --display test`` will show
