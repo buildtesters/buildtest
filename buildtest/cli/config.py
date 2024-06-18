@@ -68,7 +68,7 @@ def handle_executors_command(command_args, configuration):
 
 def handle_validate_command(command_args, configuration, system):
     if command_args.config in ["validate", "val"]:
-        validate_config(configuration, system.system["moduletool"])
+        validate_config(configuration)
 
 
 def handle_systems_command(command_args, configuration):

@@ -1,153 +1,79 @@
 $ buildtest inspect query -o -t hello_world_multi_compiler/ 
-───────────────────────────────────────────────────────────────────────────────────────────────────── hello_world_multi_compiler/7ea7082b-1c26-4e52-b62b-3108f192b860 ─────────────────────────────────────────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────────────────── hello_world_multi_compiler/b43967d7-d27a-47c5-8737-a14a7c8bbbef ─────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello world compilation in C, C++ and Fortran with multiple compilers
 State: PASS
 Returncode: 0
-Runtime: 0.545868 sec
-Starttime: 2024/02/28 18:34:46
-Endtime: 2024/02/28 18:34:46
+Runtime: 0.574126 sec
+Starttime: 2024/06/17 18:50:22
+Endtime: 2024/06/17 18:50:22
 Command: bash hello_world_multi_compiler_build.sh
-Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.sh
-Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler_build.sh
-Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.out
-Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.err
-Log File: /home/ubuntu/buildtest/var/logs/buildtest_bknghril.log
-──────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.out ─────────────────────────────────────────────────────────
-Hello, World in C                                                                                                                                                                                                                                                          
-Hello, World in C++                                                                                                                                                                                                                                                        
- Hello, World in Fortran                                                                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                           
-────────────────────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.sh ──────────────────────────────────────────────────────────
-#!/usr/bin/bash                                                                                                                                                                                                                                                            
-set -eo pipefail                                                                                                                                                                                                                                                           
-BUILDTEST_CC="/usr/bin/gcc"                                                                                                                                                                                                                                                
-BUILDTEST_CXX="/usr/bin/g++"                                                                                                                                                                                                                                               
-BUILDTEST_FC="/usr/bin/gfortran"                                                                                                                                                                                                                                           
-BUILDTEST_CFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_FFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_LDFLAGS=                                                                                                                                                                                                                                                         
-# Content of run section                                                                                                                                                                                                                                                   
-$BUILDTEST_CC hello.c -o hello_c                                                                                                                                                                                                                                           
-$BUILDTEST_CXX hello.cpp -o hello_cpp                                                                                                                                                                                                                                      
-$BUILDTEST_FC hello.f90 -o hello_f90                                                                                                                                                                                                                                       
-./hello_c                                                                                                                                                                                                                                                                  
-./hello_cpp                                                                                                                                                                                                                                                                
-./hello_f90                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                           
-───────────────────────────────────────────────────────────────────────────────────────────────────── hello_world_multi_compiler/543d59fb-5a91-43b4-8c21-4d99917729db ─────────────────────────────────────────────────────────────────────────────────────────────────────
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/hello_world_multi_compiler.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/hello_world_multi_compiler_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/hello_world_multi_compiler.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/b43967d7/hello_world_multi_compiler.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_e7uu69js.log
+────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Hello, World in C                                                                                                                                                                                                          
+Hello, World in C++                                                                                                                                                                                                        
+ Hello, World in Fortran                                                                                                                                                                                                   
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Test File:  ───────────────────────────────────────────────────────────────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                            
+BUILDTEST_CC="/usr/bin/gcc-12"                                                                                                                                                                                             
+BUILDTEST_CXX="/usr/bin/g++-12"                                                                                                                                                                                            
+BUILDTEST_FC="/usr/bin/gfortran-12"                                                                                                                                                                                        
+BUILDTEST_CFLAGS=                                                                                                                                                                                                          
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                        
+BUILDTEST_FFLAGS=                                                                                                                                                                                                          
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                        
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                         
+# Content of run section                                                                                                                                                                                                   
+$BUILDTEST_CC hello.c -o hello_c                                                                                                                                                                                           
+$BUILDTEST_CXX hello.cpp -o hello_cpp                                                                                                                                                                                      
+$BUILDTEST_FC hello.f90 -o hello_f90                                                                                                                                                                                       
+./hello_c                                                                                                                                                                                                                  
+./hello_cpp                                                                                                                                                                                                                
+./hello_f90                                                                                                                                                                                                                
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────────────────── hello_world_multi_compiler/9b1c9f5b-b8c6-46c9-a664-19f7fa5b6c2c ─────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello world compilation in C, C++ and Fortran with multiple compilers
 State: PASS
 Returncode: 0
-Runtime: 0.571412 sec
-Starttime: 2024/02/28 18:34:46
-Endtime: 2024/02/28 18:34:46
+Runtime: 0.494109 sec
+Starttime: 2024/06/17 18:50:22
+Endtime: 2024/06/17 18:50:22
 Command: bash hello_world_multi_compiler_build.sh
-Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.sh
-Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler_build.sh
-Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.out
-Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.err
-Log File: /home/ubuntu/buildtest/var/logs/buildtest_bknghril.log
-──────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.out ─────────────────────────────────────────────────────────
-Hello, World in C                                                                                                                                                                                                                                                          
-Hello, World in C++                                                                                                                                                                                                                                                        
- Hello, World in Fortran                                                                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                           
-────────────────────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.sh ──────────────────────────────────────────────────────────
-#!/usr/bin/bash                                                                                                                                                                                                                                                            
-set -eo pipefail                                                                                                                                                                                                                                                           
-BUILDTEST_CC="/usr/bin/gcc-9"                                                                                                                                                                                                                                              
-BUILDTEST_CXX="/usr/bin/g++-9"                                                                                                                                                                                                                                             
-BUILDTEST_FC="/usr/bin/gfortran-9"                                                                                                                                                                                                                                         
-BUILDTEST_CFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_FFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_LDFLAGS=                                                                                                                                                                                                                                                         
-# Content of run section                                                                                                                                                                                                                                                   
-$BUILDTEST_CC hello.c -o hello_c                                                                                                                                                                                                                                           
-$BUILDTEST_CXX hello.cpp -o hello_cpp                                                                                                                                                                                                                                      
-$BUILDTEST_FC hello.f90 -o hello_f90                                                                                                                                                                                                                                       
-./hello_c                                                                                                                                                                                                                                                                  
-./hello_cpp                                                                                                                                                                                                                                                                
-./hello_f90                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                           
-───────────────────────────────────────────────────────────────────────────────────────────────────── hello_world_multi_compiler/337a9268-35a4-4182-914c-3c9d985e05a8 ─────────────────────────────────────────────────────────────────────────────────────────────────────
-Executor: generic.local.bash
-Description: Hello world compilation in C, C++ and Fortran with multiple compilers
-State: PASS
-Returncode: 0
-Runtime: 16.082103 sec
-Starttime: 2024/02/28 18:24:33
-Endtime: 2024/02/28 18:24:49
-Command: bash hello_world_multi_compiler_build.sh
-Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/337a9268/hello_world_multi_compiler.sh
-Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/337a9268/hello_world_multi_compiler_build.sh
-Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/337a9268/hello_world_multi_compiler.out
-Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/337a9268/hello_world_multi_compiler.err
-Log File: /home/ubuntu/buildtest/var/logs/buildtest_26_np7tl.log
-──────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/337a9268/hello_world_multi_compiler.out ─────────────────────────────────────────────────────────
-Hello, World in C                                                                                                                                                                                                                                                          
-Hello, World in C++                                                                                                                                                                                                                                                        
- Hello, World in Fortran                                                                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                           
-────────────────────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/337a9268/hello_world_multi_compiler.sh ──────────────────────────────────────────────────────────
-#!/usr/bin/bash                                                                                                                                                                                                                                                            
-set -eo pipefail                                                                                                                                                                                                                                                           
-BUILDTEST_CC="/usr/bin/gcc"                                                                                                                                                                                                                                                
-BUILDTEST_CXX="/usr/bin/g++"                                                                                                                                                                                                                                               
-BUILDTEST_FC="/usr/bin/gfortran"                                                                                                                                                                                                                                           
-BUILDTEST_CFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_FFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_LDFLAGS=                                                                                                                                                                                                                                                         
-# Content of run section                                                                                                                                                                                                                                                   
-$BUILDTEST_CC hello.c -o hello_c                                                                                                                                                                                                                                           
-$BUILDTEST_CXX hello.cpp -o hello_cpp                                                                                                                                                                                                                                      
-$BUILDTEST_FC hello.f90 -o hello_f90                                                                                                                                                                                                                                       
-./hello_c                                                                                                                                                                                                                                                                  
-./hello_cpp                                                                                                                                                                                                                                                                
-./hello_f90                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                           
-───────────────────────────────────────────────────────────────────────────────────────────────────── hello_world_multi_compiler/432aa86e-b3db-460f-85a3-a25238a83672 ─────────────────────────────────────────────────────────────────────────────────────────────────────
-Executor: generic.local.bash
-Description: Hello world compilation in C, C++ and Fortran with multiple compilers
-State: PASS
-Returncode: 0
-Runtime: 23.025996 sec
-Starttime: 2024/02/28 18:24:33
-Endtime: 2024/02/28 18:24:56
-Command: bash hello_world_multi_compiler_build.sh
-Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/432aa86e/hello_world_multi_compiler.sh
-Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/432aa86e/hello_world_multi_compiler_build.sh
-Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/432aa86e/hello_world_multi_compiler.out
-Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/432aa86e/hello_world_multi_compiler.err
-Log File: /home/ubuntu/buildtest/var/logs/buildtest_26_np7tl.log
-──────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/432aa86e/hello_world_multi_compiler.out ─────────────────────────────────────────────────────────
-Hello, World in C                                                                                                                                                                                                                                                          
-Hello, World in C++                                                                                                                                                                                                                                                        
- Hello, World in Fortran                                                                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                           
-────────────────────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/432aa86e/hello_world_multi_compiler.sh ──────────────────────────────────────────────────────────
-#!/usr/bin/bash                                                                                                                                                                                                                                                            
-set -eo pipefail                                                                                                                                                                                                                                                           
-BUILDTEST_CC="/usr/bin/gcc-9"                                                                                                                                                                                                                                              
-BUILDTEST_CXX="/usr/bin/g++-9"                                                                                                                                                                                                                                             
-BUILDTEST_FC="/usr/bin/gfortran-9"                                                                                                                                                                                                                                         
-BUILDTEST_CFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_FFLAGS=                                                                                                                                                                                                                                                          
-BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                                                        
-BUILDTEST_LDFLAGS=                                                                                                                                                                                                                                                         
-# Content of run section                                                                                                                                                                                                                                                   
-$BUILDTEST_CC hello.c -o hello_c                                                                                                                                                                                                                                           
-$BUILDTEST_CXX hello.cpp -o hello_cpp                                                                                                                                                                                                                                      
-$BUILDTEST_FC hello.f90 -o hello_f90                                                                                                                                                                                                                                       
-./hello_c                                                                                                                                                                                                                                                                  
-./hello_cpp                                                                                                                                                                                                                                                                
-./hello_f90                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                           
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/hello_world_multi_compiler.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/hello_world_multi_compiler_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/hello_world_multi_compiler.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/9b1c9f5b/hello_world_multi_compiler.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_e7uu69js.log
+────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Hello, World in C                                                                                                                                                                                                          
+Hello, World in C++                                                                                                                                                                                                        
+ Hello, World in Fortran                                                                                                                                                                                                   
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Test File:  ───────────────────────────────────────────────────────────────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                            
+BUILDTEST_CC="/usr/bin/gcc"                                                                                                                                                                                                
+BUILDTEST_CXX="/usr/bin/g++"                                                                                                                                                                                               
+BUILDTEST_FC="/usr/bin/gfortran"                                                                                                                                                                                           
+BUILDTEST_CFLAGS=                                                                                                                                                                                                          
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                        
+BUILDTEST_FFLAGS=                                                                                                                                                                                                          
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                        
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                         
+# Content of run section                                                                                                                                                                                                   
+$BUILDTEST_CC hello.c -o hello_c                                                                                                                                                                                           
+$BUILDTEST_CXX hello.cpp -o hello_cpp                                                                                                                                                                                      
+$BUILDTEST_FC hello.f90 -o hello_f90                                                                                                                                                                                       
+./hello_c                                                                                                                                                                                                                  
+./hello_cpp                                                                                                                                                                                                                
+./hello_f90                                                                                                                                                                                                                
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
