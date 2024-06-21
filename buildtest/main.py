@@ -238,7 +238,7 @@ def setup(args):
     )
     configuration = SiteConfiguration(config_file, verbose=args.verbose)
     configuration.detect_system()
-    configuration.validate(moduletool=system.system["moduletool"])
+    configuration.validate()
 
     if args.verbose:
         console.print("Finish configuration initialization", style="bold blue")

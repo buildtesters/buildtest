@@ -21,6 +21,9 @@ system:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
+      torque:
+        e4spro-cluster:
+          queue: e4spro-cluster
     compilers:
       find:
         gcc: ^(gcc)
@@ -30,10 +33,10 @@ system:
             cc: /usr/bin/gcc
             fc: /usr/bin/gfortran
             cxx: /usr/bin/g++
-          gcc_9.4.0:
-            cc: /usr/bin/gcc-9
-            fc: /usr/bin/gfortran-9
-            cxx: /usr/bin/g++-9
+          gcc_12.3.0:
+            cc: /usr/bin/gcc-12
+            fc: /usr/bin/gfortran-12
+            cxx: /usr/bin/g++-12
     cdash:
       url: https://my.cdash.org/
       project: buildtest

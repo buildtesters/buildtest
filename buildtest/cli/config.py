@@ -68,7 +68,7 @@ def handle_executors_command(command_args, configuration):
 
 def handle_validate_command(command_args, configuration, system):
     if command_args.config in ["validate", "val"]:
-        validate_config(configuration, system.system["moduletool"])
+        validate_config(configuration)
 
 
 def handle_systems_command(command_args, configuration):
@@ -128,7 +128,7 @@ def view_system(configuration):
     console.print(table)
 
 
-def validate_config(configuration, moduletool):
+def validate_config(configuration):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
     If it's not validate an exception is raised which could be
@@ -147,14 +147,13 @@ def validate_config(configuration, moduletool):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        moduletool (str): Name of moduletool for validating module system
 
     Raises:
         SystemExit: If exception is raised during validating configuration file.
     """
 
     try:
-        configuration.validate(moduletool=moduletool)
+        configuration.validate()
     except (ValidationError, ConfigurationError) as err:
         print(err)
         raise sys.exit(f"{configuration.file} is not valid")

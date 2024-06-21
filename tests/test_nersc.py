@@ -29,7 +29,7 @@ class TestNersc:
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate(moduletool="lmod")
+    bc.validate()
     BuildspecCache(rebuild=True, configuration=bc)
 
     def test_slurm_hostname(self):
@@ -122,7 +122,7 @@ class TestNersc:
 
         config = SiteConfiguration(tf.name)
         config.detect_system()
-        config.validate(moduletool="lmod")
+        config.validate()
 
         compilers = BuildtestCompilers(configuration=config)
         # remove one compiler from configuration

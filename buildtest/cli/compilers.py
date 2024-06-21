@@ -324,7 +324,7 @@ class BuildtestCompilers:
 
         self.moduletool = self.configuration.target_config.get("moduletool")
 
-        if self.moduletool == "N/A" or not self.moduletool:
+        if self.moduletool == "none" or not self.moduletool:
             raise ConfigurationError(
                 self.configuration.config,
                 self.configuration.file,
