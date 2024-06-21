@@ -33,7 +33,7 @@ jobs:
           # ls -la
           cd
           mkdir projects
-          sudo chmod 777 projects
+          # sudo chmod 777 projects
           cd projects
           git clone https://github.com/buildtesters/buildtest.git
           cd buildtest
