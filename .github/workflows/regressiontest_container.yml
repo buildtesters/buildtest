@@ -35,7 +35,9 @@ jobs:
           cd projects
           git clone https://github.com/buildtesters/buildtest.git
           cd buildtest
-          pip --version
+          pip3 --version
+          python3 -m venv bt
+          source bt/bin/activate
           export HOMEDIR=`pwd`
           export BUILDTEST_CONFIGFILE=$HOMEDIR/buildtest/settings/spack_container.yml
           source $HOMEDIR/setup.sh
