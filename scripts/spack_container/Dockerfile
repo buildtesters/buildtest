@@ -8,6 +8,8 @@ RUN apt update && \
     apt install -y software-properties-common && \
     add-apt-repository ppa:git-core/ppa -y && \
     apt-get update && \
+    apt-get install tcsh zsh && \
+    apt-get install python3-venv && \
     apt-get install git -y
 
 USER spack
