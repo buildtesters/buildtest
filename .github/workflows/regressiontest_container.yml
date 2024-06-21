@@ -35,9 +35,10 @@ jobs:
           cd projects
           git clone https://github.com/buildtesters/buildtest.git
           cd buildtest
-          source setup.sh
+          pip --version
           export HOMEDIR=`pwd`
           export BUILDTEST_CONFIGFILE=$HOMEDIR/buildtest/settings/spack_container.yml
+          source $HOMEDIR/setup.sh
           python $HOMEDIR/buildtest/tools/unittests.py -c
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
