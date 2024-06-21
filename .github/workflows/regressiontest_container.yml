@@ -31,14 +31,10 @@ jobs:
           # python3 --version3
           # cd $GITHUB_WORKSPACE
           # ls -la
+          git clone https://github.com/buildtesters/buildtest.git
+          cd buildtest
+          source setup.sh
           export HOMEDIR=`pwd`
-          echo $HOMEDIR
-
-          echo "-------------"
-          ls -la $HOMEDIR
-          echo "-------------"
-
-          . setup.sh
           export BUILDTEST_CONFIGFILE=$HOMEDIR/buildtest/settings/spack_container.yml
           python $HOMEDIR/buildtest/tools/unittests.py -c
           returncode=$?
