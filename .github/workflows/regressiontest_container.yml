@@ -32,7 +32,9 @@ jobs:
           # cd $GITHUB_WORKSPACE
           # ls -la
           cd
-          git --version
+          mkdir projects
+          sudo chmod 777 projects
+          cd projects
           git clone https://github.com/buildtesters/buildtest.git
           cd buildtest
           source setup.sh
