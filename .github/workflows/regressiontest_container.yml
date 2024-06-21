@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
-      options: "-it --user spack"
+      options: "-it --user root"
     steps:
       - name: regression test in container
         shell: bash
@@ -31,9 +31,7 @@ jobs:
           # python3 --version3
           # cd $GITHUB_WORKSPACE
           # ls -la
-          cd
           mkdir projects
-          # sudo chmod 777 projects
           cd projects
           git clone https://github.com/buildtesters/buildtest.git
           cd buildtest
