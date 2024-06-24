@@ -62,6 +62,9 @@ if (! $?BUILDTEST_ROOT) then
     endif
 endif
 
+set python=python3
+# install pip in user environment
+curl https://bootstrap.pypa.io/get-pip.py | $python
 
 set pip=pip3
 
@@ -70,7 +73,7 @@ if ( ! -x `command -v $pip` ) then
   exit 1
 endif
 
-python3 -c "import buildtest.main" >& /dev/null
+$python -c "import buildtest.main" >& /dev/null
 
 # if we unable to import buildtest.main module then install buildtest dependencies
 if ( $status != 0 ) then
