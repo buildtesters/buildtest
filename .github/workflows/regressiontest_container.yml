@@ -11,16 +11,15 @@ jobs:
       image: ghcr.io/buildtesters/buildtest_spack
       options: "-it --user root"
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
       - name: regression test in container
         shell: bash
         run: | 
           set +xe
           . /etc/profile
           module load python
-          mkdir projects
-          cd projects
-          git clone https://github.com/buildtesters/buildtest.git
-          cd buildtest
           python3 -m venv env
           source env/bin/activate
           export HOMEDIR=`pwd`
