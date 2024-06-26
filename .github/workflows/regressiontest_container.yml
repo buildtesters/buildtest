@@ -12,7 +12,7 @@ jobs:
       options: "-it --user root"
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: regression test in container
         shell: bash
