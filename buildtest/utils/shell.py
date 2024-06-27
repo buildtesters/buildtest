@@ -141,7 +141,6 @@ class Shell:
             system_shells
             + python_shells
             + ["bash", "csh", "tcsh", "sh", "zsh", "python", "python3"]
-            + ["/bin/csh"]
         )
 
         # if input shell is not in list of valid shells we raise error.
