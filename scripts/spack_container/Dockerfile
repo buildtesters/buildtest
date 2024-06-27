@@ -8,7 +8,8 @@ RUN apt update && \
     apt install -y software-properties-common && \
     add-apt-repository ppa:git-core/ppa -y && \
     apt-get update && \
-    apt-get install git -y
+    apt-get install -y tcsh zsh && \
+    apt-get install -y git 
 
 USER spack
 RUN git clone --depth=100 --branch=releases/v0.21 https://github.com/spack/spack.git ~/spack

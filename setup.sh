@@ -35,6 +35,11 @@ else
   exit 1
 fi
 
+python=python3
+
+# install pip in user environment
+curl https://bootstrap.pypa.io/get-pip.py | $python
+
 pip=pip3
 
 if ! [ -x "$(command -v $pip)" ]; then 
@@ -42,7 +47,6 @@ if ! [ -x "$(command -v $pip)" ]; then
   exit 1
 fi
 
-python=python3
 
 # Need 'set +e' so that process is not terminated especially when using in CI
 set +e
