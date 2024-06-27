@@ -8,7 +8,7 @@ jobs:
   buildtest_tutorial_container:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/buildtesters/buildtest_spack
+      image: ghcr.io/buildtesters/buildtest_spack:spack-sc23
       options: "-it --user root"
     steps:
       - name: Check out the repo
