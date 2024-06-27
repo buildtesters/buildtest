@@ -19,6 +19,7 @@ jobs:
         run: | 
           set +xe
           . /etc/profile
+          which csh zsh
           module load python
           python3 -m venv env
           source env/bin/activate
