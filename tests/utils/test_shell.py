@@ -82,7 +82,7 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_tcsh_shell(self):
-        if not shutil.which("bin/tcsh"):
+        if not shutil.which("/bin/tcsh"):
             pytest.skip("Skipping test for tcsh shell")
 
         shell = Shell("/bin/tcsh")
