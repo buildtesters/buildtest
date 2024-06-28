@@ -52,7 +52,7 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_zsh_shell(self):
-        if not shutil.which("bin/zsh"):
+        if not shutil.which("/bin/zsh"):
             pytest.skip("Skipping test for zsh shell")
 
         shell = Shell("/bin/zsh")
@@ -67,7 +67,7 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_csh_shell(self):
-        if not shutil.which("bin/csh"):
+        if not shutil.which("/bin/csh"):
             pytest.skip("Skipping test for csh shell")
 
         shell = Shell("/bin/csh")
