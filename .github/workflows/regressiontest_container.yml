@@ -3,6 +3,12 @@ name: Regression Test in Container
 on:
   pull_request:
     branches: [ devel ]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - '.github/workflows/regressiontest_container.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
     
 jobs:
   buildtest_tutorial_container:
