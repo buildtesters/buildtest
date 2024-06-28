@@ -1,0 +1,36 @@
+name: Regression Test in Container
+
+on:
+  pull_request:
+    branches: [ devel ]
+    
+jobs:
+  buildtest_tutorial_container:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/buildtesters/buildtest_spack:spack-sc23
+      options: "-it --user root"
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: regression test in container
+        shell: bash
+        run: | 
+          set +xe
+          . /etc/profile
+          which csh zsh
+          module load python
+          python3 -m venv env
+          source env/bin/activate
+          export HOMEDIR=`pwd`
+          export BUILDTEST_CONFIGFILE=$HOMEDIR/buildtest/settings/spack_container.yml
+          source $HOMEDIR/setup.sh
+          python $HOMEDIR/buildtest/tools/unittests.py -c
+          returncode=$?
+          if [ $returncode != 0 ]; then exit $returncode; fi
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 30
