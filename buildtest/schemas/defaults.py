@@ -1,6 +1,8 @@
 import os
 
 from jsonschema import Draft7Validator, RefResolver
+from referencing import Registry, Resource
+from referencing.jsonschema import DRAFT7
 
 from buildtest.schemas.utils import load_schema
 
@@ -71,9 +73,39 @@ schema_store = {
     ]["recipe"],
 }
 
+# Create a Registry object
+initial_registry = Registry()
+
+"""
 resolver = RefResolver.from_schema(
     schema_table["definitions.schema.json"]["recipe"], store=schema_store
 )
+"""
+schemas = [
+    "global.schema.json",
+    "script.schema.json",
+    "spack.schema.json",
+    "definitions.schema.json",
+    "settings.schema.json",
+]
+for schema_file in schemas:
+    loaded = load_schema(os.path.join(here, schema_file))
+    resource = Resource.from_contents(loaded)
+    registry = resource @ initial_registry
+    # registry.with_resource(uri=schema_file, resource=Resource.from_contents(loaded))
+
+    print(initial_registry.contents)
+    import sys
+
+    sys.exit(0)
+# Register your schemas with the registry
+for schema_name in schema_table.keys():
+    print("XXX", schema_name)
+    resource = Resource.from_contents(schema_table[schema_name]["recipe"])
+    registry = resource @ registry
+
+    # registry.with_resource(uri=schema_name, resource=schema_table[schema_name]["recipe"])
+print(base_registry)
 
 
 def custom_validator(recipe, schema):
@@ -98,5 +130,6 @@ def custom_validator(recipe, schema):
     assert isinstance(recipe, dict)
     assert isinstance(schema, dict)
 
-    validator = Draft7Validator(schema, resolver=resolver)
+    validator = Draft7Validator(schema, resolver=registry.resolver)
+
     validator.validate(recipe)
