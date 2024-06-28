@@ -23,14 +23,8 @@ jobs:
           module load python
           python3 -m venv env
           source env/bin/activate
-          export HOMEDIR=`pwd`
-          export BUILDTEST_CONFIGFILE=$HOMEDIR/buildtest/settings/spack_container.yml
-          source $HOMEDIR/setup.sh
-          python $HOMEDIR/buildtest/tools/unittests.py -c
+          source setup.sh
+          export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/spack_container.yml
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
-
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 30
