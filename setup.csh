@@ -24,8 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Get the name of the current shell
+set shell_name = `ps -p $$ -o comm=`
+
 # if shell is not csh or tcsh exit
-if (`basename "$SHELL"` != "csh" && `basename "$SHELL"` != "tcsh") then
+if ($shell_name != "csh" && "$shell_name" != "tcsh") then
   echo "Unsupported shell, please use 'csh' or 'tcsh' when sourcing this script"
   exit 1
 endif
