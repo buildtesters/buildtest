@@ -2,7 +2,13 @@ name: Regression Test in Container
 
 on:
   pull_request:
-    branches: [ devel ]
+    branches: [devel]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - '.github/workflows/regressiontest_container.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
     
 jobs:
   buildtest_tutorial_container:
@@ -23,14 +29,13 @@ jobs:
           module load python
           python3 -m venv env
           source env/bin/activate
-          export HOMEDIR=`pwd`
-          export BUILDTEST_CONFIGFILE=$HOMEDIR/buildtest/settings/spack_container.yml
-          source $HOMEDIR/setup.sh
-          python $HOMEDIR/buildtest/tools/unittests.py -c
+          source setup.sh
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
-
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 30
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
