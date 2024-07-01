@@ -68,9 +68,16 @@ curl https://bootstrap.pypa.io/get-pip.py | $python
 
 set pip=pip3
 
-if ( ! -x `command -v $pip` ) then 
-  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
-  exit 1
+if ( ! -x `command -v $pip` ) then
+  # If not found in PATH, check $HOME/.local/bin
+  if ( -x "$HOME/.local/bin/$pip" ) then
+    echo "$pip found in $HOME/.local/bin"
+    # Optionally, you can add $HOME/.local/bin to PATH
+    setenv PATH $HOME/.local/bin:$PATH
+  else
+    echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
+    exit 1
+  endif
 endif
 
 $python -c "import buildtest.main" >& /dev/null
