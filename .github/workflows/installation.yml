@@ -52,7 +52,7 @@ jobs:
     - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - csh
       shell: csh {0}
       run: |
-        echo $SHELL        
+        echo $shell        
         pip install -U pip                
         source setup.csh        
         which buildtest
