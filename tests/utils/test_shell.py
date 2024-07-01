@@ -67,13 +67,13 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_csh_shell(self):
-        if not shutil.which("/usr/bin/csh"):
+        if not shutil.which("/bin/csh"):
             pytest.skip("Skipping test for csh shell")
 
-        shell = Shell("/usr/bin/csh")
-        assert shell.name == "/usr/bin/csh"
-        assert shell.path == shutil.which("/usr/bin/csh")
-        assert shell.shebang == f"#!{shutil.which('/usr/bin/csh')}"
+        shell = Shell("/bin/csh")
+        assert shell.name == "/bin/csh"
+        assert shell.path == shutil.which("/bin/csh")
+        assert shell.shebang == f"#!{shutil.which('/bin/csh')}"
 
         shell = Shell("csh")
         assert shell.name == "csh"
