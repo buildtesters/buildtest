@@ -28,7 +28,7 @@
 set shell_name = `ps -p $$ -o comm=`
 
 # if shell is not csh or tcsh exit
-if ($shell_name != "csh" && "$shell_name" != "tcsh") then
+if (`basename $shell_name` != "csh" && `basename $shell_name` != "tcsh") then
   echo "Unsupported shell, please use 'csh' or 'tcsh' when sourcing this script"
   exit 1
 endif
