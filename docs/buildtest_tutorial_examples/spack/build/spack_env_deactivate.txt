@@ -1,0 +1,72 @@
+$ buildtest build -b /home/spack/buildtest/examples/spack/spack_env_deactivate.yml 
+╭────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────╮                                                                                                      
+│                                                                                                                                │                                                                                                      
+│ User:               spack                                                                                                      │                                                                                                      
+│ Hostname:           3220cd0ac8f6                                                                                               │                                                                                                      
+│ Platform:           Linux                                                                                                      │                                                                                                      
+│ Current Time:       2024/02/08 19:01:41                                                                                        │                                                                                                      
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                        │                                                                                                      
+│ buildtest version:  1.7                                                                                                        │                                                                                                      
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                    │                                                                                                      
+│ python version:     3.11.6                                                                                                     │                                                                                                      
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                               │                                                                                                      
+│ Test Directory:     /home/spack/runs                                                                                           │                                                                                                      
+│ Report File:        /home/spack/buildtest/var/report.json                                                                      │                                                                                                      
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/spack_env_deactivate.yml │                                                                                                      
+│                                                                                                                                │                                                                                                      
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                      
+───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+                      Discovered buildspecs                      
+╔═══════════════════════════════════════════════════════════════╗
+║ buildspec                                                     ║
+╟───────────────────────────────────────────────────────────────╢
+║ /home/spack/buildtest/examples/spack/spack_env_deactivate.yml ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/spack/buildtest/examples/spack/spack_env_deactivate.yml: VALID
+Total builder objects created: 1
+                                                                                                   Builders by type=spack                                                                                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                             ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                                 ┃ buildspecs                                                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ spack_env_deactivate_first/8be22b89 │ spack │ generic.local.bash │ None     │ None  │ None  │ deactivate a spack environment first prior to activating it │ /home/spack/buildtest/examples/spack/spack_env_deactivate.yml │
+└─────────────────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴─────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+spack_env_deactivate_first/8be22b89: Creating Test Directory: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 8 processes for processing builders
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+spack_env_deactivate_first/8be22b89 does not have any dependencies adding test to queue
+       Builders Eligible to Run        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ spack_env_deactivate_first/8be22b89 │
+└─────────────────────────────────────┘
+spack_env_deactivate_first/8be22b89: Current Working Directory : /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/stage
+spack_env_deactivate_first/8be22b89: Running Test via command: bash spack_env_deactivate_first_build.sh
+spack_env_deactivate_first/8be22b89: Test completed in 16.525284 seconds with returncode: 0
+spack_env_deactivate_first/8be22b89: Writing output file -  /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.out
+spack_env_deactivate_first/8be22b89: Writing error file - /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.err
+                                        Test Summary                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                             ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ spack_env_deactivate_first/8be22b89 │ generic.local.bash │ PASS   │ 0          │ 16.525  │
+└─────────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
+
+
+
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+Adding 1 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to /home/spack/buildtest/var/logs/buildtest_sjwfw_5j.log

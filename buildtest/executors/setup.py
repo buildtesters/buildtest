@@ -1,25 +1,26 @@
 """
 This module is responsible for setup of executors defined in buildtest
 configuration. The BuildExecutor class initializes the executors and chooses the
-executor class (LocalExecutor, LSFExecutor, SlurmExecutor, CobaltExecutor) to call depending
-on executor name.
+executor class to call depending on executor name.
 """
 
 import logging
 import multiprocessing as mp
 import os
+import shutil
+import sys
 import time
 
-from rich.table import Table
+from rich.table import Column, Table
 
 from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, ExecutorError
 from buildtest.executors.base import BaseExecutor
-from buildtest.executors.cobalt import CobaltExecutor
+from buildtest.executors.container import ContainerExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
-from buildtest.executors.pbs import PBSExecutor
+from buildtest.executors.pbs import PBSExecutor, TorqueExecutor
 from buildtest.executors.slurm import SlurmExecutor
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
@@ -45,6 +46,7 @@ class BuildExecutor:
         maxpendtime=None,
         pollinterval=None,
         timeout=None,
+        max_jobs=None,
     ):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
@@ -55,6 +57,7 @@ class BuildExecutor:
             account (str, optional): pass account name to charge batch jobs.
             maxpendtime (int, optional): maximum pend time in second until job is cancelled.
             pollinterval (int, optional): Number of seconds to wait until polling batch jobs
+            max_jobs (int, optional): Maximum number of jobs to run at a time.
         """
 
         # stores a list of builders objects
@@ -83,64 +86,27 @@ class BuildExecutor:
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
 
-        if site_config.valid_executors["local"]:
-            for name in self.configuration.valid_executors["local"].keys():
-                self.executors[name] = LocalExecutor(
-                    name=name,
-                    settings=self.configuration.valid_executors["local"][name][
-                        "setting"
-                    ],
-                    site_configs=self.configuration,
-                    timeout=timeout,
-                )
+        executor_types = {
+            "local": LocalExecutor,
+            "slurm": SlurmExecutor,
+            "lsf": LSFExecutor,
+            "pbs": PBSExecutor,
+            "torque": TorqueExecutor,
+            "container": ContainerExecutor,
+        }
 
-        if site_config.valid_executors["slurm"]:
-            for name in self.configuration.valid_executors["slurm"]:
-                self.executors[name] = SlurmExecutor(
+        for executor_type, executor_cls in executor_types.items():
+            valid_executors = self.configuration.valid_executors.get(executor_type, {})
+            for name, executor_settings in valid_executors.items():
+                self.executors[name] = executor_cls(
                     name=name,
                     account=account,
-                    settings=self.configuration.valid_executors["slurm"][name][
-                        "setting"
-                    ],
+                    settings=executor_settings.get("setting"),
                     site_configs=self.configuration,
                     maxpendtime=maxpendtime,
                     timeout=timeout,
                 )
-
-        if self.configuration.valid_executors["lsf"]:
-            for name in self.configuration.valid_executors["lsf"]:
-                self.executors[name] = LSFExecutor(
-                    name=name,
-                    account=account,
-                    settings=self.configuration.valid_executors["lsf"][name]["setting"],
-                    site_configs=self.configuration,
-                    maxpendtime=maxpendtime,
-                    timeout=timeout,
-                )
-
-        if self.configuration.valid_executors["pbs"]:
-            for name in self.configuration.valid_executors["pbs"]:
-                self.executors[name] = PBSExecutor(
-                    name=name,
-                    account=account,
-                    settings=self.configuration.valid_executors["pbs"][name]["setting"],
-                    site_configs=self.configuration,
-                    maxpendtime=maxpendtime,
-                    timeout=timeout,
-                )
-
-        if self.configuration.valid_executors["cobalt"]:
-            for name in self.configuration.valid_executors["cobalt"]:
-                self.executors[name] = CobaltExecutor(
-                    name=name,
-                    account=account,
-                    settings=self.configuration.valid_executors["cobalt"][name][
-                        "setting"
-                    ],
-                    site_configs=self.configuration,
-                    maxpendtime=maxpendtime,
-                    timeout=timeout,
-                )
+        self.max_jobs = max_jobs or self.configuration.target_config.get("max_jobs")
         self.setup()
 
     def __str__(self):
@@ -159,12 +125,7 @@ class BuildExecutor:
 
     def get_validbuilders(self):
         """Return a list of valid builders that were run"""
-        complete_builders = []
-        for builder in self.builders:
-            if builder.is_complete():
-                complete_builders.append(builder)
-
-        return complete_builders
+        return [builder for builder in self.builders if builder.is_complete()]
 
     def _choose_executor(self, builder):
         """Choose executor is called at the onset of a run and poll stage. Given a builder
@@ -193,20 +154,23 @@ class BuildExecutor:
 
         for executor_name in self.names():
             create_dir(os.path.join(BUILDTEST_EXECUTOR_DIR, executor_name))
-            executor_settings = self.executors[executor_name]._settings
 
             # if before_script field defined in executor section write content to var/executors/<executor>/before_script.sh
             file = os.path.join(
                 BUILDTEST_EXECUTOR_DIR, executor_name, "before_script.sh"
             )
-            module_cmds = get_module_commands(executor_settings.get("module"))
-
-            content = "#!/bin/bash" + "\n"
+            module_cmds = get_module_commands(
+                self.executors[executor_name]._settings.get("module")
+            )
+            content = ["#!/bin/bash"]
 
             if module_cmds:
-                content += "\n".join(module_cmds) + "\n"
+                content += module_cmds
 
-            content += executor_settings.get("before_script") or ""
+            content.append(
+                self.executors[executor_name]._settings.get("before_script") or ""
+            )
+            content = "\n".join(content)
             write_file(file, content)
 
     def select_builders_to_run(self, builders):
@@ -339,58 +303,76 @@ class BuildExecutor:
         pool = mp.Pool(num_workers)
         console.print(f"Spawning {num_workers} processes for processing builders")
         count = 0
-        while True:
-            active_builders = []
-            count += 1
-            console.rule(f"Iteration {count}")
+        try:
+            while True:
+                count += 1
+                console.rule(f"Iteration {count}")
+                active_builders = [
+                    builder for builder in self.builders if builder.is_pending()
+                ]
 
-            for builder in self.builders:
-                if builder.is_pending():
-                    active_builders.append(builder)
+                run_builders = self.select_builders_to_run(active_builders)
 
-            run_builders = self.select_builders_to_run(active_builders)
+                # if max_jobs property is set then reduce the number of jobs to run to max_jobs
+                if self.max_jobs:
+                    run_builders = run_builders[: self.max_jobs]
 
-            if not run_builders:
-                raise BuildTestError("Unable to run tests ")
+                if not run_builders:
+                    raise BuildTestError("Unable to run tests")
 
-            print(
-                f"In this iteration we are going to run the following tests: {run_builders}"
-            )
-            results = []
+                run_table = Table(
+                    Column("Builder", overflow="fold", style="red"),
+                    title="Builders Eligible to Run",
+                    header_style="blue",
+                )
+                for builder in run_builders:
+                    run_table.add_row(f"{str(builder)}")
+                console.print(run_table)
 
-            for builder in run_builders:
-                executor = self._choose_executor(builder)
-                results.append(pool.apply_async(executor.run, args=(builder,)))
-                self.builders.remove(builder)
+                results = []
 
-            for result in results:
-                task = result.get()
-                if isinstance(task, BuilderBase):
-                    self.builders.add(task)
+                for builder in run_builders:
+                    executor = self._choose_executor(builder)
+                    results.append(pool.apply_async(executor.run, args=(builder,)))
+                    self.builders.remove(builder)
 
-            pending_jobs = set()
-            for builder in self.builders:
-                # returns True if attribute builder.job is an instance of class Job. Only add jobs that are active running for pending
-                if builder.is_batch_job() and builder.is_running():
-                    pending_jobs.add(builder)
+                for result in results:
+                    task = result.get()
+                    if isinstance(task, BuilderBase):
+                        self.builders.add(task)
 
-            self.poll(pending_jobs)
+                pending_jobs = [
+                    builder
+                    for builder in self.builders
+                    if builder.is_batch_job() and builder.is_running()
+                ]
+                self.poll(pending_jobs)
 
-            # remove any failed jobs from list
-            # for builder in self.builders:
-            #    if builder.is_failed():
-            #        self.builders.remove(builder)
+                # remove any failed jobs from list
+                # for builder in self.builders:
+                #    if builder.is_failed():
+                #        self.builders.remove(builder)
 
-            terminate = True
+                # set Terminate to True if no builders are pending or running
 
-            # condition below checks if all tests are complete, if any are pending or running we need to stay in loop until jobs are finished
-            # until finished
-            for builder in self.builders:
-                if builder.is_pending() or builder.is_running():
-                    terminate = False
+                terminate = not any(
+                    builder.is_pending() or builder.is_running()
+                    for builder in self.builders
+                )
 
-            if terminate:
-                break
+                if terminate:
+                    break
+        except KeyboardInterrupt:
+            console.print("[red]Terminating workers due to exception")
+            self._cleanup_when_exception()
+
+            # close the worker pool by preventing any more tasks from being submitted
+            pool.close()
+
+            # terminate all worker processes
+            pool.join()
+
+            sys.exit()
 
         # close the worker pool by preventing any more tasks from being submitted
         pool.close()
@@ -402,51 +384,75 @@ class BuildExecutor:
         """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
-        # only add builders that are batch jobs
+
+        jobs = pending_jobs
 
         # poll until all pending jobs are complete
-        while pending_jobs:
+        while jobs:
             print(f"Polling Jobs in {self.pollinterval} seconds")
             time.sleep(self.pollinterval)
-            jobs = pending_jobs.copy()
 
             # for every pending job poll job and mark if job is finished or cancelled
             for job in jobs:
-                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
+                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor
                 executor = self.get(job.executor)
-                # if builder is local executor we shouldn't be polling so we set job to
-                # complete and return
 
                 executor.poll(job)
 
-                if job.is_complete():
-                    pending_jobs.remove(job)
+            self._print_job_details(jobs)
 
-                elif job.is_failed():
-                    pending_jobs.remove(job)
-                    # need to remove builder from self._validbuilders when job is cancelled because these builders are ones
-                    # self._validbuilders.remove(job)
+            jobs = [
+                builder
+                for builder in jobs
+                if builder.job.is_running()
+                or builder.job.is_pending()
+                or builder.job.is_suspended()
+            ]
 
-            self.print_job_details(jobs)
-
-    def print_job_details(self, active_jobs):
+    def _print_job_details(self, active_jobs):
         """Print pending jobs in table format during each poll step
 
         args:
             active_jobs (list): List of builders whose jobs are pending, suspended or running
             completed_jobs (list): List of builders whose jobs are completed
         """
-        table_columns = ["builder", "executor", "jobid", "jobstate", "runtime"]
-        pending_jobs_table = Table(
-            title="Pending and Suspended Jobs", header_style="blue"
+        table_columns = [
+            "builder",
+            "executor",
+            "jobid",
+            "jobstate",
+            "runtime",
+            "elapsedtime",
+            "pendtime",
+        ]
+        pend_count = len(
+            [
+                builder
+                for builder in active_jobs
+                if builder.job.is_pending() or builder.job.is_suspended()
+            ]
         )
-        running_jobs_table = Table(title="Running Jobs", header_style="blue")
-        completed_jobs_table = Table(title="Completed Jobs", header_style="blue")
+        run_count = len(
+            [builder for builder in active_jobs if builder.job.is_running()]
+        )
+        complete_count = len(
+            [builder for builder in active_jobs if builder.job.is_complete()]
+        )
+
+        pending_jobs_table = Table(
+            title=f"Pending and Suspended Jobs ({pend_count})", header_style="blue"
+        )
+        running_jobs_table = Table(
+            title=f"Running Jobs ({run_count})", header_style="blue"
+        )
+        completed_jobs_table = Table(
+            title=f"Completed Jobs ({complete_count})", header_style="blue"
+        )
 
         for column in table_columns:
-            pending_jobs_table.add_column(column)
-            running_jobs_table.add_column(column)
-            completed_jobs_table.add_column(column)
+            pending_jobs_table.add_column(column, overflow="fold")
+            running_jobs_table.add_column(column, overflow="fold")
+            completed_jobs_table.add_column(column, overflow="fold")
 
         for builder in active_jobs:
             if builder.job.is_pending() or builder.job.is_suspended():
@@ -456,6 +462,8 @@ class BuildExecutor:
                     f"[red]{builder.job.get()}",
                     f"[cyan]{builder.job.state()}",
                     f"[magenta]{str(builder.timer.duration())}",
+                    f"[yellow]{str(builder.job.elapsedtime)}",
+                    f"[yellow]{str(builder.job.pendtime)}",
                 )
 
             if builder.job.is_running():
@@ -465,6 +473,8 @@ class BuildExecutor:
                     f"[red]{builder.job.get()}",
                     f"[cyan]{builder.job.state()}",
                     f"[magenta]{str(builder.timer.duration())}",
+                    f"[yellow]{str(builder.job.elapsedtime)}",
+                    f"[yellow]{str(builder.job.pendtime)}",
                 )
 
             if builder.job.is_complete():
@@ -474,6 +484,8 @@ class BuildExecutor:
                     f"[red]{builder.job.get()}",
                     f"[cyan]{builder.job.state()}",
                     f"[magenta]{str(builder.metadata['result']['runtime'])}",
+                    f"[yellow]{str(builder.job.elapsedtime)}",
+                    f"[yellow]{str(builder.job.pendtime)}",
                 )
 
         # only print table if there are rows in table
@@ -485,3 +497,23 @@ class BuildExecutor:
 
         if completed_jobs_table.row_count:
             console.print(completed_jobs_table)
+
+    def _cleanup_when_exception(self):
+        """This method is invoked by cleaning up any builders that are when exception is raised"""
+        for builder in self.builders:
+            console.print(
+                f"[blue]{builder}[/blue]: [red]Removing test directory: {builder.test_root}"
+            )
+            try:
+                shutil.rmtree(builder.test_root)
+            except OSError as err:
+                console.print(
+                    f"[blue]{builder}[/blue]: [red]Unable to delete test directory {builder.test_root} with error: {err.strerror}"
+                )
+                continue
+
+            if builder.is_batch_job():
+                console.print(
+                    f"[blue]{builder}[/blue]: [red]Cancelling Job {builder.job.get()}"
+                )
+                builder.job.cancel()

@@ -1,17 +1,17 @@
-import json
 import logging
 import re
+import socket
 
 from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
     USER_SETTINGS_FILE,
+    console,
 )
 from buildtest.exceptions import BuildTestError, ConfigurationError
+from buildtest.scheduler.detection import LSF, PBS, Slurm, Torque
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, Cobalt, Slurm
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
 from buildtest.utils.tools import deep_get
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class SiteConfiguration:
     """This class is an interface to buildtest configuration"""
 
-    def __init__(self, settings_file=None):
+    def __init__(self, settings_file=None, verbose=None):
         """The initializer will declare class variables in its initial state and resolve path to
         configuration file. Once file is resolved we will load the configuration using :func:`load`.
 
@@ -30,7 +30,7 @@ class SiteConfiguration:
             settings_file (str, optional): path to buildtest configuration file
 
         """
-
+        self.verbose = verbose
         self._file = settings_file
         self.config = None
         self._name = None
@@ -40,12 +40,14 @@ class SiteConfiguration:
 
         self.disabled_executors = []
         self.invalid_executors = []
+        self.all_executors = []
         self.valid_executors = {
             "local": {},
             "slurm": {},
             "lsf": {},
             "pbs": {},
-            "cobalt": {},
+            "torque": {},
+            "container": {},
         }
 
         self.resolve()
@@ -54,6 +56,8 @@ class SiteConfiguration:
     def load(self):
         """Loads configuration file"""
         self.config = load_recipe(self._file)
+        if self.verbose:
+            console.print("Loading configuration file ... COMPLETE", style="bold blue")
 
     @property
     def file(self):
@@ -92,22 +96,31 @@ class SiteConfiguration:
         """
 
         self.systems = list(self.config["system"].keys())
-
+        logger.debug(
+            f"List of available systems: {self.systems} found in configuration file"
+        )
         host_lookup = {}
 
         # get hostname fqdn
-        cmd = BuildTestCommand("hostname -f")
-        cmd.execute()
-        hostname = " ".join(cmd.get_output())
+        hostname = socket.getfqdn()
+
+        if self.verbose:
+            console.print(f"Detected hostname: {hostname}", style="bold blue")
 
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.systems:
             host_lookup[name] = self.config["system"][name]["hostnames"]
 
+            logger.debug(
+                f"Checking hostname: {hostname} in system: '{name}' with hostnames: {host_lookup[name]}"
+            )
             for host_entry in self.config["system"][name]["hostnames"]:
-                if re.match(host_entry, hostname):
+                if re.fullmatch(host_entry, hostname):
                     self.target_config = self.config["system"][name]
                     self._name = name
+                    logger.info(
+                        f"Found matching system: {name} based on hostname: {hostname}"
+                    )
                     break
 
         if not self.target_config:
@@ -117,15 +130,8 @@ class SiteConfiguration:
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
 
-        # self.localexecutors = list(self.target_config["executors"]["local"].keys())
-
-    def validate(self, validate_executors=True, moduletool=None):
-        """This method validates the site configuration with schema and checks executor setting.
-
-        Args:
-             validate_executors (bool): Check executor settings. This is the default behavior but can be disabled
-             moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
-        """
+    def validate(self):
+        """This method validates the site configuration with schema."""
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
         config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
@@ -134,34 +140,63 @@ class SiteConfiguration:
             f"Validating configuration file with schema: {DEFAULT_SETTINGS_SCHEMA}"
         )
         custom_validator(recipe=self.config, schema=config_schema)
+        if self.verbose:
+            console.print(
+                "Validating configuration file ... COMPLETE", style="bold blue"
+            )
         logger.debug("Validation was successful")
 
-        if validate_executors:
-            self._executor_check()
-
-        if (
-            self.target_config.get("moduletool") != "N/A"
-            and self.target_config.get("moduletool") != moduletool
-        ):
-            raise ConfigurationError(
-                self.config,
-                self.file,
-                f"There is a module tool mismatch, we have detected '{moduletool}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
-            )
+        self._executor_check()
 
     def _executor_check(self):
         """Validate executors"""
+
+        if self.verbose:
+            console.print("Initiating executor check ...", style="bold blue")
+
         self._validate_local_executors()
         self._validate_slurm_executors()
         self._validate_lsf_executors()
-        self._validate_cobalt_executors()
         self._validate_pbs_executors()
+        self._validate_torque_executors()
+        self._validate_container_executors()
+
+        for executor_type in self.target_config["executors"]:
+            if executor_type == "defaults":
+                continue
+
+            for name in self.target_config["executors"][executor_type]:
+                self.all_executors.append(f"{self.name()}.{executor_type}.{name}")
+
+        if self.verbose:
+            console.print(
+                f"We have found the following executors: {self.all_executors}",
+                style="bold blue",
+            )
+
+    def get_all_executors(self):
+        """Return list of all executors"""
+        return self.all_executors
 
     def is_executor_disabled(self, executor):
         if executor.get("disable"):
             return True
 
         return False
+
+    def _validate_container_executors(self):
+        executor_names = deep_get(self.target_config, "executors", "container")
+        if not executor_names:
+            return
+        for executor in executor_names:
+            executor_name = f"{self.name()}.container.{executor}"
+            if self.is_executor_disabled(executor_names[executor]):
+                self.disabled_executors.append(executor_name)
+                continue
+
+            self.valid_executors["container"][executor_name] = {
+                "setting": executor_names[executor]
+            }
 
     def _validate_local_executors(self):
         """Check local executor by verifying the 'shell' types are valid"""
@@ -199,20 +234,18 @@ class SiteConfiguration:
 
         lsf_executors = deep_get(self.target_config, "executors", "lsf")
         if not lsf_executors:
+
+            if self.verbose:
+                console.print(
+                    "No LSF executors found in configuration file", style="bold blue"
+                )
             return
 
         executor_type = "lsf"
 
-        lsf = LSF()
+        lsf = LSF(custom_dirs=deep_get(self.target_config, "paths", "lsf"))
         if not lsf.active():
             return
-
-        queue_list = []
-        valid_queue_state = "Open:Active"
-        record = lsf.queues["RECORDS"]
-        # retrieve all queues from json record
-        for name in record:
-            queue_list.append(name["QUEUE_NAME"])
 
         # check all executors have defined valid queues and check queue state.
         for executor in lsf_executors:
@@ -220,31 +253,14 @@ class SiteConfiguration:
             if self.is_executor_disabled(lsf_executors[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
-            queue = lsf_executors[executor].get("queue")
-            # if queue field is defined check if its valid queue
-            if queue:
-                if queue not in queue_list:
-                    self.invalid_executors.append(executor_name)
-                    logger.error(
-                        f"'{queue}' is invalid LSF queue. Please select one of the following queues: {queue_list}"
-                    )
-                    continue
-
-                # check queue record for Status
-                for name in record:
-                    # skip record until we find matching queue
-                    if name["QUEUE_NAME"] != queue:
-                        continue
-
-                    queue_state = name["STATUS"]
-                    # if state not Open:Active we raise error
-                    if not queue_state == valid_queue_state:
-                        self.invalid_executors.append(executor_name)
-                        logger.error(
-                            f"'{queue}' is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
-                        )
-                        break
+            if lsf_executors[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": lsf_executors[executor]
+                }
+                continue
+            if not lsf.validate_queue(executor=lsf_executors[executor]):
+                self.invalid_executors.append(executor_name)
+                continue
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": lsf_executors[executor]
@@ -259,106 +275,53 @@ class SiteConfiguration:
 
         slurm_executor = deep_get(self.target_config, "executors", "slurm")
         if not slurm_executor:
+
+            if self.verbose:
+                console.print(
+                    "No SLURM executors found in configuration file", style="bold blue"
+                )
+
             return
 
         executor_type = "slurm"
-        slurm = Slurm()
+        slurm = Slurm(custom_dirs=deep_get(self.target_config, "paths", "slurm"))
 
         if not slurm.active():
             return
 
+        slurm_partitions = slurm.partitions()
+        slurm_qos = slurm.qos()
+        slurm_clusters = slurm.clusters()
+        logger.debug(f"SLURM Partitions: {slurm_partitions}")
+        logger.debug(f"SLURM QOS: {slurm_qos}")
+        logger.debug(f"SLURM Clusters: {slurm_clusters}")
         for executor in slurm_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
             if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
-            # if 'partition' key defined check if its valid partition
-            if slurm_executor[executor].get("partition"):
-                if slurm_executor[executor]["partition"] not in slurm.partitions:
-                    self.invalid_executors(executor_name)
-                    logger.error(
-                        f"executor - {executor} has invalid partition name '{slurm_executor[executor]['partition']}'. Please select one of the following partitions: {slurm.partitions}"
-                    )
-                    continue
-
-                query = (
-                    f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
-                )
-                cmd = BuildTestCommand(query)
-                cmd.execute()
-                part_state = "".join(cmd.get_output())
-                part_state = part_state.rstrip()
-                # check if partition is in 'up' state. If not we raise an error.
-                if part_state != "up":
-                    self.invalid_executors(f"{executor_name}")
-                    logger.error(
-                        f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                    )
-                    continue
-
-            """ disable qos check for now. Issue with 'regular' qos at Cori where it maps to 'regular_hsw' partition while 'regular' is the valid qos name' 
-            # check if 'qos' key is valid qos
-            if (
-                slurm_executor[executor].get("qos")
-                and slurm_executor[executor].get("qos") not in slurm.qos
-            ):
-                raise ConfigurationError(
-                    self.config,
-                    self.file,
-                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm.qos}",
-                )
-            """
-
-            # check if 'cluster' key is valid slurm cluster
-            if (
-                slurm_executor[executor].get("cluster")
-                and slurm_executor[executor].get("cluster") not in slurm.clusters
-            ):
-                self.invalid_executors(f"{executor_name}")
-                logger.error(
-                    f"executor - {executor} has invalid slurm cluster - {slurm_executor[executor]['cluster']}. Please select one of the following slurm clusters: {slurm.clusters}"
-                )
+            if slurm_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": slurm_executor[executor]
+                }
                 continue
+            if slurm_executor[executor].get("partition"):
+                if not slurm.validate_partition(slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
+            if slurm_executor[executor].get("cluster"):
+                if not slurm.validate_cluster(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
+
+            if slurm_executor[executor].get("qos"):
+                if not slurm.validate_qos(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": slurm_executor[executor]
-            }
-
-    def _validate_cobalt_executors(self):
-        """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
-        its a non-zero exit code then queue doesn't exist otherwise it is a valid
-        queue.
-        """
-
-        cobalt_executor = deep_get(self.target_config, "executors", "cobalt")
-        if not cobalt_executor:
-            return
-
-        executor_type = "cobalt"
-
-        cobalt = Cobalt()
-        if not cobalt.active():
-            return
-
-        for executor in cobalt_executor:
-            executor_name = f"{self.name()}.{executor_type}.{executor}"
-
-            if self.is_executor_disabled(cobalt_executor[executor]):
-                self.disabled_executors.append(executor_name)
-                continue
-
-            queue = cobalt_executor[executor].get("queue")
-            # if queue property defined in cobalt executor name check if it exists
-            if queue not in cobalt.queues:
-                logger.error(
-                    f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {cobalt.queues} "
-                )
-                continue
-
-            self.valid_executors[executor_type][executor_name] = {
-                "setting": cobalt_executor[executor]
             }
 
     def _validate_pbs_executors(self):
@@ -395,11 +358,17 @@ class SiteConfiguration:
 
         pbs_executor = deep_get(self.target_config, "executors", "pbs")
         if not pbs_executor:
+
+            if self.verbose:
+                console.print(
+                    "No PBS executors found in configuration file", style="bold blue"
+                )
+
             return
 
         executor_type = "pbs"
 
-        pbs = PBS()
+        pbs = PBS(custom_dirs=deep_get(self.target_config, "paths", "pbs"))
         if not pbs.active():
             return
 
@@ -409,29 +378,56 @@ class SiteConfiguration:
             if self.is_executor_disabled(pbs_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
-            queue = pbs_executor[executor].get("queue")
-            if queue not in pbs.queues:
-                self.invalid_executors.append(executor_name)
-                logger.error(
-                    f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
-                )
+            if pbs_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": pbs_executor[executor]
+                }
                 continue
-
-            if (
-                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
-                or pbs.queue_summary["Queue"][queue]["started"] != "True"
-            ):
+            queue = pbs_executor[executor].get("queue")
+            if not pbs.validate_queue(queue):
                 self.invalid_executors.append(executor_name)
-                logger.info("Queue configuration")
-                logger.info(json.dumps(pbs.queue_summary, indent=2))
-                logger.error(
-                    f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
-                )
                 continue
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": pbs_executor[executor]
+            }
+
+    def _validate_torque_executors(self):
+
+        torque_executor = deep_get(self.target_config, "executors", "torque")
+        if not torque_executor:
+
+            if self.verbose:
+                console.print(
+                    "No PBS/Torque executors found in configuration file",
+                    style="bold blue",
+                )
+
+            return
+
+        executor_type = "torque"
+
+        torque = Torque(custom_dirs=deep_get(self.target_config, "paths", "torque"))
+        if not torque.active():
+            return
+
+        for executor in torque_executor:
+            executor_name = f"{self.name()}.{executor_type}.{executor}"
+
+            if self.is_executor_disabled(torque_executor[executor]):
+                self.disabled_executors.append(executor_name)
+                continue
+            if torque_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": torque_executor[executor]
+                }
+                continue
+            if not torque.validate_queue(torque_executor[executor]):
+                self.invalid_executors.append(executor_name)
+                continue
+
+            self.valid_executors[executor_type][executor_name] = {
+                "setting": torque_executor[executor]
             }
 
     def get_profile(self, profile_name):

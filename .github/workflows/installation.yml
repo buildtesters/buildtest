@@ -17,10 +17,10 @@ jobs:
         python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4.5.0
+      uses: actions/setup-python@v5.0.0
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -57,9 +57,3 @@ jobs:
         source setup.csh        
         which buildtest
         buildtest --help
-
-    - uses: actions/checkout@v3
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 30

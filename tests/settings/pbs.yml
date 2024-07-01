@@ -1,8 +1,19 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: N/A
+    moduletool: none
+    poolsize: 8
+    max_jobs: 8
     pager: False
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
     executors:
       defaults:
         pollinterval: 5

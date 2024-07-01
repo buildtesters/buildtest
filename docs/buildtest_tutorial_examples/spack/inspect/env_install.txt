@@ -1,25 +1,34 @@
 $ buildtest inspect query -t install_in_spack_env 
-──────────────────────────────────────────────────────────────────────────────────────── install_in_spack_env/9f0c2e5d-0974-4881-8066-c79aa2ed352f ────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────── install_in_spack_env/5f9e9757-7b72-4e7c-a0f9-42ee0f3a7bf7 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Install m4 and zlib in a spack environment named m4_zlib
 State: PASS
 Returncode: 0
-Runtime: 4.618925 sec
-Starttime: 2023/02/06 21:15:25
-Endtime: 2023/02/06 21:15:29
-Command: bash --norc --noprofile -eo pipefail install_in_spack_env_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/9f0c2e5d/install_in_spack_env.sh
-Build Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/9f0c2e5d/install_in_spack_env_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/9f0c2e5d/install_in_spack_env.out
-Error File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/9f0c2e5d/install_in_spack_env.err
-Log File: /home/spack/buildtest/var/logs/buildtest_thv679v3.log
-──────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/9f0c2e5d/install_in_spack_env.sh ─────────────────────────────────────────────────────────────
-#!/bin/bash                                                                                                                                                                                                                                
-source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                          
-spack compiler find                                                                                                                                                                                                                        
-spack env create  m4_zlib                                                                                                                                                                                                                  
-spack env activate  m4_zlib                                                                                                                                                                                                                
-spack add m4                                                                                                                                                                                                                               
-spack add zlib                                                                                                                                                                                                                             
-spack concretize -f                                                                                                                                                                                                                        
-spack install --keep-prefix                                                                                                                                                                                                                
+Runtime: 18.50853 sec
+Starttime: 2024/02/08 19:00:30
+Endtime: 2024/02/08 19:00:49
+Command: bash install_in_spack_env_build.sh
+Test Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/5f9e9757/install_in_spack_env.sh
+Build Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/5f9e9757/install_in_spack_env_build.sh
+Output File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/5f9e9757/install_in_spack_env.out
+Error File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/5f9e9757/install_in_spack_env.err
+Log File: /home/spack/buildtest/var/logs/buildtest_m7z3j_4j.log
+─────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/5f9e9757/install_in_spack_env.sh ───────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                             
+set -eo pipefail                                                                                                                                                                                                                        
+source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
+spack compiler find                                                                                                                                                                                                                     
+spack env create  m4_zlib                                                                                                                                                                                                               
+spack env activate  m4_zlib                                                                                                                                                                                                             
+spack add m4                                                                                                                                                                                                                            
+spack add zlib                                                                                                                                                                                                                          
+spack concretize -f                                                                                                                                                                                                                     
+spack install --keep-prefix                                                                                                                                                                                                             
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF POST COMMANDS ########                                                                                                                                                                                                
+spack env deactivate                                                                                                                                                                                                                    
+spack env remove -y m4_zlib                                                                                                                                                                                                             
+######## END OF POST COMMANDS   ########                                                                                                                                                                                                
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        

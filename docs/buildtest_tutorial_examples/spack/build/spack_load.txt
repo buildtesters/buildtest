@@ -1,0 +1,72 @@
+$ buildtest build -b /home/spack/buildtest/examples/spack/spack_load.yml 
+╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮                                                                                                                
+│                                                                                                                      │                                                                                                                
+│ User:               spack                                                                                            │                                                                                                                
+│ Hostname:           3220cd0ac8f6                                                                                     │                                                                                                                
+│ Platform:           Linux                                                                                            │                                                                                                                
+│ Current Time:       2024/02/08 19:02:23                                                                              │                                                                                                                
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                              │                                                                                                                
+│ buildtest version:  1.7                                                                                              │                                                                                                                
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                          │                                                                                                                
+│ python version:     3.11.6                                                                                           │                                                                                                                
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                     │                                                                                                                
+│ Test Directory:     /home/spack/runs                                                                                 │                                                                                                                
+│ Report File:        /home/spack/buildtest/var/report.json                                                            │                                                                                                                
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/spack_load.yml │                                                                                                                
+│                                                                                                                      │                                                                                                                
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                
+───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+                 Discovered buildspecs                 
+╔═════════════════════════════════════════════════════╗
+║ buildspec                                           ║
+╟─────────────────────────────────────────────────────╢
+║ /home/spack/buildtest/examples/spack/spack_load.yml ║
+╚═════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/spack/buildtest/examples/spack/spack_load.yml: VALID
+Total builder objects created: 1
+                                                                                  Builders by type=spack                                                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                     ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                 ┃ buildspecs                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ spack_load_example/e72ddfe0 │ spack │ generic.local.bash │ None     │ None  │ None  │ Run spack load for m4 package and run tests │ /home/spack/buildtest/examples/spack/spack_load.yml │
+└─────────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴─────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+spack_load_example/e72ddfe0: Creating Test Directory: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/e72ddfe0
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 8 processes for processing builders
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+spack_load_example/e72ddfe0 does not have any dependencies adding test to queue
+   Builders Eligible to Run    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ spack_load_example/e72ddfe0 │
+└─────────────────────────────┘
+spack_load_example/e72ddfe0: Current Working Directory : /home/spack/runs/generic.local.bash/spack_load/spack_load_example/e72ddfe0/stage
+spack_load_example/e72ddfe0: Running Test via command: bash spack_load_example_build.sh
+spack_load_example/e72ddfe0: Test completed in 9.780865 seconds with returncode: 0
+spack_load_example/e72ddfe0: Writing output file -  /home/spack/runs/generic.local.bash/spack_load/spack_load_example/e72ddfe0/spack_load_example.out
+spack_load_example/e72ddfe0: Writing error file - /home/spack/runs/generic.local.bash/spack_load/spack_load_example/e72ddfe0/spack_load_example.err
+                                    Test Summary                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                     ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ spack_load_example/e72ddfe0 │ generic.local.bash │ PASS   │ 0          │ 9.781   │
+└─────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
+
+
+
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+Adding 1 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to /home/spack/buildtest/var/logs/buildtest_17hscxmj.log

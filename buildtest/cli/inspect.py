@@ -1,168 +1,17 @@
 """This module implements methods for buildtest inspect command that can be used
 to retrieve test record from report file in JSON format."""
+
 import re
 import sys
 
 from rich.pretty import pprint
-from rich.syntax import Syntax
-from rich.table import Table
+from rich.table import Column, Table
 
 from buildtest.defaults import console
-from buildtest.utils.file import read_file, resolve_path
+from buildtest.utils.file import resolve_path
+from buildtest.utils.print import print_file_content
+from buildtest.utils.table import create_table, print_table, print_terse_format
 from buildtest.utils.tools import checkColor
-
-
-def fetch_test_names(report, names):
-    """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
-    are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
-
-    Args:
-        report (buildtest.cli.report.Report): An instance of Report class
-        names (list): A list of test names
-    """
-    query_builders = []
-    name_lookup = report.lookup()
-
-    for name in names:
-        # if test includes backslash we need to check if their is an ID match
-        if name.find("/") != -1:
-            test_name, tid = name.split("/")[0], "".join(name.split("/")[1:])
-
-            if test_name not in name_lookup.keys():
-                console.print(f"Unable to find test: {test_name} so skipping test")
-                continue
-
-            # for list of all TEST IDs corresponding to test name, apply a re.match to acquire builder names
-            for full_ids in name_lookup[test_name]:
-                # if full_ids.startswith(tid):
-                if re.match(tid, full_ids):
-                    query_builders.append(f"{test_name}/{full_ids}")
-
-        # get latest test id for given test name
-        else:
-            tid = report.latest_testid_by_name(name)
-            if tid:
-                query_builders.append(f"{name}/{tid}")
-
-    query_builders = list(set(query_builders))
-
-    if not query_builders:
-        console.print(
-            f"Unable to find any tests by name {names}, please select one of the following tests: {report.get_names()}"
-        )
-        sys.exit(1)
-
-    return query_builders
-
-
-def print_builders(report):
-    """This method prints all the builders.
-
-    Args:
-        report (str): Path to report file
-    """
-
-    builders = report.builder_names()
-    for name in builders:
-        console.print(name)
-
-
-def print_terse(table, no_header=None, console_color=None):
-    """This method prints output of builders in terse mode which is run via command ``buildtest inspect list --terse``
-
-    Args:
-        table (dict): Table with columns required for the ``buildtest inspect list`` command.
-        no_header (bool, optional): Determine whether to print header in terse format.
-        console_color (bool, optional): Select desired color when displaying results
-    """
-
-    row_entry = [table[key] for key in table.keys()]
-    transpose_list = [list(i) for i in zip(*row_entry)]
-
-    # We print the table columns if --no-header is not specified
-    if not no_header:
-        console.print("|".join(table.keys()), style=console_color)
-
-    for row in transpose_list:
-        console.print("|".join(row), style=console_color)
-
-
-def inspect_list(
-    report,
-    terse=None,
-    no_header=None,
-    builder=None,
-    color=None,
-    pager=None,
-    row_count=None,
-):
-    """This method list an output of test id, name, and buildspec file from the report cache. The default
-    behavior is to display output in table format though this can be changed with terse format which will
-    display in parseable format. This method implements command ``buildtest inspect list``
-
-    Args:
-        report (str): Path to report file
-        terse (bool, optional): Print output in terse format
-        no_header (bool, optional): Determine whether to print header in terse format.
-        builder (bool, optional): Print output in builder format which can be done via ``buildtest inspect list --builder``
-        color (bool, optional): Print table output of ``buildtest inspect list`` with selected color
-        pager (bool, optional): Print output in paging format
-        row_count (bool, optional): Print total number of test runs
-    """
-    consoleColor = checkColor(color)
-
-    test_ids = report._testid_lookup()
-
-    if row_count:
-        print(len(test_ids))
-        return
-
-    # implement command 'buildtest inspect list --builder'
-    if builder:
-        if pager:
-            with console.pager():
-                print_builders(report)
-            return
-
-        print_builders(report)
-        return
-
-    table = {"id": [], "name": [], "buildspec": []}
-
-    for identifier in test_ids.keys():
-        table["id"].append(identifier)
-        table["name"].append(test_ids[identifier]["name"])
-        table["buildspec"].append(test_ids[identifier]["buildspec"])
-
-    # print output in terse format
-    if terse:
-        if pager:
-            with console.pager():
-                print_terse(table, no_header, consoleColor)
-            return
-
-        print_terse(table, no_header, consoleColor)
-        return
-
-    inspect_table = Table(
-        header_style="blue",
-        title="Test Summary by id, name, buildspec",
-        row_styles=[consoleColor],
-    )
-    for column in table.keys():
-        inspect_table.add_column(column)
-
-    for identifier, name, buildspec in zip(
-        table["id"], table["name"], table["buildspec"]
-    ):
-        inspect_table.add_row(identifier, name, buildspec)
-
-    if pager:
-        with console.pager():
-            console.print(inspect_table)
-        return
-
-    console.print(inspect_table)
 
 
 def print_by_query(
@@ -221,7 +70,11 @@ def print_by_query(
                 console.print(f"[red]Log File: {test['logpath']}")
 
                 if test["metrics"]:
-                    table = Table("[blue]Name", "[blue]Value", title="Metrics")
+                    table = Table(
+                        Column("Name", overflow="fold", header_style="blue"),
+                        Column("Value", overflow="fold", header_style="blue"),
+                        title="Metrics",
+                    )
                     for name, values in test["metrics"].items():
                         table.add_row(name, values)
 
@@ -229,42 +82,153 @@ def print_by_query(
 
                 # print content of output file when 'buildtest inspect query --output' is set
                 if output:
-                    content = read_file(test["outfile"])
-                    console.rule(f"Output File: {test['outfile']}")
-
-                    syntax = Syntax(content, "text")
-                    console.print(syntax)
+                    print_file_content(test["outfile"], "Output File: ", "text", theme)
 
                 # print content of error file when 'buildtest inspect query --error' is set
                 if error:
-                    content = read_file(test["errfile"])
-                    console.rule(f"Error File: {test['errfile']}")
-
-                    syntax = Syntax(content, "text", theme=theme)
-                    console.print(syntax)
+                    print_file_content(test["errfile"], "Error File: ", "text", theme)
 
                 # print content of testpath when 'buildtest inspect query --testpath' is set
                 if testpath:
-                    content = read_file(test["testpath"])
-                    console.rule(f"Test File: {test['testpath']}")
-
-                    syntax = Syntax(content, "shell", theme=theme)
-                    console.print(syntax)
+                    print_file_content(test["testpath"], "Test File: ", "shell", theme)
 
                 # print content of build script when 'buildtest inspect query --buildscript' is set
                 if buildscript:
-                    content = read_file(test["build_script"])
-                    console.rule(f"Test File: {test['build_script']}")
-
-                    syntax = Syntax(content, lexer="shell", theme=theme)
-                    console.print(syntax)
+                    print_file_content(
+                        test["build_script"], "Build Script File: ", "shell", theme
+                    )
 
                 if buildenv:
-                    content = read_file(test["buildenv"])
-                    console.rule(f"Test File: {test['buildenv']}")
+                    print_file_content(test["buildenv"], "Test File: ", "text", theme)
 
-                    syntax = Syntax(content, lexer="text", theme=theme)
-                    console.print(syntax)
+
+def fetch_test_names(report, names):
+    """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
+    are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
+
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        names (list): A list of test names
+    """
+    query_builders = []
+    name_lookup = report.lookup()
+
+    for name in names:
+        # if test includes backslash we need to check if their is an ID match
+        if name.find("/") != -1:
+            test_name, tid = name.split("/")[0], "".join(name.split("/")[1:])
+
+            if test_name not in name_lookup.keys():
+                console.print(f"Unable to find test: {test_name} so skipping test")
+                continue
+
+            # for list of all TEST IDs corresponding to test name, apply a re.match to acquire builder names
+            for full_ids in name_lookup[test_name]:
+                # if full_ids.startswith(tid):
+                if re.match(tid, full_ids):
+                    query_builders.append(f"{test_name}/{full_ids}")
+
+        # get latest test id for given test name
+        else:
+            tid = report.latest_testid_by_name(name)
+            if tid:
+                query_builders.append(f"{name}/{tid}")
+
+    query_builders = list(set(query_builders))
+
+    if not query_builders:
+        console.print(
+            f"Unable to find any tests by name {names}, please select one of the following tests: {report.get_names()}"
+        )
+        sys.exit(1)
+
+    return query_builders
+
+
+def print_builders(report, pager=None, color=None):
+    """This method prints all the builders.
+
+    Args:
+        report (str): Path to report file
+    """
+
+    if pager:
+        with console.pager():
+            for name in report.builder_names():
+                console.print(name)
+        return
+
+    for name in report.builder_names():
+        console.print(f"[{color}]{name}")
+
+
+def inspect_list(
+    report,
+    terse=None,
+    no_header=None,
+    builder=None,
+    color=None,
+    pager=None,
+    row_count=None,
+):
+    """This method list an output of test id, name, and buildspec file from the report cache. The default
+    behavior is to display output in table format though this can be changed with terse format which will
+    display in parseable format. This method implements command ``buildtest inspect list``
+
+    Args:
+        report (str): Path to report file
+        terse (bool, optional): Print output in terse format
+        no_header (bool, optional): Determine whether to print header in terse format.
+        builder (bool, optional): Print output in builder format which can be done via ``buildtest inspect list --builder``
+        color (bool, optional): Print table output of ``buildtest inspect list`` with selected color
+        pager (bool, optional): Print output in paging format
+        row_count (bool, optional): Print total number of test runs
+    """
+
+    consoleColor = checkColor(color)
+    test_ids = report._testid_lookup()
+
+    if row_count:
+        print(len(test_ids))
+        return
+
+    # implement command 'buildtest inspect list --builder'
+    if builder:
+        print_builders(report, pager=pager, color=consoleColor)
+        return
+
+    tdata = []
+
+    for identifier in test_ids.keys():
+        tdata.append(
+            [
+                identifier,
+                test_ids[identifier]["name"],
+                test_ids[identifier]["buildspec"],
+            ]
+        )
+
+    # print output in terse format
+    if terse:
+        print_terse_format(
+            tdata=tdata,
+            headers=["id", "name", "buildspec"],
+            color=consoleColor,
+            display_header=no_header,
+            pager=pager,
+        )
+        return
+
+    # Create the table using the create_table method
+    inspect_table = create_table(
+        data=tdata,
+        title="Test Summary by id, name, buildspec",
+        columns=["id", "name", "buildspec"],
+        header_style="blue",
+        column_style=consoleColor,
+    )
+
+    print_table(inspect_table, pager=pager)
 
 
 def inspect_query(
@@ -438,4 +402,3 @@ def inspect_by_name(report, names, pager=None):
         return
 
     print_by_name(report, names)
-    return

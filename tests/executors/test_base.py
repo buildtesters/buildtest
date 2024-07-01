@@ -12,7 +12,6 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.system import BuildTestSystem
 
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +19,10 @@ pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def test_build_executor(tmp_path):
     bc = SiteConfiguration()
     bc.detect_system()
-    bc.validate(validate_executors=True)
+    bc.validate()
 
     # Load BuildExecutor
     be = BuildExecutor(bc)
-
-    system = BuildTestSystem()
 
     # ensure we have the following executors valid
     assert "generic.local.bash" in list(be.names())
@@ -54,7 +51,6 @@ def test_build_executor(tmp_path):
             configuration=bc,
             filters=bp_filters,
             testdir=tmp_path,
-            buildtest_system=system,
             buildtest_compilers=buildtest_compilers,
         )
         valid_builders += builders.get_builders()

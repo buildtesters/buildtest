@@ -1,0 +1,11 @@
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml config compilers list --yaml 
+gcc:
+  gcc_11.4.0:
+    cc: /usr/bin/gcc
+    cxx: /usr/bin/g++
+    fc: /usr/bin/gfortran
+  gcc_12.3.0:
+    cc: /usr/bin/gcc-12
+    cxx: /usr/bin/g++-12
+    fc: /usr/bin/gfortran-12
+

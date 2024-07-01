@@ -1,18 +1,6 @@
 Contributing to Schemas
 ==========================
 
-Schema Docs
-------------
-
-Schema Documentation are hosted on branch `gh-pages <https://github.com/buildtesters/buildtest/tree/gh-pages>`_
-which is hosted via GitHub Pages at https://buildtesters.github.io/buildtest/.
-
-There is an automated workflow `jsonschema2md <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/jsonschemadocs.yml>`_
-which publishes schemas, documentation and examples. If you want to edit top-level page
-`README.md <https://github.com/buildtesters/buildtest/blob/gh-pages/README.md>`_ please
-send a pull-request to `gh-pages` branch.
-
-
 Adding a new schema
 ----------------------
 
@@ -81,8 +69,7 @@ references definition ``string_or_list``::
       "$ref": "#/definitions/string_or_list"
     },
 
-The tags field is used in other schemas like **compiler.schema.json**
-and **script.schema.json**. In this example we declare **tags** field and
+The tags field is used in other schemas like **script.schema.json**. In this example we declare **tags** field and
 reference tags anchor from definitions.schema.json::
 
     "tags": {

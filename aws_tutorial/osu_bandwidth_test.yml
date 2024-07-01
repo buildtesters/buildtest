@@ -1,0 +1,24 @@
+buildspecs:
+  osu_bandwidth:
+    type: script
+    executor: generic.local.bash
+    description: Run OSU Bandwidth Test
+    run:  mpirun -np 2 osu_bw
+
+  osu_bandwidth_perf:
+    type: script
+    executor: generic.local.bash
+    description: Run OSU Bandwidth Performance Test
+    run:  mpirun -np 2 osu_bw
+    metrics:
+      osu_bw:
+        type: float
+        regex:
+          exp: '^16384\s+([\d.]+)$'
+          stream: stdout
+          item: 1
+    status:
+      assert_ge:
+        comparisons:
+          - name: osu_bw
+            ref: 10000

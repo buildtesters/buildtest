@@ -1,0 +1,8 @@
+buildspecs:
+  hello_world_example:
+    type: script
+    executor: generic.local.bash
+    description: Hello world compilation in C
+    run: |
+      gcc hello.c -o hello
+      ./hello

@@ -1,0 +1,11 @@
+buildspecs:
+  run_script_in_container:
+    type: script
+    executor: generic.local.bash
+    description: run a python script in container
+    container:
+      platform: "docker"
+      image: python:latest
+      command: bash -c "python /buildtest/script.py"
+    run: |      
+      python script.py

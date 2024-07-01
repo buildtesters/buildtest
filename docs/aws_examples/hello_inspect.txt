@@ -1,0 +1,26 @@
+$ buildtest inspect query -o -t hello_world_example 
+──────────────────────────────────────────────────────────────────────────────── hello_world_example/516718ee-aafe-4807-9ac1-cc2b3f1065c2 ─────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Hello world compilation in C
+State: PASS
+Returncode: 0
+Runtime: 0.050824 sec
+Starttime: 2024/06/17 18:50:20
+Endtime: 2024/06/17 18:50:20
+Command: bash hello_world_example_build.sh
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/hello_world_example.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/hello_world_example_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/hello_world_example.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/hello/hello_world_example/516718ee/hello_world_example.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_k4_6t_re.log
+────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Hello, World in C                                                                                                                                                                                                          
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Test File:  ───────────────────────────────────────────────────────────────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                            
+# Content of run section                                                                                                                                                                                                   
+gcc hello.c -o hello                                                                                                                                                                                                       
+./hello                                                                                                                                                                                                                    
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

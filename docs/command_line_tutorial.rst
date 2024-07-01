@@ -1,5 +1,7 @@
-Buildtest Command Line Tutorial
-=================================
+.. _command_line_tutorial:
+
+Command Line Tutorial
+======================
 
 For this session, we assume you have :ref:`installed buildtest <installing_buildtest>` on your system.
 You can check if ``buildtest`` command is available by running::
@@ -116,20 +118,23 @@ Inspecting Test
 The ``buildtest inspect`` command can be used to query test details and display metadata for one or more test. First you will
 want to see all available test and their corresponding unique identifiers. Let's run the following
 
-.. dropdown:: ``buildtest it list``
+.. dropdown:: ``buildtest inspect list``
 
-    .. command-output:: buildtest it list
+    .. command-output:: buildtest inspect list
 
 In buildtest, test are referred as **builders** which is in format **<name>/<ID>** where each test has a unique identifier
 separated by backslash **/** character. To see all builders you can run::
 
-    buildtest it list -b
+    buildtest inspect list -b
 
-Note, we will be using the builder notation when querying test via ``buildtest it name`` and ``buildtest it query``. The
+The ``buildtest it`` command is an alias for ``buildtest inspect`` command, so we will use this command going forward.
+We will be using the builder notation when querying test via ``buildtest it name`` and ``buildtest it query``. The
 command ``buildtest it name`` will display raw JSON record from the report file for a given test. The test names can be positional
-arguments so you can query multiple tests simulataneously. Let's run the following::
+arguments so you can query multiple tests simultaneously.
 
-    buildtest it name hello_world circle_area
+Let's run the following::
+
+    buildtest it name hello_world
 
 The ``buildtest it query`` is used to query test records in human readable format. This command is useful once you
 run test via ``buildtest build`` and you want to inspect test result. buildtest can display test content, output and
@@ -137,9 +142,9 @@ error file and support multiple test queries including regular expression!!
 
 Let's try running the following
 
-.. dropdown:: ``buildtest it query -o -e --testpath hello_world``
+.. dropdown:: ``buildtest it query -o -e -t hello_world``
 
-    .. command-output:: buildtest it query -o -e --testpath hello_world
+    .. command-output:: buildtest it query -o -e -t hello_world
 
 You can retrieve paths to given test via ``buildtest path`` that can be useful if you want to navigate to directory or list
 contents. By default ``buildtest path`` will retrieve root directory of test. You can retrieve output and error via
@@ -159,8 +164,9 @@ validating buildspecs, showing content of buildspecs, and editing buildspecs in 
 The ``buildtest buildspec`` command contains several subcommands that we will discuss in this
 session. To learn more we encourage you see :ref:`buildspec_interface` for detailed guide.
 
-The ``buildtest show`` command can be used to provide a brief help message for each subcommand. Let's run
-the following command since there are lots of commands that can be used to query buildspec.
+The ``buildtest show`` command can be used to provide a brief help message for each subcommand and usage. This
+command can be useful if you want to understand how a particular command works. Let's run
+``buildtest show buildspec`` which will summarize the **buildtest buildspec** command.
 
 .. dropdown:: ``buildtest show buildspec``
 
@@ -218,12 +224,12 @@ Let's run the following::
     buildtest bc show sleep hello_world
 
 Buildtest uses `rich <https://rich.readthedocs.io/>`_ python library for coloring which is used extensively throughout the buildtest output.
-Rich supports several built-in themes that can be used for your preference. The ``buildtest bc show -t <THEME>`` can be used
+Rich supports several built-in themes that can be used for your preference. The ``buildtest bc show --theme <THEME>`` can be used
 select a color theme.
 
 Currently, buildtest supports the following themes, feel free to tab complete::
 
-       buildtest bc show -t
+       buildtest bc show --theme
     abap                borland             emacs               gruvbox-dark        lovelace            native              paraiso-light       sas                 stata-dark          vs
     algol               bw                  friendly            gruvbox-light       manni               nord                pastie              solarized-dark      stata-light         xcode
     algol_nu            colorful            friendly_grayscale  igor                material            nord-darker         perldoc             solarized-light     tango               zenburn
@@ -232,7 +238,7 @@ Currently, buildtest supports the following themes, feel free to tab complete::
 
 Let's try running the same example with ``emacs`` theme::
 
-    buildtest bc show -t emacs sleep
+    buildtest bc show --theme emacs sleep
 
 If you want to see list of invalid buildspecs you can run::
 
@@ -262,18 +268,18 @@ We also support color themes (``buildtest cg view --theme <theme>``) when showin
 Buildtest configuration file defines one or more :ref:`executors <configuring_executors>` that are used when
 writing test. Every test must be run by an executor. To retrieve all executors in a flat-listing you can run the following
 
-.. dropdown:: ``buildtest cg executors``
+.. dropdown:: ``buildtest cg executors list``
 
-    .. command-output:: buildtest cg executors
+    .. command-output:: buildtest cg executors list
 
 
 Buildtest can show executor details in JSON and YAML format, you can fetch the details by running the following
 
-.. dropdown:: ``buildtest cg executors --json``
+.. dropdown:: ``buildtest cg executors list --json``
 
-    .. command-output:: buildtest cg executors --json
+    .. command-output:: buildtest cg executors list --json
 
 
-.. dropdown:: ``buildtest cg executors --yaml``
+.. dropdown:: ``buildtest cg executors list --yaml``
 
-    .. command-output:: buildtest cg executors --yaml
+    .. command-output:: buildtest cg executors list --yaml

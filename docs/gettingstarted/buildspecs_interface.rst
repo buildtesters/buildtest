@@ -24,7 +24,7 @@ provided for this command.
 
     .. command-output:: buildtest buildspec find --help
 
-The ``buildtest buildspec find`` command will discover all buildspecs by recursively searching all `.yml` extensions.
+The ``buildtest buildspec find`` command will discover all buildspecs by recursively searching all **.yml** extensions.
 buildtest will validate each buildspec file with the json schema and buildtest will display all valid buildspecs in the output,
 all invalid buildspecs will be stored in a file for post-processing.
 
@@ -92,9 +92,25 @@ or pass them via command line.
 buildtest will search buildspecs in :ref:`buildspecs root <buildspec_roots>` defined in your configuration,
 which is a list of directory paths to search for buildspecs.
 If you want to load buildspecs from a directory path, you can specify a directory
-via ``--root`` option in the format: ``buildtest buildspec find --root <path> --rebuild``.
-buildtest will load all valid buildspecs into cache and ignore
-the rest. It's important to add ``--rebuild`` if you want to regenerate buildspec cache.
+via ``--root`` option in the format: ``buildtest buildspec find --root <path>``.
+buildtest will rebuild cache when `--root` option is specified. Note that to rebuild cache you typically
+need to pass **--rebuild** option but that is not required when using **--root** option because we want
+buildtest to load buildspecs into cache.
+
+The **--root** option must be path to a directory, if you specify a file path then buildtest will report an error message similar
+to one below
+
+.. dropdown:: ``buildtest buildspec find --root $BUILDTEST_ROOT/README.rst``
+   :color: warning
+
+    .. command-output:: buildtest buildspec find --root $BUILDTEST_ROOT/README.rst
+       :returncode: 1
+
+If you want to specify multiple root paths you can specify the  **--root** options multiple times.
+
+Let's rebuild the cache again by running ``buildtest buildspec find`` which will load the default buildspecs into the cache
+
+.. command-output:: buildtest buildspec find --rebuild --quiet
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~~
@@ -138,7 +154,7 @@ We can filter output of buildspec cache by buildspec using ``--filter buildspec=
 expects a path to buildspec file.  The buildspec must be in the cache and file path must exist in order to
 fetch the result. The path can be absolute or relative path.
 
-In this next example, we will filter cache by file `tutorials/test_status/pass_returncode.yml` and use ``--format name,buildspec``
+In this next example, we will filter cache by file ``tutorials/test_status/pass_returncode.yml`` and use ``--format name,buildspec``
 to format columns. The ``--format buildspec`` will show full path to buildspec and ``name`` refers to name of test.
 For more details on **--format** see :ref:`format_buildspec`.
 
@@ -249,10 +265,10 @@ report a list of invalid buildspecs as shown below
 If you want to see error messages for each buildspec you can pass the ``-e`` or ``--error`` option which will display output of
 each buildspec followed by error message.
 
-.. dropdown:: ``buildtest buildspec find -e``
+.. dropdown:: ``buildtest buildspec find invalid --error``
    :color: warning
 
-    .. command-output:: buildtest buildspec find invalid -e
+    .. command-output:: buildtest buildspec find invalid --error
        :returncode: 1
 
 .. _buildspec_maintainers:
@@ -282,7 +298,7 @@ If you prefer a machine readable format, then you can use ``--terse`` and ``--no
 
     .. command-output:: buildtest buildspec maintainers --terse --no-header
 
-If you want to see a breakdown of all buildspecs by maintainers you can use `--breakdown` which will
+If you want to see a breakdown of all buildspecs by maintainers you can use ``--breakdown`` which will
 display the following information
 
 .. dropdown:: ``buildtest buildspec maintainers --breakdown``
@@ -290,7 +306,7 @@ display the following information
     .. command-output:: buildtest buildspec maintainers --breakdown
 
 The ``buildtest buildspec maintainers find`` command can be used to report buildspec given a maintainer
-name which works similar to `--breakdown` but doesn't report information for all maintainers. Shown
+name which works similar to ``--breakdown`` but doesn't report information for all maintainers. Shown
 below, we query all buildspecs by maintainer **@shahzebsiddiqui**
 
 .. dropdown:: ``buildtest buildspec maintainers find @shahzebsiddiqui``
@@ -313,7 +329,7 @@ Validate Buildspecs - ``buildtest buildspec validate``
 --------------------------------------------------------
 
 buildtest can validate buildspecs through the ``buildtest buildspec validate`` command which provides
-analogous options for ``buildtest build`` for selecting buildspecs such as ``-b``, ``-e``, ``-t`` and ``-e``.
+analogous options for ``buildtest build`` for selecting buildspecs such as ``-b``, ``-e``, ``-n``, ``-t`` and ``-x``.
 This command can be used to validate buildspecs with the JSON Schema which can be useful if you are writing a buildspec
 and want to validate the buildspec without running the test.
 
@@ -323,7 +339,7 @@ Shown below are the available command options.
 
     .. command-output:: buildtest buildspec validate --help
 
-The `-b` option can be used to specify path to buildspec file or directory to validate buildspecs. If its a directory,
+The **-b** option can be used to specify path to buildspec file or directory to validate buildspecs. If its a directory,
 buildtest will traverse all directories recursively and find any **.yml** file extensions and attempt to validate each buildspec.
 Shown below is an example output of what it may look like
 
@@ -346,6 +362,13 @@ will validate all buildspecs for **python** and **pass** tags.
 .. dropdown:: ``buildtest buildspec validate -t python -t pass``
 
     .. command-output:: buildtest buildspec validate -t python -t pass
+
+You can mix and match different options for searching buildspecs to validate. For example, we can
+search by buildspec, tags, and name in the following example
+
+.. dropdown:: ``buildtest buildspec validate -t python -n hello_world -b tutorials/vars.yml``
+
+    .. command-output:: buildtest buildspec validate -t python -n hello_world -b tutorials/vars.yml
 
 Show buildspec ``buildtest buildspec show``
 --------------------------------------------

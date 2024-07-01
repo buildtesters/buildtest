@@ -1,0 +1,23 @@
+buildspecs:
+  spack_env_deactivate_first:
+    type: spack
+    executor: generic.local.bash
+    description: "deactivate a spack environment first prior to activating it"
+    tags: [spack]
+    pre_cmds: |
+      rm -rf $HOME/spack-envs/m4
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          dir: $HOME/spack-envs/m4
+        deactivate: true
+        activate:
+          dir: $HOME/spack-envs/m4
+        specs:
+          - 'm4'
+      install:
+        option: ''
+    post_cmds: |
+      spack find
+      rm -rf $HOME/spack-envs/m4

@@ -36,6 +36,8 @@ buildspecs:
           item: 1
     status:
       assert_ge:
+        mode: and
+        comparisons:
         - name: copy
           ref: 5000
         - name: scale

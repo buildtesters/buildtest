@@ -5,10 +5,8 @@ Defining Compilers
 
 buildtest provides a mechanism to declare compilers in your configuration file, this
 is defined in ``compilers`` top-level section. The compilers should reflect compilers
-installed at your site. The compilers are used if you are writing a buildspec
-with :ref:`compiler schema <compiler_schema>` that needs to reference a particular compiler.
-The compilers are declared within scope of a system since we assume compilers will vary across
-different HPC clusters.
+installed at your site. The compilers are declared within scope of a system since we assume
+compilers will vary across different HPC clusters.
 
 Compiler Declaration
 ---------------------
@@ -32,27 +30,27 @@ which includes the name of the compiler in this example we call ``builtin_gcc`` 
 system compiler that defines C, C++ and Fortran compilers using ``cc``, ``cxx`` and
 ``fc``.
 
-One can retrieve all compilers using ``buildtest config compilers``, there are few
+One can retrieve all compilers using ``buildtest config compilers list``, there are few
 options for this command.
 
-.. dropdown:: ``buildtest config compilers --help``
+.. dropdown:: ``buildtest config compilers list --help``
 
-    .. command-output:: buildtest config compilers --help
+    .. command-output:: buildtest config compilers list --help
 
 buildtest can represent compiler output in JSON, YAML using the ``--json`` and ``--yaml``.
 Shown below is an example output with these options
 
-.. dropdown:: ``buildtest config compilers --json``
+.. dropdown:: ``buildtest config compilers list --json``
 
-    .. command-output:: buildtest config compilers --json
+    .. command-output:: buildtest config compilers list --json
 
-.. dropdown:: ``buildtest config compilers --yaml``
+.. dropdown:: ``buildtest config compilers list --yaml``
 
-    .. command-output:: buildtest config compilers --yaml
+    .. command-output:: buildtest config compilers list --yaml
 
-If you want to see a flat listing of the compilers as names you can simply run ``buildtest config compilers`` as shown below
+If you want to see a flat listing of the compilers as names you can simply run ``buildtest config compilers list`` as shown below
 
-.. command-output:: buildtest config compilers
+.. command-output:: buildtest config compilers list
 
 .. _detect_compilers:
 
@@ -70,7 +68,7 @@ Detect Compilers (Experimental Feature)
 .. Note::
 
     ``buildtest config compilers find`` will not update the buildtest configuration with new compilers, you will need to use ``--update`` option
-    to override the configuration file.
+    to write changes back to configuration file.
 
 
 buildtest can detect compilers based on modulefiles and generate compiler section
@@ -86,6 +84,7 @@ In example, below we define a pattern for gcc modules as ``^(gcc)`` which will
 find all modules that start with name `gcc`.
 
 .. code-block:: yaml
+   :emphasize-lines: 2-3
 
     compilers:
       find:
@@ -98,8 +97,8 @@ find all modules that start with name `gcc`.
             fc: /usr/bin/gfortran
 
 
-In this system, we have two gcc modules installed via `spack <https://spack.readthedocs.io/en/latest/>`_
-package manager, we will attempt to add both modules as compiler instance in buildtest.
+In this system, we have two gcc modules and we will add both modules as compiler
+declaration in buildtest.
 
 .. code-block:: console
 
@@ -108,7 +107,7 @@ package manager, we will attempt to add both modules as compiler instance in bui
     gcc/9.3.0-n7p74fd
     gcc/10.2.0-37fmsw7
 
-Next we run ``buildtest config compilers find`` which will search all modules based on
+We will run ``buildtest config compilers find`` which will search all modules based on
 regular expression and add compilers in their respective group. In this example, buildtest
 automatically add ``gcc/9.2.0-n7p74fd`` and ``gcc/10.2.0-37fmsw7`` modules as compiler
 instance. Depending on the compiler group, buildtest will update the properties
@@ -117,7 +116,7 @@ the module configuration to be used to access the compiler, the ``load`` propert
 The ``purge`` property is a boolean that determines whether to run **module purge** prior to loading modules when using the compiler.
 If ``purge: true`` is set then we will do **module purge**.
 
-.. dropdown:: ``buildtest config compilers``
+.. dropdown:: ``buildtest config compilers find``
 
     .. code-block:: console
        :emphasize-lines: 9-24
@@ -154,7 +153,7 @@ by searching the modules in MODULEPATH and testing each one with a regular expre
 We can see in the output buildtest is applying a regular expression with each modulefile and if there is a match, we
 add the compiler instance into the appropriate compiler group.
 
-.. dropdown:: ``buildtest config compilers --detailed``
+.. dropdown:: ``buildtest config compilers find --detailed``
 
     .. code-block:: console
        :linenos:
@@ -279,7 +278,7 @@ Now take a look at generated compilers upon running ``buildtest config compiler 
    :linenos:
    :emphasize-lines: 16,24
 
-       (buildtest)  ~/Documents/github/ buildtest config compilers find
+         buildtest config compilers find
        MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
        ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
        gcc:
@@ -318,7 +317,7 @@ is the programming environment modulefile that will load the GNU compiler on Cra
 
 .. literalinclude:: ../tests/settings/nersc.yml
     :language: yaml
-    :emphasize-lines: 6-10
+    :emphasize-lines: 19-24
 
 Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
 compiler instance under the ``module``, ``load`` section. Furthermore, you will see the cray wrappers **cc**, **CC**, and **ftn** are used
@@ -328,7 +327,7 @@ instead of the compiler wrappers when defining a compiler instance that uses a P
 
     .. code-block:: console
 
-        (buildtest)  ~/gitrepos/buildtest/tests/settings/ [prgenv_support] buildtest config compilers find --detailed
+         buildtest config compilers find --detailed
         MODULEPATH: /opt/cray/pe/perftools/21.12.0/modulefiles:/opt/cray/pe/craype-targets/default/modulefiles:/opt/cray/ari/modulefiles:/opt/cray/pe/modulefiles:/opt/cray/modulefiles:/opt/modulefiles:/global/common/software/nersc/cle7up03/modulefiles:/global/common/software/nersc/cle7up03/extra_modulefiles:/global/common/cori_cle7up03/ftg/modulefiles
         Searching modules by parsing content of command: module av -t
           Discovered Modules
@@ -660,3 +659,98 @@ compiler ``gcc/9.1.01``
         ┡━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━┩
         │ 1   │ gcc/9.1.0     │     ✅ │
         └─────┴───────────────┴────────┘
+
+Removing Compilers
+-------------------
+
+The ``buildtest config compilers remove`` command allows you to remove a compiler from the configuration file.
+This command takes a positional argument that includes the name of compiler you want to remove. buildtest will
+search for compiler name in configuration file and attempt to remove it if it's found.
+
+This command can be used when you find compilers are out of date, for instance you can run ``buildtest config compilers test``
+to test all compilers and show which compilers failed during test. In output below we have
+one failed compiler name ``nvhpc-mixed/23.7``.
+
+.. code-block:: console
+
+    $ buildtest config compilers test
+    Compiler 'builtin_gcc' has no 'modules' defined therefore skipping test
+            Compilers Test Pass
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name     ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ builtin_gcc       │     ✅ │
+    │ 2   │ gcc/11.2.0        │     ✅ │
+    │ 3   │ gcc/10.3.0        │     ✅ │
+    │ 4   │ gcc/12.2.0        │     ✅ │
+    │ 5   │ gcc/12.1.0        │     ✅ │
+    │ 6   │ cce/15.0.1        │     ✅ │
+    │ 7   │ cce/15.0.0        │     ✅ │
+    │ 8   │ nvhpc/21.11       │     ✅ │
+    │ 9   │ nvhpc/21.9        │     ✅ │
+    │ 10  │ nvhpc/22.7        │     ✅ │
+    │ 11  │ nvhpc-mixed/21.11 │     ✅ │
+    │ 12  │ nvhpc-mixed/21.9  │     ✅ │
+    │ 13  │ nvhpc-mixed/22.7  │     ✅ │
+    │ 14  │ nvhpc/23.1        │     ✅ │
+    │ 15  │ nvhpc-mixed/23.1  │     ✅ │
+    └─────┴───────────────────┴────────┘
+            Compilers Test Fail
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name    ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ nvhpc-mixed/23.7 │     ❌ │
+    └─────┴──────────────────┴────────┘
+
+Note we have tab completion for compilers names that can be removed which can help select the compiler you want
+to remove.
+
+.. code-block::
+
+    $ buildtest config compilers remove
+    builtin_gcc        cce/15.0.1         gcc/11.2.0         gcc/12.2.0         nvhpc/21.9         nvhpc/23.1         nvhpc-mixed/21.9   nvhpc-mixed/23.1
+    cce/15.0.0         gcc/10.3.0         gcc/12.1.0         nvhpc/21.11        nvhpc/22.7         nvhpc-mixed/21.11  nvhpc-mixed/22.7   nvhpc-mixed/23.7
+
+Let's remove the compiler `nvhpc-mixed/23.7` by running the following, take note buildtest will update the configuration file
+
+.. code-block::
+
+    $ buildtest config compilers remove nvhpc-mixed/23.7
+    ──────────────────────────────────────────────────────────────────────────────── Removing compiler name: nvhpc-mixed/23.7 ────────────────────────────────────────────────────────────────────────────────
+    cc: cc
+    cxx: CC
+    fc: ftn
+    module:
+      load:
+      - PrgEnv-nvidia
+      - nvhpc-mixed/23.7
+      purge: false
+
+    Updating configuration file: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml
+
+Now if we rerun the compiler tests, we see all compilers have passed checks
+
+.. code-block:: console
+
+    $ buildtest config compilers test
+    Compiler 'builtin_gcc' has no 'modules' defined therefore skipping test
+            Compilers Test Pass
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name     ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ builtin_gcc       │     ✅ │
+    │ 2   │ gcc/11.2.0        │     ✅ │
+    │ 3   │ gcc/10.3.0        │     ✅ │
+    │ 4   │ gcc/12.2.0        │     ✅ │
+    │ 5   │ gcc/12.1.0        │     ✅ │
+    │ 6   │ cce/15.0.1        │     ✅ │
+    │ 7   │ cce/15.0.0        │     ✅ │
+    │ 8   │ nvhpc/21.11       │     ✅ │
+    │ 9   │ nvhpc/21.9        │     ✅ │
+    │ 10  │ nvhpc/22.7        │     ✅ │
+    │ 11  │ nvhpc-mixed/21.11 │     ✅ │
+    │ 12  │ nvhpc-mixed/21.9  │     ✅ │
+    │ 13  │ nvhpc-mixed/22.7  │     ✅ │
+    │ 14  │ nvhpc/23.1        │     ✅ │
+    │ 15  │ nvhpc-mixed/23.1  │     ✅ │
+    └─────┴───────────────────┴────────┘

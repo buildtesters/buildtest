@@ -27,6 +27,8 @@ class SpackBuilder(BuilderBase):
         testdir=None,
         numprocs=None,
         numnodes=None,
+        strict=None,
+        display=None,
     ):
         super().__init__(
             name=name,
@@ -37,7 +39,9 @@ class SpackBuilder(BuilderBase):
             testdir=testdir,
             numprocs=numprocs,
             numnodes=numnodes,
+            display=display,
         )
+        self.strict = strict
         self.status = deep_get(
             self.recipe, "executors", self.executor, "status"
         ) or self.recipe.get("status")
@@ -54,15 +58,8 @@ class SpackBuilder(BuilderBase):
         if sched_lines:
             lines += sched_lines
 
-        if self.burstbuffer:
-            burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
-            if burst_buffer_lines:
-                lines += burst_buffer_lines
-
-        if self.datawarp:
-            data_warp_lines = self._get_data_warp(self.datawarp)
-            if data_warp_lines:
-                lines += data_warp_lines
+        if self.strict:
+            lines.append(self._emit_set_command())
 
         var_lines = self._get_variables(self.recipe.get("vars"))
         env_lines = self._get_environment(self.recipe.get("env"))
@@ -121,6 +118,15 @@ class SpackBuilder(BuilderBase):
                     lines.append(f"spack install {opts} {spec}")
             else:
                 lines.append(f"spack install {opts}")
+
+        if spack_configuration.get("load"):
+            opts = spack_configuration["load"].get("option") or ""
+
+            if spack_configuration["load"].get("specs"):
+                for spec in spack_configuration["load"]["specs"]:
+                    lines.append(f"spack load {opts} {spec}")
+            else:
+                lines.append(f"spack load{opts}")
 
         if spack_configuration.get("test"):
             lines += self._spack_test(spack_configuration)
@@ -196,7 +202,7 @@ class SpackBuilder(BuilderBase):
 
     def _spack_environment(self, spack_env):
         """This method is responsible for  creating a spack environment, activate an existing
-        spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
+        spack environment, deactivating an existing spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
 
         Args:
             spack_env (dict): Contains property ``env`` from buildspec dictionary
@@ -206,7 +212,7 @@ class SpackBuilder(BuilderBase):
         lines = []
 
         if spack_env.get("rm"):
-            lines.append(f"spack env rm -y {spack_env['rm']['name']}")
+            lines.append(f"spack env rm -y {spack_env['rm']['name']} || true")
 
         if spack_env.get("create"):
             opts = spack_env["create"].get("options") or ""
@@ -216,7 +222,9 @@ class SpackBuilder(BuilderBase):
             if spack_env["create"].get("name"):
                 # if remove_environment is defined we remove the environment before creating it
                 if spack_env["create"].get("remove_environment"):
-                    lines.append(f"spack env rm -y {spack_env['create']['name']}")
+                    lines.append(
+                        f"spack env rm -y {spack_env['create']['name']} || true"
+                    )
 
                 cmd.append(spack_env["create"]["name"])
 
@@ -231,6 +239,10 @@ class SpackBuilder(BuilderBase):
 
             spack_env_create_line = " ".join(cmd)
             lines += [spack_env_create_line]
+
+            # deactivate environment ('spack env deactivate')
+        if spack_env.get("deactivate"):
+            lines += ["spack env deactivate || true"]
 
         # activate environment ('spack env activate')
         if spack_env.get("activate"):

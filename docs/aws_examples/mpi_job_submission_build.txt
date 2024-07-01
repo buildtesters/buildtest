@@ -1,0 +1,139 @@
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/mpi_job_submission.yml --pollinterval=10 --display output --display test 
+╭─────────────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                                                         │
+│ User:               lbladmin                                                                                                                                                                                            │
+│ Hostname:           e4spro-cluster                                                                                                                                                                                      │
+│ Platform:           Linux                                                                                                                                                                                               │
+│ Current Time:       2024/06/17 18:50:35                                                                                                                                                                                 │
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                                                                                    │
+│ buildtest version:  2.0                                                                                                                                                                                                 │
+│ python path:        /usr/bin/python3                                                                                                                                                                                    │
+│ python version:     3.10.12                                                                                                                                                                                             │
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                                                                       │
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                                                                        │
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                                                                                  │
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/mpi_job_submission.yml - │
+│                                                                                                                                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
+                          Discovered buildspecs                           
+╔════════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                              ║
+╟────────────────────────────────────────────────────────────────────────╢
+║ /home/lbladmin/Documents/buildtest/aws_tutorial/mpi_job_submission.yml ║
+╟────────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                               ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+─────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/lbladmin/Documents/buildtest/aws_tutorial/mpi_job_submission.yml: VALID
+Total builder objects created: 1
+                                                                                       Builders by type=script                                                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                     ┃ type   ┃ executor                      ┃ compiler ┃ nodes ┃ procs ┃ description            ┃ buildspecs                                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ mpi_job_submission/25048a6e │ script │ generic.torque.e4spro-cluster │ None     │ None  │ None  │ Run MPI Proc Name test │ /home/lbladmin/Documents/buildtest/aws_tutorial/mpi_job_submission.yml │
+└─────────────────────────────┴────────┴───────────────────────────────┴──────────┴───────┴───────┴────────────────────────┴────────────────────────────────────────────────────────────────────────┘
+                                                           Batch Job Builders                                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                     ┃ executor                      ┃ buildspecs                                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ mpi_job_submission/25048a6e │ generic.torque.e4spro-cluster │ /home/lbladmin/Documents/buildtest/aws_tutorial/mpi_job_submission.yml │
+└─────────────────────────────┴───────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
+mpi_job_submission/25048a6e: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e
+──────────────────────────────────────────────────────────────────────────────────── mpi_job_submission/25048a6e: Start of Test Script ────────────────────────────────────────────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                            
+#PBS -l nodes=1:ppn=2,walltime=1:00                                                                                                                                                                                        
+#PBS -N mpi_job_submission                                                                                                                                                                                                 
+#PBS -o mpi_job_submission.o                                                                                                                                                                                               
+#PBS -e mpi_job_submission.e                                                                                                                                                                                               
+# Content of run section                                                                                                                                                                                                   
+cd $HOME/examples/mpi-procname                                                                                                                                                                                             
+mpicc -o mpiprocname mpiprocname.c                                                                                                                                                                                         
+mpirun -np 2 ./mpiprocname                                                                                                                                                                                                 
+rm mpiprocname                                                                                                                                                                                                             
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────── mpi_job_submission/25048a6e: Start of Build Script ────────────────────────────────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                
+                                                                                                                                                                                                                           
+# Function to handle all signals and perform cleanup                                                                                                                                                                       
+function cleanup() {                                                                                                                                                                                                       
+    echo "Signal trapped. Performing cleanup before exiting."                                                                                                                                                              
+    exitcode=$?                                                                                                                                                                                                            
+    echo "buildtest: command \`$BASH_COMMAND' failed (exit code: $exitcode)"                                                                                                                                               
+    exit $exitcode                                                                                                                                                                                                         
+}                                                                                                                                                                                                                          
+                                                                                                                                                                                                                           
+# Trap all signals and call the cleanup function                                                                                                                                                                           
+trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU                                                                                                                 
+                                                                                                                                                                                                                           
+export BUILDTEST_TEST_NAME=mpi_job_submission                                                                                                                                                                              
+export BUILDTEST_TEST_ROOT=/home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e                                                                       
+export BUILDTEST_BUILDSPEC_DIR=/home/lbladmin/Documents/buildtest/aws_tutorial                                                                                                                                             
+export BUILDTEST_STAGE_DIR=/home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e/stage                                                                 
+# source executor startup script                                                                                                                                                                                           
+source /home/lbladmin/Documents/buildtest/var/executor/generic.torque.e4spro-cluster/before_script.sh                                                                                                                      
+# Run generated script                                                                                                                                                                                                     
+/usr/local/bin/qsub -q e4spro-cluster /home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e/stage/mpi_job_submission.sh                                
+# Get return code                                                                                                                                                                                                          
+returncode=$?                                                                                                                                                                                                              
+# Exit with return code                                                                                                                                                                                                    
+exit $returncode                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 4 processes for processing builders
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+mpi_job_submission/25048a6e does not have any dependencies adding test to queue
+   Builders Eligible to Run    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ mpi_job_submission/25048a6e │
+└─────────────────────────────┘
+mpi_job_submission/25048a6e: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e/stage
+mpi_job_submission/25048a6e: Running Test via command: bash mpi_job_submission_build.sh
+────────────────────────────────────────────────────────────────────────────────────── mpi_job_submission/25048a6e: Start of Output ───────────────────────────────────────────────────────────────────────────────────────
+3290003.e4spro-cluster                                                                                                                                                                                                     
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+mpi_job_submission/25048a6e: JobID: 3290003.e4spro-cluster dispatched to scheduler
+Polling Jobs in 10 seconds
+                                                    Pending and Suspended Jobs (1)                                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                     ┃ executor                      ┃ jobid                  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ mpi_job_submission/25048a6e │ generic.torque.e4spro-cluster │ 3290003.e4spro-cluster │ Q        │ 10.046  │ 0           │ 10.03    │
+└─────────────────────────────┴───────────────────────────────┴────────────────────────┴──────────┴─────────┴─────────────┴──────────┘
+Polling Jobs in 10 seconds
+mpi_job_submission/25048a6e: Job 3290003.e4spro-cluster is complete! 
+mpi_job_submission/25048a6e: Test completed in 0 seconds with returncode: 0
+mpi_job_submission/25048a6e: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e/mpi_job_submission.o
+mpi_job_submission/25048a6e: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.torque.e4spro-cluster/mpi_job_submission/mpi_job_submission/25048a6e/mpi_job_submission.e
+                                                          Completed Jobs (1)                                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                     ┃ executor                      ┃ jobid                  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ mpi_job_submission/25048a6e │ generic.torque.e4spro-cluster │ 3290003.e4spro-cluster │ C        │ 0       │ 0           │ 10.03    │
+└─────────────────────────────┴───────────────────────────────┴────────────────────────┴──────────┴─────────┴─────────────┴──────────┘
+                                         Test Summary                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                     ┃ executor                      ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ mpi_job_submission/25048a6e │ generic.torque.e4spro-cluster │ PASS   │ 0          │ 0.000   │
+└─────────────────────────────┴───────────────────────────────┴────────┴────────────┴─────────┘
+
+
+
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+Adding 1 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_z6rcivu8.log

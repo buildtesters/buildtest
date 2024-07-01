@@ -1,6 +1,191 @@
 CHANGELOG
 =========
 
+v2.0 (Apr 16th, 2024)
+----------------------
+
+**Major Changes**
+
+This release comes with several improvements to batch scheduler integration including code refactoring of all schedulers. We have
+added supported for Torque scheduler. Furthermore, we have changed logic for PBS scheduler for polling jobs to be consistent with Torque
+since both schedulers are very similar. We have improved logging for batch jobs and scheduler detection. Furthermore we have added validation
+for queues to ensure executor validation takes place to invalidate an executor if queue is not found.
+
+- Add support for Torque batch scheduler `#1734 <https://github.com/buildtesters/buildtest/pull/1734>`_
+- Improve scheduler detection logic `#1738 <https://github.com/buildtesters/buildtest/pull/1738>`_, `#1739 <https://github.com/buildtesters/buildtest/pull/1739>`_
+- Change poll command to `qstat -xf` for PBS scheduler and `qstat -f` for Torque `#1746 <https://github.com/buildtesters/buildtest/pull/1746/>`_
+- Improvement to LSF executors such as queue validation and testing LSF executors on OLCF system on Summit `#1748 <https://github.com/buildtesters/buildtest/pull/1748>`_, `#1750 <https://github.com/buildtesters/buildtest/pull/1750>`_
+
+**Buildspecs Changes**
+
+- Add support for regular expression types such as ``re.search``, ``re.match``, and ``re.fullmatch`` using the **re** property for status check and metrics `#1730 <https://github.com/buildtesters/buildtest/pull/1730>`_ 
+- Add support for line count (``linecount``) and file line count (``file_line_count``) status check used for counting lines in a file or stdout/stderr. `#1722 <https://github.com/buildtesters/buildtest/pull/1722>`_, `#1723 <https://github.com/buildtesters/buildtest/pull/1723>`_
+- Remove burst buffer and data warp directives from spack schema `#1717 <https://github.com/buildtesters/buildtest/pull/1717>`_
+- Extract line number from stdout/stderr via ``linenum`` field used in status check particularly useful with regular expression search `#1735 <https://github.com/buildtesters/buildtest/pull/1735>`_
+
+**Command Line Changes**
+
+- Add support for ``buildtest build --validate`` option that will be used for validating buildspecs and stop after parse stage. This feature will deprecate feature ``buildtest build --stage=parse`` `#1729 <https://github.com/buildtesters/buildtest/pull/1729>`_
+- Add dry run mode for buildtest via ``buildtest build --dry-run`` option. This feature will build the test but not run it. This feature will deprecate **buildtest build --stage=build** `#1727 <https://github.com/buildtesters/buildtest/pull/1727>`_
+- Add dryrun (``--dryrun``), write (``--write``) and failfast (``--failfast``) options to ``buildtest tutorial-examples`` command `#1720 <https://github.com/buildtesters/buildtest/pull/1720>`_
+- List all buildtest options via command line via ``buildtest --listopts`` `#1715 <https://github.com/buildtesters/buildtest/pull/1715>`_
+
+**Documentation Changes**
+
+- Build prototype for AWS tutorial that includes several example buildspecs, configuration file and improvement to ``buildtest tutorial-examples`` command to help auto-generate examples. For instance we added positional argument to specify either ``buildtest tutorial-examples {aws,spack}`` which will be used to generate example docs for each section `#1719 <https://github.com/buildtesters/buildtest/pull/1719>`_
+- Rearrange documentation pages to move all status checks into single page `#1733 <https://github.com/buildtesters/buildtest/pull/1733>`_
+- Add documentation for Torque Executors `#1743 <https://github.com/buildtesters/buildtest/pull/1743>`_
+- Add documentation for LSF Executors `#1745 <https://github.com/buildtesters/buildtest/pull/1745>`_
+
+**Project Improvements**
+
+- Add github workflow to run regression test examples with spack using github action `spack/setup-spack <https://github.com/spack/setup-spack>`_  to help increase code coverage for spack schema `#1716 <https://github.com/buildtesters/buildtest/pull/1716>`_
+- Change singularity invocation from **singularity exec** to **singularity run** when running singularity containers `#1711 <https://github.com/buildtesters/buildtest/pull/1711>`_
+- Fix a bug in argparser invocation when running ``buildtest --help-all`` that caused an error with showing all help options. `#1708 <https://github.com/buildtesters/buildtest/pull/1708>`_
+
+v1.8 (Feb 14th, 2024)
+----------------------
+
+**Major Changes**
+
+- Add support for container executors in buildtest configuration to allow one to run tests in a container. `#1695 <https://github.com/buildtesters/buildtest/pull/1695>`_
+- Build new spack container for spack tutorial `#1700 <https://github.com/buildtesters/buildtest/pull/1700>`_
+- Remove support for compiler schema from buildtest and all references from documentation and example tests `#1686 <https://github.com/buildtesters/buildtest/pull/1686>`_
+
+**General Improvements**
+
+- Add command aliases for commands **buildtest config executors list**, **buildtest config profiles list**, **buildtest config profiles**, **buildtest inspect list**, **buildtest report list**. The command aliases are: **buildtest config executors ls**, **buildtest config profiles ls**, **buildtest inspect ls**, **buildtest report ls**, **buildtest config prof**. `#1705 <https://github.com/buildtesters/buildtest/pull/1705/>`_
+- The command ``buildtest buildspec find --root`` will rebuild buildspec cache, when ``--root`` option is specified. Previously ``--rebuild`` option was required to rebuild cache which didn't make sense when ``--root`` option was specified. When ``root`` option is specified in configuration file and ``--root`` option is used, buildtest will use the command line option. Previously, buildtest would append both values into list. `#1706 <https://github.com/buildtesters/buildtest/pull/1706>`_
+- Remove `latest` and `oldest` keywords from buildtest configuration `#1673 <https://github.com/buildtesters/buildtest/pull/1673>`_
+- Add GitHub workflow for command line tutorial `#1663 <https://github.com/buildtesters/buildtest/pull/1663>`_
+- Trigger regression test when `pyproject.toml` or `requirements.txt` file is changed `#1687 <https://github.com/buildtesters/buildtest/pull/1687>`_
+- Rewrite documentation for Configuring Buildtest `#1696 <https://github.com/buildtesters/buildtest/pull/1696>`_
+- Remove jsonschema documentation workflow used for publishing schemas to github pages posted on branch `gh-pages` `#1682 <https://github.com/buildtesters/buildtest/pull/1682>`_. This change meant we removed all content from `gh-pages` branch in `#1683 <https://github.com/buildtesters/buildtest/pull/1683>`_.
+- Add compilation examples using script schema `#1692 <https://github.com/buildtesters/buildtest/pull/1692>`_
+
+v1.7 (Nov 12th, 2023)
+----------------------
+
+**Buildspec Changes**
+
+- Add support for containers via ``container`` property. Initial support includes specifying container runtime, container options, and run command to invoke container. Current platform support includes ``docker``, ``podman``, ``singularity``. `#1642 <https://github.com/buildtesters/buildtest/pull/1642>`_.
+
+.. code-block:: yaml
+
+    buildspecs:
+      container_commands_ubuntu:
+        type: script
+        executor: generic.local.bash
+        description: run arbitrary linux commands in ubuntu container
+        container:
+          platform: "docker"
+          image: ubuntu:latest
+          command: bash -c "cat /etc/os-release"
+        run: |
+          ls -l /etc/os-release || true
+
+- Update schema for Performance Checks (``assert_ge``, ``assert_ne``, ``assert_gt``, ``assert_ge``, ``assert_le``, ``assert_lt``, ``assert_range``, ``contains``, ``not_contains``) to support for logical AND/OR. The ``mode`` key can be defined in each performance check, and list of assertions are defined under ``comparisons``. `#1648 <https://github.com/buildtesters/buildtest/pull/1648>`_
+
+.. code-block:: yaml
+
+    status:
+      assert_ge:
+        mode: and
+        comparisons:
+        - name: copy
+          ref: 5000
+        - name: scale
+          ref: 5500
+        - name: add
+          ref: 6000
+        - name: triad
+          ref: 6500
+
+
+- Change `mode` property under status check (``status``) to use values ``(AND|and|OR|or)``, this is to be consistent with use of ``mode`` under each performance check such as ``assert_ge``. `#1656 <https://github.com/buildtesters/buildtest/pull/1656>`_
+
+**Command Line Changes**
+
+- Remove executors via command line ``buildtest config executors remove``. `#1636 <https://github.com/buildtesters/buildtest/pull/1636>`_
+- Extend support for  ``--count`` for other queries in ``buildtest buildspec find`` command. Rewrite regression test for ``buildtest buildspec find`` `#1638 <https://github.com/buildtesters/buildtest/pull/1638>`_
+
+**Project Improvements**
+
+- Buildtest will gracefully terminate running jobs when user hits ``CTRL-C``. For batch jobs, the jobIDs will be cancelled. Add ``trap`` command in generated script to allow users to run script and catch signal interrupt. `#1644 <https://github.com/buildtesters/buildtest/pull/1644>`_
+- Improvement to polling implementation for batch jobs by showing number of jobs by type (PENDING, RUNNING, COMPLETED) in the table. Fix issue where FAILED slurm jobs were not reported. `#1650 <https://github.com/buildtesters/buildtest/pull/1650>`_
+- Add error message of tests in console output of ``buildtest build``. `#1643 <https://github.com/buildtesters/buildtest/pull/1643>`_
+- Change ``re.match`` -> ``re.fullmatch`` when hostname with ones specified in configuration file. `#1651 <https://github.com/buildtesters/buildtest/pull/1651>`_
+- Rewrite NERSC CI regression tests, update buildtest configuration and example buildspecs to be run. `#1639 <https://github.com/buildtesters/buildtest/pull/1639/>`_
+- Slurm jobs ``TIMEOUT`` and ``OUT_OF_MEMORY`` will be reported as completed jobs. `#1653 <https://github.com/buildtesters/buildtest/pull/1653>`_
+- Rewrite documentation for Batch Scheduler, Troubleshooting, Buildtest Features, and improving bash completion script. `#1637 <https://github.com/buildtesters/buildtest/pull/1637>`_
+
+v1.6 (Sep 28th, 2023)
+----------------------
+
+**Command Line Changes**
+
+- The ``buildtest config profiles remove`` command will remove a given profile from configuration file `#1585 <https://github.com/buildtesters/buildtest/pull/1585>`_
+- The compiler listing is now done via ``buildtest config compilers list`` command, previously it was via ``buildtest config compilers``. `#1588 <https://github.com/buildtesters/buildtest/pull/1588>`_
+- Add short option ``-t`` for ``buildtest inspect query --testpath``. `#1599 <https://github.com/buildtesters/buildtest/pull/1599>`_
+- Change behavior of listing executors from command ``buildtest config executors`` to command name ``buildtest config executors list``. `#1610 <https://github.com/buildtesters/buildtest/pull/1610>`_
+- Add support for building tests by names via ``buildtest build --name``. `#1616 <https://github.com/buildtesters/buildtest/pull/1616>`_
+- Add support for limiting number of jobs that can run concurrently via ``max_jobs`` property in configuration file and option ``buildtest build --max-jobs`` to override configuration on command line. `#1629 <https://github.com/buildtesters/buildtest/pull/1629>`_, `#1630 <https://github.com/buildtesters/buildtest/pull/1630>`_
+
+**Buildspec/Test Changes**
+
+- Add support for deactivating spack environments via ``deactivate`` property. `#1587 <https://github.com/buildtesters/buildtest/pull/1587>`_
+- Add ``set -eo pipefail`` command in generated test script to ensure test are run in strict mode and errors are captured properly. `#1628 <https://github.com/buildtesters/buildtest/pull/1628>`_
+
+**Project Improvements**
+
+- Rewrite logic for building the command line arguments for buildtest. `#1612 <https://github.com/buildtesters/buildtest/pull/1612>`_
+- Update version of **sphinx-autoapi** to fix documentation build error with generating API. `#1632 <https://github.com/buildtesters/buildtest/pull/1632>`_
+- Ensure every buildtest CI run is executed in a unique directory. The environment variable **BUILDTEST_CI_DIR** will be root to where tests will be written in a unique directory. This can be set in shell environment prior to running tests. `#1601 <https://github.com/buildtesters/buildtest/pull/1601/>`_
+- The buildtest commands run as part of documentation builds also performed in unique directory. `#1603 <https://github.com/buildtesters/buildtest/pull/1603>`_
+- Move pytest configuration to pyproject.toml `#1596 <https://github.com/buildtesters/buildtest/pull/1596>`_
+- Upgrade dependencies for **docutils**, **sphinx**, **sphinx-rtd-theme**, **sphinx-design** to be compatible with python 3.8 `#1606 <https://github.com/buildtesters/buildtest/pull/1606>`_
+- Rewrite bash completion script. `#1611 <https://github.com/buildtesters/buildtest/pull/1611>`_
+
+**Bug Fixes**
+
+- Fix time calculation for batch jobs to ensure runtime is calculated correctly from when job runs to when job ends. Previously the test runtime took into account pending time. `#1618 <https://github.com/buildtesters/buildtest/pull/1618>`_
+- Fix issue with ``buildtest report``  only showing latest test records. `#1620 <https://github.com/buildtesters/buildtest/pull/1620>`_
+- Fix issue with CDASH upload (``buildtest cdash upload``) with uniccode characters in test output. `#1627 <https://github.com/buildtesters/buildtest/pull/1627>`_
+
+v1.5 (Aug 4th, 2023)
+----------------------
+
+**Command Line Changes**
+
+- Add support to exclude tests by tagnames via ``buildtest build --exclude-tags`` `#1467 <https://github.com/buildtesters/buildtest/pull/1467>`_
+- Change behavior of ``buildtest report --count`` to allow a negative value which will show all test records. `#1468 <https://github.com/buildtesters/buildtest/pull/1468>`_
+- Change behavior of ``buildtest build --filter`` with multiple filters from comma to semi-colon `#1471 <https://github.com/buildtesters/buildtest/pull/1471>`_
+- Remove option ``buildtest buildspec maintainers --list`` `#1474 <https://github.com/buildtesters/buildtest/pull/1474>`_
+- Add support for `profiles <https://buildtest.readthedocs.io/en/devel/gettingstarted/buildingtest.html#using-profiles>`_ which allows one to run a set of ``buildtest build`` options given a profile name via command ``buildtest build --profile=<NAME>``. Add support for saving profile via ``buildtest build --save-profile`` which will record command and save into buildtest configuration file. `#1489 <https://github.com/buildtesters/buildtest/pull/1489>`_
+- Rename ``buildtest help`` to ``buildtest show`` `#1530 <https://github.com/buildtesters/buildtest/pull/1530>`_
+- Remove option ``buildtest build --disable-executor-check`` `#1541 <https://github.com/buildtesters/buildtest/pull/1541>`_
+- Add command ``buildtest --help-all`` to show all commands and options for buildtest and change behavior of ``buildtest --help`` to only show a subset of commands. `#1568 <https://github.com/buildtesters/buildtest/pull/1568>`_
+- Add ``buildtest report --detailed`` which will show detailed information about test record. `#1567 <https://github.com/buildtesters/buildtest/pull/1567>`_
+- Add alias ``buildtest config val`` for ``buildtest config validate`` command `#1559 <https://github.com/buildtesters/buildtest/pull/1559/>`_
+
+**Misc Updates**
+
+- buildtest now uses `pyproject.toml <https://github.com/buildtesters/buildtest/blob/devel/pyproject.toml>`_ to specify project dependencies, coverage, black and isort configuration. The installation script will no longer install from requirements.txt, instead it will use content from `pyproject.toml`. `#1545 <https://github.com/buildtesters/buildtest/pull/1545>`_, `#1547 <https://github.com/buildtesters/buildtest/pull/1547>`_
+- Deprecate support for Python 3.7  `#1514 <https://github.com/buildtesters/buildtest/pull/1514>`_
+- Add a `security page <https://github.com/buildtesters/buildtest/blob/devel/SECURITY.md>`_ to report vulnerability  `#1473 <https://github.com/buildtesters/buildtest/pull/1473>`_
+- Reorganize example buildspecs for **script.schema.json**, **compilers.schema.json** and **spack.schema.json** into separate buildspecs used for regression tests. This was addressed in `#1496 <https://github.com/buildtesters/buildtest/pull/1496>`_, `#1498 <https://github.com/buildtesters/buildtest/pull/1498>`_, `#1499 <https://github.com/buildtesters/buildtest/pull/1499>`_
+- Improve regression test coverage `#1501 <https://github.com/buildtesters/buildtest/pull/1501>`_,  `#1503 <https://github.com/buildtesters/buildtest/pull/1503>`_, `#1507 <https://github.com/buildtesters/buildtest/pull/1507>`_, `#1511 <https://github.com/buildtesters/buildtest/pull/1511>`_, `#1515 <https://github.com/buildtesters/buildtest/pull/1515>`_
+- Fix bug with running buildtest using `multiprocessing <https://docs.python.org/3/library/multiprocessing.html>`_ library that led to error mostly caused on MacOS. `#1522 <https://github.com/buildtesters/buildtest/pull/1522>`_
+- Fix bug with ``buildtest report --pass`` and ``buildtest report --fail`` where test records were not filtered properly `#1524 <https://github.com/buildtesters/buildtest/pull/1524>`_
+- Fix error in buildtest configuration file used for tutorials `#1513 <https://github.com/buildtesters/buildtest/pull/1513>`_
+- Hardcode version dependency for jsonschema package to 4.18 since RefResolver is deprecated `#1520 <https://github.com/buildtesters/buildtest/pull/1520>`_. This will be addressed in https://github.com/buildtesters/buildtest/issues/1521
+- Remove short option ``-t`` for long option ``--theme`` `#1576 <https://github.com/buildtesters/buildtest/pull/1576>`_
+
+**CI checks**
+
+- Update regression test and installation workflow to use python 3.8-3.11. Also run tests on `macos-13`  `#1512 <https://github.com/buildtesters/buildtest/pull/1512>`_
+- Update installation workflow to add support for `zsh` `#1548 <https://github.com/buildtesters/buildtest/pull/1548>`_
+
 v1.4 (May 4th, 2023)
 ----------------------
 

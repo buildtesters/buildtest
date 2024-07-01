@@ -3,8 +3,8 @@ import argparse
 import pytest
 
 from buildtest.cli import (
+    BuildTestParser,
     build_filters_format,
-    get_parser,
     handle_kv_string,
     positive_number,
     supported_color,
@@ -84,9 +84,6 @@ def test_valid_time():
         valid_time("2022-01-01 abcdef")
 
 
-def test_arg_parse():
-    parser = get_parser()
-    print(parser)
-
-    assert parser.prog == "buildtest"
-    assert parser.usage == "%(prog)s [options] [COMMANDS]"
+def test_retrieve_main_opts():
+    parser = BuildTestParser()
+    print(parser.retrieve_main_options())

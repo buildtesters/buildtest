@@ -1,6 +1,0 @@
-buildspecs:
-  missing_required_compilers:
-    executor: generic.local.bash
-    type: compiler
-    description: "missing required field compilers "
-    source: "src/hello.c"

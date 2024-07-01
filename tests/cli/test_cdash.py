@@ -7,7 +7,6 @@ from buildtest.cli.build import BuildTest
 from buildtest.cli.cdash import upload_test_cdash, view_cdash_project
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.system import BuildTestSystem
 from buildtest.utils.tools import deep_get
 
 configuration = SiteConfiguration()
@@ -25,10 +24,9 @@ def test_cdash_view():
 
 @pytest.mark.cli
 def test_cdash_upload():
-    system = BuildTestSystem()
+
     cmd = BuildTest(
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
-        buildtest_system=system,
         configuration=configuration,
     )
     cmd.build()

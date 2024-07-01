@@ -1,7 +1,7 @@
 #!/bin/csh
 # MIT License
 
-# Copyright (c) 2021-2023, The Regents of the University of California,
+# Copyright (c) 2021-2024, The Regents of the University of California,
 # through Lawrence Berkeley National Laboratory (subject to receipt of
 # any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
 # and Vanessa Sochat. All rights reserved.
@@ -62,15 +62,25 @@ if (! $?BUILDTEST_ROOT) then
     endif
 endif
 
+set python=python3
+# install pip in user environment
+curl https://bootstrap.pypa.io/get-pip.py | $python
 
 set pip=pip3
 
-if ( ! -x `command -v $pip` ) then 
-  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
-  exit 1
+if ( ! -x `command -v $pip` ) then
+  # If not found in PATH, check $HOME/.local/bin
+  if ( -x "$HOME/.local/bin/$pip" ) then
+    echo "$pip found in $HOME/.local/bin"
+    # Optionally, you can add $HOME/.local/bin to PATH
+    setenv PATH $HOME/.local/bin:$PATH
+  else
+    echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
+    exit 1
+  endif
 endif
 
-python3 -c "import buildtest.main" >& /dev/null
+$python -c "import buildtest.main" >& /dev/null
 
 # if we unable to import buildtest.main module then install buildtest dependencies
 if ( $status != 0 ) then

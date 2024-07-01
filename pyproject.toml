@@ -19,11 +19,17 @@ dependencies=[
    'PyYAML >= 5.12',
    'requests',
    'rich',
+   'urllib3>=2.1.0',
+    # both coverage and pytest required for running 'buildtest tutorial-examples'
    'coverage',
    'pytest',
-   'black==23.3.0',
+
+    # required for running 'buildtest stylecheck'
+   'black==24.3.0',
    'pyflakes',
-   'urllib3 >=1.26',
+   'isort',
+   'archspec',
+   'psutil',
 ]
 
 
@@ -39,25 +45,26 @@ path = "buildtest/__init__.py"
 
 [project.optional-dependencies]
 dev = [
-    'docutils==0.16',
     'pre-commit',
-    'Sphinx',
-    'sphinx-design',
-    'sphinx-argparse',
-    'sphinx-autoapi',
-    'sphinx-rtd-theme',
-    'sphinxcontrib-programoutput',
-    'sphinxext-remoteliteralinclude',
-    'sphinx-copybutton',
-    'readthedocs-sphinx-search',
     'yamllint'
 ]
+docs = [
+    "docutils==0.18.1",
+    "readthedocs-sphinx-search==0.3.2",
+    "sphinx==7.3.7",
+    "sphinx-design==0.5.0",
+    "sphinx-argparse==0.4.0",
+    "sphinx-autoapi==3.0.0",
+    "sphinx-rtd-theme==2.0.0",
+    "sphinxcontrib-programoutput==0.17",
+    "sphinxext-remoteliteralinclude==0.4.0",
+    "sphinx-copybutton==0.5.2"
+]
 [tool.black]
-required-version = '23.3.0'
-target-version = ['py38', 'py39', 'py310']
+#required-version = '23.3.0'
+#target-version = ['py38', 'py39', 'py310', 'py311']
 skip_magic_trailing_comma = true
 line-length = 88
-verbose = true
 
 [tool.isort]
 profile = 'black'
@@ -69,6 +76,16 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 split_on_trailing_comma = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-vra -x --durations=20 -vv"
+testpaths = ["tests"]
+markers = [
+    "schema: run schema tests",
+    "utility: run test for utility methods used throughout codebase",
+    "cli: run test for targetting buildtest command line features"
+]
 
 [tool.coverage.run]
 parallel = true
@@ -83,9 +100,14 @@ omit = [
     'buildtest/cli/cd.py',
     'buildtest/tools/docs.py',
     'buildtest/tools/unittests.py',
+    'buildtest/tools/tutorialexamples.py',
 ]
 
 [tool.coverage.report]
+ignore_errors = true
+skip_empty = true
+sort = "-cover"
+precision = 2
 # Regexes for lines to exclude from consideration
 exclude_lines = [
     # Have to re-enable the standard pragma
@@ -107,12 +129,9 @@ exclude_lines = [
     # buildtest methods that should not be coverred by regression tests
     'buildspec_find',
     'config_cmd',
+    'report_cmd',
     'build_history',
 ]
-ignore_errors = true
-skip_empty = true
-sort = "-cover"
-precision = 2
 
 [tool.coverage.html]
 directory = "htmlcov"

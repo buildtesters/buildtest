@@ -1,0 +1,41 @@
+system:
+  generic:
+    hostnames:
+    - .*
+    description: Generic System
+    moduletool: none
+    testdir: ~/runs
+    pager: false
+    buildspecs:
+      rebuild: false
+      count: 15
+      format: name,description
+      terse: false
+      root:
+      - $BUILDTEST_ROOT/examples
+    report:
+      count: 25
+      terse: false
+      format: name,id,state,runtime,returncode
+    executors:
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+    compilers:
+      find:
+        gcc: ^(gcc)
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            fc: /usr/bin/gfortran
+            cxx: /usr/bin/g++
+    cdash:
+      url: https://my.cdash.org/
+      project: buildtest
+      site: generic
+      buildname: buildtest_spack_tutorial

@@ -18,12 +18,3 @@ buildspecs:
       - "-W 00:30"
       - "-N 1"
     run: hostname
-
-  cobalt_example:
-    type: script
-    executor: generic.local.bash
-    description: This test runs hostname using cobalt directives
-    cobalt:
-      - "-t 30"
-      - "-n 1"
-    run: hostname

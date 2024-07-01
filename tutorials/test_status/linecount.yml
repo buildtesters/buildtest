@@ -1,0 +1,26 @@
+buildspecs:
+  linecount_stdout:
+    type: script
+    executor: generic.local.bash
+    description: "Write 10 lines to stdout and run linecount check"
+    run: |      
+      for i in {1..10}; do
+        echo $i
+      done
+    status:
+      linecount:
+        stream: stdout
+        count: 10
+
+  linecount_stderr_mismatch:
+    type: script
+    executor: generic.local.bash
+    description: "Write 10 lines to stderr and run linecount check"
+    run: |      
+      for i in {1..10}; do
+        echo $i >&2
+      done
+    status:
+      linecount:
+        stream: stderr
+        count: 5

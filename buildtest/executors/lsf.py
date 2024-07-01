@@ -3,14 +3,15 @@ This module implements the LSFExecutor class responsible for submitting
 jobs to LSF Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
+
 import logging
 import os
 import re
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.lsf import LSFJob
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -30,17 +31,26 @@ class LSFExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-        self.account = account
-        self.maxpendtime = maxpendtime
-        super().__init__(name, settings, site_configs, timeout=None)
+        super().__init__(
+            name,
+            settings,
+            site_configs,
+            timeout=timeout,
+            account=account,
+            maxpendtime=maxpendtime,
+        )
 
         self.queue = self._settings.get("queue")
+        self.custom_dirs = deep_get(site_configs.target_config, "paths", "lsf")
 
     def launcher_command(self, numprocs=None, numnodes=None):
         """This command returns the launcher command and any options specified in configuration file. This
         is useful when generating the build script in the BuilderBase class
         """
-        cmd = ["bsub"]
+        self.lsf_cmds = check_binaries(
+            ["bsub", "bjobs", "bkill"], custom_dirs=self.custom_dirs
+        )
+        cmd = [self.lsf_cmds["bsub"]]
 
         if self.queue:
             cmd += [f"-q {self.queue}"]
@@ -74,39 +84,40 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+        cmd = f"{self.shell} {os.path.basename(builder.build_script)}"
 
-        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        self.timeout = self.timeout or self._buildtestsettings.target_config.get(
+            "timeout"
+        )
+        command = builder.run(cmd, self.timeout)
 
-        try:
-            command = builder.run(cmd, timeout)
-        except RuntimeFailure as err:
-            self.logger.error(err)
-            return
+        if command.returncode() != 0:
+            builder.failed()
+            return builder
 
         out = command.get_output()
         out = " ".join(out)
         pattern = r"(\d+)"
         # output in the form:  'Job <58654> is submitted to queue <batch>' and applying regular expression to get job ID
-        m = re.search(pattern, out)
+        regex_match = re.search(pattern, out)
         self.logger.debug(f"Applying regular expression '{pattern}' to output: '{out}'")
 
         # if there is no match we raise error
-        if not m:
+        if not regex_match:
             self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
             builder.failed()
-            return
+            return builder
 
         try:
-            job_id = int(m.group(0))
+            job_id = int(regex_match.group(0))
         except ValueError:
             self.logger.debug(
-                f"Unable to convert '{m.group(0)}' to int to extract Job ID"
+                f"Unable to convert '{regex_match.group(0)}' to int to extract Job ID"
             )
             builder.failed()
-            return
+            return builder
 
-        builder.job = LSFJob(job_id)
+        builder.job = LSFJob(job_id, self.lsf_cmds)
 
         builder.metadata["jobid"] = job_id
 
@@ -115,61 +126,3 @@ class LSFExecutor(BaseExecutor):
         console.print(msg)
 
         return builder
-
-    def poll(self, builder):
-        """Given a builder object we poll the job by invoking builder method ``builder.job.poll()`` return state of job. If
-        job is suspended or pending we stop timer and check if timer exceeds maxpendtime value which could be defined in configuration
-        file or passed via command line ``--max-pend-time``
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.job.poll()
-
-        # if job is complete gather job data
-        if builder.job.is_complete():
-            self.gather(builder)
-            return
-
-        builder.stop()
-        if builder.job.is_suspended() or builder.job.is_pending():
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
-
-            # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
-                )
-                return
-
-        builder.start()
-
-    def gather(self, builder):
-        """Gather Job detail after completion of job by invoking the builder method ``builder.job.gather()``.
-        We retrieve exit code, output file, error file and update builder metadata.
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.record_endtime()
-
-        builder.metadata["job"] = builder.job.gather()
-        builder.metadata["result"]["returncode"] = builder.job.exitcode()
-
-        self.logger.debug(
-            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
-        )
-
-        builder.metadata["outfile"] = os.path.join(
-            builder.stage_dir, builder.job.output_file()
-        )
-        builder.metadata["errfile"] = os.path.join(
-            builder.stage_dir, builder.job.error_file()
-        )
-        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
-        builder.post_run_steps()

@@ -1,12 +1,13 @@
 """This module implements PBSExecutor class that defines how executors submit
 job to PBS Scheduler"""
+
 import logging
 import os
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
-from buildtest.scheduler.pbs import PBSJob
+from buildtest.scheduler.pbs import PBSJob, TorqueJob
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -27,13 +28,31 @@ class PBSExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-        self.maxpendtime = maxpendtime
-        self.account = account
-        super().__init__(name, settings, site_configs, timeout=timeout)
+        super().__init__(
+            name,
+            settings,
+            site_configs,
+            timeout=timeout,
+            account=account,
+            maxpendtime=maxpendtime,
+        )
+
         self.queue = self._settings.get("queue")
+        self.custom_dirs = None
+
+        if isinstance(self, PBSExecutor):
+            self.custom_dirs = deep_get(site_configs.target_config, "paths", "pbs")
+        elif isinstance(self, TorqueExecutor):
+            self.custom_dirs = deep_get(site_configs.target_config, "paths", "torque")
 
     def launcher_command(self, numprocs=None, numnodes=None):
-        batch_cmd = ["qsub"]
+        batch_cmd = []
+
+        self.pbs_cmds = check_binaries(
+            ["qsub", "qstat", "qdel"], custom_dirs=self.custom_dirs
+        )
+
+        batch_cmd += [self.pbs_cmds["qsub"]]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]
@@ -63,27 +82,27 @@ class PBSExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
-        self.load()
-
         os.chdir(builder.stage_dir)
 
-        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+        cmd = f"{self.shell} {os.path.basename(builder.build_script)}"
 
-        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        self.timeout = self.timeout or self._buildtestsettings.target_config.get(
+            "timeout"
+        )
 
-        try:
-            command = builder.run(cmd, timeout=timeout)
-        except RuntimeFailure as err:
+        command = builder.run(cmd, timeout=self.timeout)
+
+        if command.returncode() != 0:
             builder.failed()
-            self.logger.error(err)
-            return
+            return builder
 
         out = command.get_output()
         JobID = " ".join(out).strip()
 
-        builder.metadata["jobid"] = JobID
-
-        builder.job = PBSJob(JobID)
+        if isinstance(self, TorqueExecutor):
+            builder.job = TorqueJob(JobID, self.pbs_cmds)
+        elif isinstance(self, PBSExecutor):
+            builder.job = PBSJob(JobID, self.pbs_cmds)
 
         # store job id
         builder.metadata["jobid"] = builder.job.get()
@@ -94,59 +113,6 @@ class PBSExecutor(BaseExecutor):
 
         return builder
 
-    def poll(self, builder):
-        """This method is responsible for polling PBS job which will update the job state. If job is complete we will
-        gather job result. If job is pending we will stop timer and check if pend time exceeds max pend time for executor.
-        If so we will cancel the job.
 
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.job.poll()
-
-        # if job is complete gather job data
-        if builder.job.is_complete():
-            self.gather(builder)
-            return
-
-        builder.stop()
-
-        # if job in pending or suspended, check if it exceeds maxpendtime if so cancel job
-        if builder.job.is_pending() or builder.job.is_suspended():
-            self.logger.debug(f"Time Duration: {builder.timer.duration()}")
-            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
-
-            # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
-                )
-                console.print(
-                    f"{builder} in job state: {builder.job.state()} and {builder._state}"
-                )
-                return
-
-        builder.start()
-
-    def gather(self, builder):
-        """This method is responsible for gather job results including output and error file and complete metadata
-        for job which is stored in the builder object. We will retrieve job exitcode which corresponds to test
-        returncode.
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.record_endtime()
-        builder.metadata["job"] = builder.job.gather()
-        builder.metadata["result"]["returncode"] = builder.job.exitcode()
-
-        builder.metadata["outfile"] = builder.job.output_file()
-        builder.metadata["errfile"] = builder.job.error_file()
-
-        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
-
-        builder.post_run_steps()
+class TorqueExecutor(PBSExecutor):
+    """This class is a sub-class of PBSExecutor class and is responsible for Torque Executor"""

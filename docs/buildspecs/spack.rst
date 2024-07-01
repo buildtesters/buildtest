@@ -26,9 +26,7 @@ is a test named **install_zlib**. The **spack** keyword is a JSON object, in thi
 of spack using the ``root`` keyword which informs buildtest where spack is located. buildtest will automatically
 check the path and source the startup script. The ``install`` field is a JSON object that
 contains a ``specs`` property which is a list of strings types that are name of spack packages to install. Each item in the
-``specs`` property will be added as a separate ``spack install`` command. In the second test,
-we run the same example except we clone spack and install zlib. When ``root`` property is not specified buildtest
-will clone spack and automatically source the spack setup script (`source $SPACK_ROOT/share/spack/setup-env.sh`).
+``specs`` property will be added as a separate ``spack install`` command.
 
 The schema is designed to mimic spack commands which will be clear with more examples.
 
@@ -44,10 +42,9 @@ Let's build this test by running the following
 
 
 Let's inspect the generated script and output file via ``buildtest inspect query`` command. We notice that buildtest
-will source spack setup script and install `zlib` which is automatically installed from the buildcache. In the second test
-we clone spack and it will install zlib from source.
+will source spack setup script and install `zlib` which is automatically installed from the buildcache.
 
-.. dropdown:: ``buildtest inspect query -o --testpath install_specs_example clone_spack_and_install_zlib``
+.. dropdown:: ``buildtest inspect query -o -t install_specs_example``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/install_specs.txt
 
@@ -96,7 +93,7 @@ concretize the environment and install the specs.
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/env_install.txt
 
-.. dropdown:: ``buildtest inspect query --testpath install_in_spack_env``
+.. dropdown:: ``buildtest inspect query -t install_in_spack_env``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_install.txt
 
@@ -121,7 +118,7 @@ this using the ``option`` field. Shown below is the build and generated script a
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/env_create_directory.txt
 
-.. dropdown:: ``buildtest inspect query -o --testpath spack_env_directory``
+.. dropdown:: ``buildtest inspect query -o -t spack_env_directory``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_create_directory.txt
 
@@ -150,9 +147,41 @@ will create an environment **manifest_example** using the manifest file that we 
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/env_create_manifest.txt
 
-.. dropdown:: ``buildtest inspect query -o --testpath spack_env_create_from_manifest``
+.. dropdown:: ``buildtest inspect query -o -t spack_env_create_from_manifest``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_create_manifest.txt
+
+Deactivate Spack Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you are switching between spack environments, it can be important to deactivate
+your current spack environment which can be used when writing test. This can be achieved
+using the keyword ``deactivate`` which is a boolean type.
+
+If ``deactivate: true`` is set, then we will deactivate the spack environment by
+running ``spack env deactivate``
+
+Shown below is an example buildspec where we create a spack environment, deactivate first and then
+activate the environment. Buildtest will deactivate a spack environment prior to activating an environment
+which is specified via ``activate`` keyword.
+
+.. literalinclude:: ../../examples/spack/spack_env_deactivate.yml
+  :language: yaml
+  :emphasize-lines: 10-14
+
+Let's build this by running the following
+
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_env_deactivate.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_env_deactivate.txt
+
+Let's take a look at the generated test, take note of the ``spack env deactivate`` command and order of commands.
+We run ``spack env create``, followed by ``spack env deactivate`` and finally we activate the environment
+using ``spack env activate``.
+
+.. dropdown:: ``buildtest inspect query -t spack_env_deactivate_first``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_env_deactivate.txt
 
 Removing Spack Environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,7 +209,7 @@ Let's build this by running the following
 
 If we build and look at the generated te, we notice that spack will remove environments names: **remove_environment**, **dummy**.
 
-.. dropdown:: ``buildtest inspect query --testpath remove_environment_automatically remove_environment_explicit``
+.. dropdown:: ``buildtest inspect query -t remove_environment_automatically remove_environment_explicit``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/remove_environment_example.txt
 
@@ -192,10 +221,7 @@ field that are of ``type: string`` and buildtest will insert the content into th
 these two fields.
 
 In this next example, we will test an installation of `zlib` by cloning spack from upstream and use ``pre_cmds`` field
-to specify where we will clone spack. In this example, we will clone spack under **/tmp**. Since we don't have a valid
-root of spack since test hasn't been run, we can ignore check for spack paths by specifying ``verify_spack: false`` which
-informs buildtest to skip spack path check. Generally, buildtest will raise an exception if path specified by ``root`` is
-invalid and if ``$SPACK_ROOT/share/spack/setup-env.sh`` doesn't exist since this is the file that must be sourced.
+to specify where we will clone spack.
 
 The ``pre_cmds`` are shell commands that are run before sourcing spack, whereas the ``post_cmds`` are run at the very
 end of the script. In the `post_cmds`, we will ``spack find`` that will be run after ``spack install``.
@@ -211,7 +237,7 @@ If we build this test and inspect the generated script we should get the followi
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/pre_post_cmds.txt
 
-.. dropdown:: ``buildtest inspect query -o --testpath run_pre_post_commands``
+.. dropdown:: ``buildtest inspect query -o -t run_pre_post_commands``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/pre_post_cmds.txt
 
@@ -239,7 +265,7 @@ If we look at the generated script for both tests, we see that mirror is added f
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
 defined by spack.
 
-.. dropdown:: ``buildtest inspect query -o  --testpath add_mirror add_mirror_in_spack_env``
+.. dropdown:: ``buildtest inspect query -o -t add_mirror add_mirror_in_spack_env``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/mirror_example.txt
 
@@ -276,7 +302,7 @@ The **spack test run --alias** option is used to query results by suitename whic
 
 Take note of the generated test and the suite-name that is generated by buildtest.
 
-.. dropdown:: ``buildtest inspect query -o --testpath spack_test_m4``
+.. dropdown:: ``buildtest inspect query -o -t spack_test_m4``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_test.txt
 
@@ -308,7 +334,7 @@ in spack environment followed by removing all testsuites using ``spack test remo
 query results in spec format (``spack test results --l --libxml2``) where spack will try to match a result file that matches the
 corresponding spec.
 
-.. dropdown:: ``buildtest inspect query -o --testpath spack_test_results_specs_format``
+.. dropdown:: ``buildtest inspect query -o -t spack_test_results_specs_format``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_test_specs.txt
 
@@ -317,7 +343,7 @@ Specifying Scheduler Directives
 ---------------------------------
 
 The spack schema supports all of the :ref:`scheduler scheduler directives <batch_support>` such
-as ``sbatch``, ``bsub``, ``pbs``, ``cobalt``, and ``batch`` property in the buildspec.
+as ``sbatch``, ``bsub`` and ``pbs`` property in the buildspec.
 
 The directives are applied at top of script. Shown below is a toy example that will define
 directives using **sbatch** property. Note, this test won't submit job to scheduler
@@ -325,12 +351,17 @@ since we are not using the a slurm executor.
 
 .. literalinclude:: ../../examples/spack/spack_sbatch.yml
     :language: yaml
+    :emphasize-lines: 7
 
 buildtest will generate the shell script with the job directives and set the name, output and error
 files based on name of test. If we build this test, and inspect the generated test we see that
 **#SBATCH** directives are written based on the **sbatch** field.
 
-.. dropdown:: ``buildtest inspect query --testpath spack_sbatch_example``
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_sbatch.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_sbatch.txt
+
+.. dropdown:: ``buildtest inspect query -t spack_sbatch_example``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_sbatch.txt
 
@@ -344,4 +375,56 @@ Shown below is an example buildspec that will specify ``sbatch`` directives for
 
 .. literalinclude:: ../../examples/spack/spack_multiple_executor_sbatch.yml
   :language: yaml
+  :emphasize-lines: 7-11
 
+Cloning Spack
+---------------
+
+buildtest will automatically clone spack if ``root`` is not specified in the buildspec, which will be performed in the test directory
+where the test is executed. In example below have two tests, first one will clone spack automatically and second test will clone explicitly
+in `/tmp` where we specify ``root`` property.
+
+.. literalinclude:: ../../examples/spack/clone_spack.yml
+  :language: yaml
+  :emphasize-lines: 20-22
+
+Let's build the following test
+
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_clone.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/clone_spack.txt
+
+Let's check the generated output, take note in the output the full path to where ``spack`` binary is present in each test. You must
+clone spack in ``pre_cmds`` in second test in order for buildtest to find the spack binary since you need to specify this the ``root`` property in-order
+for buildtest to install spack in the environment.
+
+.. dropdown:: ``buildtest inspect query -t clone_spack_automatically clone_spack_and_specify_root``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/clone_spack.txt
+
+Loading Specs
+---------------
+
+We can load specs into our user environment via ``spack load`` which can be used for running tests or
+simply loading the package once it is installed. In this next example, we will test ``m4`` package,
+where we load the package first prior to testing it. The ``load`` refers to ``spack load`` and ``options``
+refers to command options passed to ``spack load`` command with a list of specs to load defined
+by ``specs`` property.
+
+In this test, the command would translate to ``spack load --only package m4``
+
+.. literalinclude:: ../../examples/spack/spack_load.yml
+  :language: yaml
+  :emphasize-lines: 9-11
+
+Let's build this by running the following
+
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_load.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_load.txt
+
+Let's take a look at the generated test, take note of the `spack load` command
+
+.. dropdown:: ``buildtest inspect query -o -t spack_load_example``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_load.txt

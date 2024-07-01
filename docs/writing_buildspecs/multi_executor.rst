@@ -7,7 +7,7 @@ The `executor` property can support regular expression to search for compatible
 executors, this can be used if you want to run a test across multiple executors. In buildtest,
 we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
 pattern defined by **executor** property against a list of available executors defined in configuration file.
-You can retrieve a list of executors by running ``buildtest config executors``.
+You can retrieve a list of executors by running ``buildtest config executors list``.
 
 In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
 on the regular expression.
@@ -30,7 +30,7 @@ Multiple Executors
 
 The ``executors`` property can be used to define executor specific configuration
 for each test, currently this field can be used with :ref:`vars <variables>`, :ref:`env <environment_variables>`
-, scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt`` and :ref:`cray burst buffer/data warp <cray_burstbuffer_datawarp>`.
+, scheduler directives: ``sbatch``, ``bsub``, ``pbs``,  and :ref:`cray burst buffer/data warp <cray_burstbuffer_datawarp>`.
 The ``executors`` field is a JSON object that expects name of executor followed by property set per executor. In this next example,
 we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
 
@@ -48,9 +48,9 @@ Now let's look at the generated content of the test as follows. We will see that
 set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
 ``generic.local.sh``
 
-.. dropdown:: ``buildtest inspect query --testpath executors_vars_env_declaration/``
+.. dropdown:: ``buildtest inspect query -t executors_vars_env_declaration/``
 
-   .. command-output:: buildtest inspect query --testpath executors_vars_env_declaration/
+   .. command-output:: buildtest inspect query -t executors_vars_env_declaration/
 
 Scheduler Directives
 ----------------------
@@ -62,7 +62,7 @@ will override the ``sbatch`` property defined in the top-level file otherwise it
 
 .. literalinclude:: ../tutorials/multi_executors/executor_scheduler.yml
    :language: yaml
-
+   :emphasize-lines: 8-13
 
 .. dropdown:: ``buildtest build -b tutorials/multi_executors/executor_scheduler.yml``
 
@@ -71,9 +71,9 @@ will override the ``sbatch`` property defined in the top-level file otherwise it
 If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
 based on the ``sbatch`` property defined in the ``executors`` field.
 
-.. dropdown:: ``buildtest inspect query --testpath executors_sbatch_declaration/``
+.. dropdown:: ``buildtest inspect query -t executors_sbatch_declaration/``
 
-   .. command-output:: buildtest inspect query --testpath executors_sbatch_declaration/
+   .. command-output:: buildtest inspect query -t executors_sbatch_declaration/
 
 Cray Burst Buffer and Data Warp
 ---------------------------------
@@ -85,6 +85,7 @@ see :ref:`cray_burstbuffer_datawarp`.
 
 .. literalinclude:: ../tutorials/burstbuffer_datawarp_executors.yml
     :language: yaml
+    :emphasize-lines: 9-18
 
 Custom Status by Executor
 --------------------------

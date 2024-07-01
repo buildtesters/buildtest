@@ -6,7 +6,6 @@ parsed validation via :class:`buildtest.buildsystem.parser.BuildspecParser`.
 import logging
 import re
 
-from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
 from buildtest.defaults import console
@@ -18,7 +17,7 @@ class Builder:
 
     The builder class is created based on the 'type' field in the test. If test contains
     ``type: script`` we will create builder by calling :class:`buildtest.builders.script.ScriptBuilder`.
-    Likewise for ``type: compiler`` and ``type: spack`` we will call :class:`buildtest.builders.compiler.CompilerBuilder` and
+    Likewise for ``type: spack`` we will call
     :class:`buildtest.builders.spack.SpackBuilder`.
     """
 
@@ -30,12 +29,13 @@ class Builder:
         filters,
         testdir,
         configuration,
-        buildtest_system,
         rebuild=1,
         numprocs=None,
         numnodes=None,
         executor_type=None,
         exclude_tags=None,
+        strict=None,
+        display=None,
     ):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
@@ -47,30 +47,29 @@ class Builder:
             filters (dict): List of filter fields specified via ``buildtest build --filter`` for filtering tests
             testdir (str): Test directory where tests will be written which could be specified via ``buildtest build --testdir`` or configuration file
             configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
-            buildtest_system (buildtest.system.BuildTestSystem): Instance of BuildTestSystem class
             rebuild (int, option): Number of rebuild for test. This is specified via ``buildtest build --rebuild``. Defaults to 1
             numprocs (list, optional): List of processor values to create builder objects specified via ``buildtest build --procs``
             numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --nodes``
             executor_type (str, optional): Filter test by executor type (local, batch)
             exclude_tags (list, optional): List of tags to exclude tests from buildspec file
+            strict (bool, optional): This is a boolean used for enable strict mode for test that will run the 'set' command in test.
+            display (list, optional): Show content of test or output via ``buildtest build --display``
         """
 
         self.configuration = configuration
-        self.system = buildtest_system
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
         self.buildexecutor = buildexecutor
-
         self.rebuild = rebuild or 1
         self.numprocs = numprocs
         self.numnodes = numnodes
         self.executor_type = executor_type
         self.exclude_tags = exclude_tags
-
+        self.strict = strict
         self.bp = bp
         self.bc = buildtest_compilers
         self.filters = filters
-
+        self.display = display
         self.builders = []
 
         # skip property defined at top-level then skip test
@@ -120,7 +119,7 @@ class Builder:
                     continue
                 # Add the builder for the script or spack schema
 
-                if recipe["type"] in ["script", "compiler", "spack"]:
+                if recipe["type"] in ["script", "spack"]:
                     builders = self.build(name, recipe)
                     if builders:
                         self.builders += builders
@@ -173,6 +172,8 @@ class Builder:
             configuration=self.configuration,
             testdir=self.testdir,
             compiler=compiler_name,
+            strict=self.strict,
+            display=self.display,
         )
         builders.append(builder)
 
@@ -188,6 +189,8 @@ class Builder:
                     testdir=self.testdir,
                     numnodes=node,
                     compiler=compiler_name,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
         if procs:
@@ -202,64 +205,8 @@ class Builder:
                     testdir=self.testdir,
                     numprocs=proc,
                     compiler=compiler_name,
-                )
-                builders.append(builder)
-
-        return builders
-
-    def create_compiler_builders(
-        self, name, recipe, executor, nodes=None, procs=None, compiler_name=None
-    ):
-        """Create builder objects by calling :class:`buildtest.builders.compiler.CompilerBuilder` class.
-
-        args:
-            name (str): Name of test
-            recipe (dict): Loaded test recipe from buildtest
-            executor (str): Name of executor
-            nodes (list, optional): A list of node configuration
-            procs (list, optional): A list of process configuration
-            compiler_name (str, optional): Name of resolved compiler instance
-        """
-        builders = []
-
-        builder = CompilerBuilder(
-            name=name,
-            recipe=recipe,
-            executor=executor,
-            buildspec=self.bp.buildspec,
-            buildexecutor=self.buildexecutor,
-            configuration=self.configuration,
-            testdir=self.testdir,
-            compiler=compiler_name,
-        )
-        builders.append(builder)
-
-        if nodes:
-            for node in nodes:
-                builder = CompilerBuilder(
-                    name=name,
-                    recipe=recipe,
-                    executor=executor,
-                    buildspec=self.bp.buildspec,
-                    buildexecutor=self.buildexecutor,
-                    configuration=self.configuration,
-                    testdir=self.testdir,
-                    numnodes=node,
-                    compiler=compiler_name,
-                )
-                builders.append(builder)
-        if procs:
-            for proc in procs:
-                builder = CompilerBuilder(
-                    name=name,
-                    recipe=recipe,
-                    executor=executor,
-                    buildspec=self.bp.buildspec,
-                    buildexecutor=self.buildexecutor,
-                    configuration=self.configuration,
-                    testdir=self.testdir,
-                    numprocs=proc,
-                    compiler=compiler_name,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
 
@@ -284,6 +231,8 @@ class Builder:
             buildspec=self.bp.buildspec,
             buildexecutor=self.buildexecutor,
             testdir=self.testdir,
+            strict=self.strict,
+            display=self.display,
         )
         builders.append(builder)
 
@@ -297,6 +246,8 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                     numnodes=node,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
         if procs:
@@ -309,6 +260,8 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                     numprocs=proc,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
 
@@ -340,22 +293,6 @@ class Builder:
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
                 )
                 builders += self.create_script_builders(
-                    name=name,
-                    executor=executor,
-                    recipe=recipe,
-                    nodes=self.numnodes,
-                    procs=self.numprocs,
-                    compiler_name=compiler_name,
-                )
-
-            elif (
-                re.fullmatch(recipe["executor"], executor)
-                and recipe["type"] == "compiler"
-            ):
-                self.logger.debug(
-                    f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
-                )
-                builders += self.create_compiler_builders(
                     name=name,
                     executor=executor,
                     recipe=recipe,
@@ -475,7 +412,6 @@ class Builder:
         if not recipe.get("tags"):
             return True
 
-        found = False
         # the input tag names from test can be list or string
         tests_in_tags = recipe["tags"]
         # if input is string, convert to list otherwise we assume its a list

@@ -1,0 +1,84 @@
+system:
+  summit:
+    hostnames:
+    - login1.summit.olcf.ornl.gov
+    - login2.summit.olcf.ornl.gov
+    moduletool: lmod
+    poolsize: 8
+    max_jobs: 10
+    pager: false
+    buildspecs:
+      rebuild: false
+      count: 15
+      format: name,description
+      terse: false
+    report:
+      count: 25
+      terse: false
+      format: name,id,state,runtime,returncode
+    executors:
+      defaults:
+        pollinterval: 30
+        maxpendtime: 300
+        account: gen243-hpctest
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
+      lsf:
+        batch:
+          queue: batch
+        storage:
+          queue: storage
+        debug:
+          queue: debug
+    compilers:
+      find:
+        gcc: ^(gcc)
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+          gcc/12.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/12.1.0
+              purge: false
+          gcc/9.3.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.3.0
+              purge: false
+          gcc/12.2.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/12.2.0
+              purge: false
+          gcc/9.3.0-compiler_only:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.3.0-compiler_only
+              purge: false

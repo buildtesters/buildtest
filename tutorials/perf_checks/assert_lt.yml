@@ -36,6 +36,7 @@ buildspecs:
           item: 1
     status:
       assert_lt:
+        comparisons:
         - name: copy
           ref: 5000
         - name: scale

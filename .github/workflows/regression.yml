@@ -7,6 +7,8 @@ on:
       - 'buildtest/**'
       - 'tests/**'
       - '.github/workflows/regression.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
 
 jobs:
 
@@ -20,10 +22,10 @@ jobs:
         python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4.5.0
+      uses: actions/setup-python@v5.0.0
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -48,6 +50,8 @@ jobs:
       timeout-minutes: 30
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         verbose: true
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

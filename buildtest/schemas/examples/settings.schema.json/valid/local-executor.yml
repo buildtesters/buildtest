@@ -1,20 +1,16 @@
 system:
   generic:
     hostnames: ['.*']
-    #logdir: $BUILDTEST_ROOT/logs
-    #testdir: $BUILDTEST_ROOT/tests
-    moduletool: N/A
+    logdir: $BUILDTEST_ROOT/logs
+    testdir: $BUILDTEST_ROOT/tests
+    moduletool: none
     poolsize: 1
+    max_jobs: 1
+    pager: False
     cdash:
       url: https://my.cdash.org
       project: buildtest
       site: laptop
-    processor:
-      numcpus: 8
-      cores: 4
-      threads_per_core: 2
-      sockets: 1
-      model: "Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz"
     buildspecs:
       # whether to rebuild cache file automatically when running `buildtest buildspec find`
       rebuild: False
@@ -30,10 +26,6 @@ system:
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
     executors:
       local:
         bash:

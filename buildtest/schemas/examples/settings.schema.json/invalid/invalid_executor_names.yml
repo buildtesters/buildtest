@@ -18,11 +18,6 @@ system:
           launcher: bsub
           queue: batch
           options: ["-q batch", "-t 00:10"]
-      cobalt:
-        <normal>:
-          launcher: qsub
-          queue: normal
-          options: ["-n 1", "-t 10"]
     compilers:
       compiler:
         gcc:

@@ -1,0 +1,48 @@
+system:
+  generic:
+    hostnames:
+    - .*
+    description: Generic System
+    moduletool: 'none'
+    pager: false
+    buildspecs:
+      rebuild: false
+      count: 15
+      format: name,description
+      terse: false
+      root:
+      - $BUILDTEST_ROOT/aws_oddc
+    report:
+      count: 25
+      terse: false
+      format: name,id,state,runtime,returncode
+    executors:
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+      torque:
+        lbl:
+          queue: lbl-cluster
+    compilers:
+      find:
+        gcc: ^(gcc)
+      compiler:
+        gcc:
+          gcc_11.4.0:
+            cc: /usr/bin/gcc
+            fc: /usr/bin/gfortran
+            cxx: /usr/bin/g++
+          gcc_9.4.0:
+            cc: /usr/bin/gcc-9
+            fc: /usr/bin/gfortran-9
+            cxx: /usr/bin/g++-9
+          gcc_8.4.0:
+            cc: /usr/bin/gcc-8
+            fc: /usr/bin/gfortran-8
+            cxx: /usr/bin/g++-8
+    cdash:
+      url: https://my.cdash.org/
+      project: buildtest
+      site: generic
+      buildname: buildtest_aws_tutorial

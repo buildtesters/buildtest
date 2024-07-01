@@ -22,12 +22,16 @@ Setup
 
 buildtest documentation is located in top-level `docs <https://github.com/buildtesters/buildtest/tree/devel/docs>`_ directory.
 If you want to build the documentation you will need to make sure your python environment
-has all the packages defined in ``docs/requirements.txt``. If your environment
-is already setup as described in :ref:`installing_buildtest` then  you can skip this step.
+has all the packages defined in `docs/requirements.txt <https://github.com/buildtesters/buildtest/blob/devel/docs/requirements.txt>`_.
+If your environment setup, then you can skip this step.
 
-To install your python packages, you can run the following::
+To install python dependencies for documentation build, you can run the following::
 
-  pip install -r docs/requirements.txt
+    # install from requirements file
+    pip install -r docs/requirements.txt
+
+    # install from pyproject.toml
+    pip install '.[docs]'
 
 Building docs locally
 -----------------------
@@ -38,7 +42,7 @@ To build your documentation, navigate to the `docs` directory and run the follow
   make clean
   make html
 
-It is best practice to run ``make clean`` to ensure sphinx will remove old html
+It's best practice to run ``make clean`` to ensure sphinx will remove old html
 content from previous builds, but it is ok to skip this step if you are
 making minor changes.
 
@@ -87,32 +91,54 @@ on google style see: https://google.github.io/styleguide/pyguide.html
 Generating Documentation Examples for Buildtest Tutorial
 ----------------------------------------------------------
 
-The documentation examples for the buildtest tutorial are run inside the container image
-ghcr.io/buildtesters/buildtest_spack:latest which means that some of the example output needs to be generated manually. There
-is a script `doc-examples.py <https://github.com/buildtesters/buildtest/blob/devel/scripts/spack_container/doc-examples.py>`_ that
-is responsible for auto-generating the documentation examples inside the container. To get the container running along with the buildtest codebase you will need to run the
-following commands.
+The ``buildtest tutorial-examples`` command is used for auto-generating examples for the buildtest tutorial. This command will serve the purpose of semi-automating
+the test creation where examples can't be run on readthedocs platform. Shown below is the command usage for ``buildtest tutorial-examples``.
+
+.. command-output:: buildtest tutorial-examples --help
+   :shell:
+
+The documentation examples for the :ref:`buildtest_spack_integration` are run inside the container image
+`ghcr.io/buildtesters/buildtest_spack:latest <https://ghcr.io/buildtesters/buildtest_spack:latest>`_ which means that some of the
+example output needs to be generated manually.
+
+To get into the container along with the buildtest codebase you will need to run the following commands
 
 .. Note::
 
-   You may need to `source /etc/profile` in your container if you see module command is not found.
+   You may need to `source /etc/profile` in your container if you see **module command is not found**.
+
+.. Note::
+
+    You will need to volume mount **$BUILDTEST_ROOT** into `/home/spack/buildtest` in-order to get buildtest code-base accessible inside the container.
+
 
 .. code-block:: console
 
     docker run -it -v  $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
+
+Once you are in the container run the following commands
+
+.. code-block:: console
+
     cd /home/spack/buildtest
     source scripts/spack_container/setup.sh
 
-You will need to volume mount **$BUILDTEST_ROOT** into `/home/spack/buildtest` in-order to get buildtest code-base accessible inside
-the container.
+Once your setup is complete, you can run the spack generated examples in dryrun mode by running::
 
-Once your setup is complete, you can auto-generate documentation examples by running the following ::
+        buildtest tutorial-examples spack --dryrun
 
-        buildtest tutorial-examples
+This will print a list of buildtest commands that will be run without actually executing them. If you want to test the examples, you can
+run the following command::
 
-Alternatively, the script can also be invoked via python as shown below :: 
+    buildtest tutorial-examples spack
 
-        python scripts/spack_container/doc-examples.py
+If you want buildtest to write the changes to the documentation, you will need to use the ``--write`` flag which will run the example tests and write
+the output to file.
+
+If you want to generate the examples for :ref:`buildtest_aws`, you will need to access the E4S Pro container image and clone buildtest, checkout to your
+branch and then run the command::
+
+    buildtest tutorial-examples aws
 
 Please verify all the auto-generated examples that will be used in the documentation. Once you are content with all the changes please add all
 the changes via ``git add``.

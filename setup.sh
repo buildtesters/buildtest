@@ -1,7 +1,7 @@
 #!/bin/bash
 # MIT License
 
-# Copyright (c) 2021-2023, The Regents of the University of California,
+# Copyright (c) 2021-2024, The Regents of the University of California,
 # through Lawrence Berkeley National Laboratory (subject to receipt of
 # any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
 # and Vanessa Sochat. All rights reserved.
@@ -35,14 +35,25 @@ else
   exit 1
 fi
 
+python=python3
+
+# install pip in user environment
+curl https://bootstrap.pypa.io/get-pip.py | $python 
+
 pip=pip3
 
 if ! [ -x "$(command -v $pip)" ]; then 
-  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
-  exit 1
+  # If not found in PATH, check $HOME/.local/bin
+  if [ -x "$HOME/.local/bin/$pip" ]; then
+    echo "$pip found in $HOME/.local/bin"
+    # Optionally, you can add $HOME/.local/bin to PATH
+    export PATH=$HOME/.local/bin:$PATH
+  else
+    echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
+    exit 1
+  fi
 fi
 
-python=python3
 
 # Need 'set +e' so that process is not terminated especially when using in CI
 set +e

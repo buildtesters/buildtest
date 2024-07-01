@@ -1,0 +1,8 @@
+buildspecs:
+  hostname_test:
+    type: script
+    executor: generic.torque.lbl
+    description: run sleep for 5 seconds 
+    pbs: ["-l nodes=1"]
+    run: |
+      sleep 5

@@ -28,9 +28,6 @@
     "bsub": {
       "$ref": "definitions.schema.json#/definitions/bsub"
     },
-    "cobalt": {
-      "$ref": "definitions.schema.json#/definitions/cobalt"
-    },
     "pbs": {
       "$ref": "definitions.schema.json#/definitions/pbs"
     },
@@ -61,6 +58,9 @@
       "description": "Specify a custom shebang line. If not specified buildtest will automatically add it in the test script."
     },
     "run": {
+      "$ref": "definitions.schema.json#/definitions/run"
+    },
+    "post_run": {
       "$ref": "definitions.schema.json#/definitions/run"
     },
     "status": {
@@ -131,6 +131,40 @@
               "$ref": "#definitions/compiler_declaration"
             }
           }
+        }
+      }
+    },
+    "container": {
+      "type": "object",
+      "required": [
+          "image",
+          "platform"
+        ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "description": "Specify a container platform to use when running test. This is used for running commands inside container.",
+          "enum": [
+            "docker",
+            "podman",
+            "singularity"
+          ]
+        },
+        "image": {
+          "type": "string",
+          "description": "Specify a container image to use when running test. This is used for running commands inside container."
+        },
+        "mounts": {
+          "type": "string",
+          "description": "Specify a list of directory paths to bind mount into the container"
+        },
+        "options": {
+          "type": "string",
+          "description": "Specify a list of options to pass to container runtime. "
+        },
+        "command": {
+          "type": "string",
+          "description": "Specify a list of commands to run inside container. This is used for running commands inside container."
         }
       }
     }
