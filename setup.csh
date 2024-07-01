@@ -71,7 +71,7 @@ curl https://bootstrap.pypa.io/get-pip.py | $python
 
 set pip=pip3
 
-if ( ! -x `command -v $pip` ) then
+if ( ! -x `which $pip` ) then
   # If not found in PATH, check $HOME/.local/bin
   if ( -x "$HOME/.local/bin/$pip" ) then
     echo "$pip found in $HOME/.local/bin"
