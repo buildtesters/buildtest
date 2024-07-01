@@ -30,6 +30,12 @@ jobs:
           python3 -m venv env
           source env/bin/activate
           source setup.sh
-          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
