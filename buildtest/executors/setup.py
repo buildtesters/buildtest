@@ -233,10 +233,7 @@ class BuildExecutor:
 
             run_builders.add(builder)
 
-        builders = []
-        for builder in run_builders:
-            if builder.is_pending():
-                builders.append(builder)
+        builders = [builder for builder in run_builders if builder.is_pending()]
 
         # console.print(f"In this iteration we will run the following tests: {builders}", )
         return builders
