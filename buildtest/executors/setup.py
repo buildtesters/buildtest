@@ -209,6 +209,7 @@ class BuildExecutor:
                         )
                         break
                 else:
+
                     testname = list(name.keys())[0]
 
                     if testname not in testnames.keys():
@@ -219,66 +220,66 @@ class BuildExecutor:
                         console.print(
                             f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {testnames[testname]} [/red]"
                         )
-                        break
+                        continue
 
                     if "state" in name[testname]:
-                        match_state = (
-                            name[testname]["state"]
-                            == testnames[testname].metadata["result"]["state"]
-                        )
-
-                        if not match_state:
-                            if testnames[testname].is_pending():
-                                builder.dependency = True
-                                console.print(
-                                    f"[blue]{builder}[/blue] skipping test because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
-                                )
-                                break
-                            # if there is no match but in 'state' property but job is not pending then we cancel job
-                            else:
-                                builder.failed()
-
-                                builder.dependency = True
-                                console.print(
-                                    f"[red]{builder} is cancelled because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
-                                )
+                        self.check_state(builder, testnames, name, testname)
 
                     if "returncode" in name[testname]:
-                        rc = []
-                        if isinstance(name[testname]["returncode"], int):
-                            rc.append(name[testname]["returncode"])
-                        else:
-                            rc = name[testname]["returncode"]
-
-                        no_match = (
-                            testnames[testname].metadata["result"]["returncode"]
-                            not in rc
-                        )
-                        if no_match:
-                            if testnames[testname].is_pending():
-                                console.print(
-                                    f"[red]{builder} is cancelled because it expects one of these returncode {rc} from {testnames[testname]} but test has {testnames[testname].metadata['result']['returncode']} "
-                                )
-                                builder.dependency = True
-
-                            # if test is not complete we check if test returncode with value specified in needs property for corresponding test
-                            else:
-                                builder.dependency = True
-                                builder.failed()
-                                continue
+                        self.check_returncode(builder, testnames, name, testname)
 
             if builder.dependency:
                 continue
 
             run_builders.add(builder)
 
-        builders = []
-        for builder in run_builders:
-            if builder.is_pending():
-                builders.append(builder)
+        builders = [builder for builder in run_builders if builder.is_pending()]
 
         # console.print(f"In this iteration we will run the following tests: {builders}", )
         return builders
+
+    def check_state(self, builder, testnames, name, testname):
+        """Check the state of the job and set the builder dependency accordingly."""
+        match_state = (
+            name[testname]["state"] == testnames[testname].metadata["result"]["state"]
+        )
+
+        if not match_state:
+
+            builder.dependency = True
+
+            if testnames[testname].is_pending():
+                console.print(
+                    f"[blue]{builder}[/blue] skipping test because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
+                )
+            else:
+                builder.failed()
+                console.print(
+                    f"[red]{builder} is cancelled because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
+                )
+
+    def check_returncode(self, builder, testnames, name, testname):
+        """Check the returncode of the job and set the builder dependency accordingly."""
+        matching_returncode = []
+        if isinstance(name[testname]["returncode"], int):
+            matching_returncode.append(name[testname]["returncode"])
+        else:
+            matching_returncode = name[testname]["returncode"]
+
+        no_match = (
+            testnames[testname].metadata["result"]["returncode"]
+            not in matching_returncode
+        )
+        if no_match:
+
+            builder.dependency = True
+
+            if testnames[testname].is_pending():
+                console.print(
+                    f"[red]{builder} is cancelled because it expects one of these returncode {matching_returncode} from {testnames[testname]} but test has {testnames[testname].metadata['result']['returncode']} "
+                )
+            else:
+                builder.failed()
 
     def run(self, builders):
         """This method is responsible for running the build script for each builder async and
