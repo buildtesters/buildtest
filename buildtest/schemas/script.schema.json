@@ -98,28 +98,28 @@
           "additionalProperties": false,
           "properties": {
             "gcc": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "intel": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "pgi": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "cray": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "clang": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "cuda": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "upcxx": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "nvhpc": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             }
           }
         },
@@ -128,7 +128,7 @@
           "description": "Specify compiler configuration based on named compilers.",
           "patternProperties": {
             "^.*$": {
-              "$ref": "#definitions/compiler_declaration"
+              "$ref": "#/definitions/compiler_declaration"
             }
           }
         }
