@@ -1,7 +1,7 @@
 docutils==0.18.1
 readthedocs-sphinx-search==0.3.2
 # don't use sphinx > 7.2.0 because they dropped support for python 3.8. See https://www.sphinx-doc.org/en/master/changes.html for changelog
-sphinx==7.3.7
+sphinx==8.0.2
 sphinx-design==0.5.0
 sphinx-argparse==0.4.0
 sphinx-autoapi==3.0.0
