@@ -38,7 +38,7 @@ fi
 python=python3
 
 # install pip in user environment
-curl https://bootstrap.pypa.io/get-pip.py | $python 
+curl https://bootstrap.pypa.io/get-pip.py 2>/dev/null | $python > /dev/null 2>&1
 
 pip=pip3
 
