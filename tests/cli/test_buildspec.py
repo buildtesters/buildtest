@@ -348,18 +348,27 @@ def test_edit_file():
 
 
 @pytest.mark.cli
-def test_buildspec_find_roots():
+def test_buildspec_find_by_directory_and_files():
     root_buildspecs = [
         os.path.join(BUILDTEST_ROOT, "tests", "buildsystem"),
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
-    # buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
+    # list of buildspec files to add to cache, we have one valid file that exists, one with invalid extension and one file that doesn't exist
+    bp_files = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
+        os.path.join(BUILDTEST_ROOT, "README.rst"),
+        os.path.join(BUILDTEST_ROOT, "badfile.yml"),
+    ]
+    # buildtest buildspec find --directory $BUILDTEST_ROOT/tests/buildsystem --directory $BUILDTEST_ROOT/tutorials
     BuildspecCache(
-        directory=root_buildspecs, configuration=configuration, rebuild=False
+        directory=root_buildspecs,
+        buildspec_files=bp_files,
+        configuration=configuration,
+        rebuild=False,
     )
 
     with pytest.raises(BuildTestError):
-        # buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
+        # buildtest buildspec find --directory $BUILDTEST_ROOT/README.rst --directory $BUILDTEST_ROOT/environment.yml
         BuildspecCache(
             directory=[
                 os.path.join(BUILDTEST_ROOT, "README.rst"),
