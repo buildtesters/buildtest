@@ -225,21 +225,21 @@ can be overridden by command line option.
 Specify Root Directories for searching buildspecs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``root`` property in configuration file
-is a list of string types which is used to search for buildspecs. The ``root`` property is not required in configuration file, but it can be a good
-idea to set this value if you have a predetermined location where buildspecs are stored.
+Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``directory`` property in configuration file
+is a list of directories to search for buildspecs. The ``directory`` property is not **required** in configuration file, but it can be a good
+idea to set this value if you have a pre-determined location where buildspecs are stored.
 
-You can specify the root path via command line ``buildtest buildspec find --root <dir1> --root <dir2>`` which will override the configuration value. In a
+You can specify the directory path via command line ``buildtest buildspec find --directory <dir1> --directory <dir2>`` which will override the configuration value. In a
 practical situation, you will want to write your buildspecs in a separate repository which you can clone in your filesystem. Let's say they are cloned in
-your $HOME directory named **$HOME/buildtest-examples**. You have one of two options, one you can specify the root path in configuration file as shown below:
+your **$HOME** directory named **$HOME/buildtest-examples**. You have one of two options, one you can specify the  path in configuration file as shown below:
 
 .. code-block:: yaml
 
     buildspecs:
-      root: [ $HOME/buildtest-examples ]
+      directory: [ $HOME/buildtest-examples ]
 
-This above configuration will instruct buildtest to search for buildspecs in ``$HOME/buildtest-examples`` directory, and you won't
-have to specify the ``--root`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--root`` everytime
+This configuration will instruct buildtest to search for buildspecs in ``$HOME/buildtest-examples`` directory, and you won't
+have to specify the ``--directory`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--directory`` everytime
 you need to build the cache. If neither is specified, buildtest will load the default buildspecs which are **$BUILDTEST_ROOT/tutorials** and
 **$BUILDTEST_ROOT/general_tests**.
 

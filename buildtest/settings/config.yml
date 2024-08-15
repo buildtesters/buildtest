@@ -34,7 +34,7 @@ system:
       terse: false
 
       # list of paths to search for buildspecs
-      #root: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
+      #directory: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
 
     # options for buildtest report command
     report:

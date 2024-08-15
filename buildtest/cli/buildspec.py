@@ -49,7 +49,7 @@ class BuildspecCache:
         rebuild=False,
         filterfields=None,
         formatfields=None,
-        roots=None,
+        directory=None,
         header=None,
         terse=None,
         pager=None,
@@ -58,7 +58,7 @@ class BuildspecCache:
         row_count=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
-        resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
+        resolve paths to directory where buildspecs will be searched. This can be specified via ``--directory`` option on command line or one can
         specify directory paths in the configuration file. Next we build the cache that contains metadata for each buildspec that will be
         written to file. If any filter or format options are specified we check if they are valid and finally display a content of the cache
         depending on the argument.
@@ -70,7 +70,7 @@ class BuildspecCache:
             rebuild (bool, optional): rebuild the buildspec cache by validating all buildspecs when using ``buildtest buildspec find --rebuild``. Defaults to ``False`` if ``--rebuild`` is not specified
             filterfields (str, optional): The filter options specified via ``buildtest buildspec find --filter`` that contains list of key value pairs for filtering buildspecs
             formatfields (str, optional): The format options used for formating table. The format option is a comma separated list of format fields specified via ``buildtest buildspec find --format``
-            roots (list, optional): List of directories to search for buildspecs. This argument contains value of ``buildtest buildspec find --roots``
+            directory (list, optional): List of directories to search for buildspecs. This argument contains value of ``buildtest buildspec find --directory``
             headers (bool, optional):  Option to control whether header are printed in terse output. This argument contains value of ``buildtest buildspec find --no-header``
             terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
             color (str, optional): An instance of a string class that selects the color to use when printing table output
@@ -98,8 +98,10 @@ class BuildspecCache:
         self.row_count = row_count
 
         # if --root is not specified we set to empty list instead of None
-        self.roots = (
-            roots or self.configuration.target_config["buildspecs"].get("root") or []
+        self.directory = (
+            directory
+            or self.configuration.target_config["buildspecs"].get("directory")
+            or []
         )
 
         # list of buildspec directories to search for .yml files
@@ -117,7 +119,7 @@ class BuildspecCache:
             "rebuild"
         )
         # if --root is specified we set rebuild to True
-        if self.roots:
+        if self.directory:
             self.rebuild = True
 
         self.cache = {}
@@ -138,20 +140,20 @@ class BuildspecCache:
         """Add all paths to search for buildspecs. We read configuration file
         and check whether we need to load buildspecs from list of directories.
         We check if directories exist, if any fail we don't add them to path.
-        If no root directories are specified we load the default buildspec roots which are
+        If no root directories are specified we load buildspecs in
         `tutorials <https://github.com/buildtesters/buildtest/tree/devel/tutorials>`_
         and `general_tests <https://github.com/buildtesters/buildtest/tree/devel/general_tests>`_ directory.
         """
 
-        # if no roots specified we load the default buildspec roots.
-        if not self.roots:
+        # if no directory is specified we load the default buildspec.
+        if not self.directory:
             self.paths += BUILDSPEC_DEFAULT_PATH
 
         # for every root buildspec defined in configuration or via --root option,
         # we resolve path and if path exist add to self.paths. The path must be a
         # directory. If its file, we ignore it
-        if self.roots:
-            for root in self.roots:
+        if self.directory:
+            for root in self.directory:
                 path = resolve_path(root, exist=False)
                 if not os.path.exists(path):
                     console.print(f"[red]Path: {path} does not exist!")
@@ -297,8 +299,8 @@ class BuildspecCache:
 
     def build_cache(self):
         """This method will rebuild the buildspec cache file by recursively searching
-        all .yml files specified by input argument ``paths`` which is a list of directory
-        roots. The buildspecs are validated and cache file is updated
+        all .yml files specified by input argument ``paths`` which is a list of directory paths.
+        The buildspecs are validated and cache file is updated
         """
 
         self.update_cache = {}
@@ -1402,7 +1404,7 @@ def buildspec_find(args, configuration):
         rebuild=args.rebuild,
         filterfields=args.filter,
         formatfields=args.format,
-        roots=args.root,
+        directory=args.directory,
         configuration=configuration,
         header=args.no_header,
         terse=args.terse,

@@ -1287,7 +1287,7 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--root"],
+                    ["-d", "--directory"],
                     {
                         "type": str,
                         "action": "append",

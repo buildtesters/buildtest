@@ -252,10 +252,10 @@ def setup(args):
     # build buildspec cache file automatically if it doesn't exist
     if not is_file(BUILDSPEC_CACHE_FILE):
         root_buildspecs = []
-        if hasattr(args, "root"):
-            root_buildspecs = args.root
+        if hasattr(args, "directory"):
+            root_buildspecs = args.directory
 
-        BuildspecCache(roots=root_buildspecs, configuration=configuration)
+        BuildspecCache(directory=root_buildspecs, configuration=configuration)
 
     return system, configuration, buildtest_editor, report_file
 

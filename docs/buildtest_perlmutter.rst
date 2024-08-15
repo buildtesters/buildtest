@@ -76,7 +76,7 @@ Exercise 2: Querying Buildspec Cache
 
 In this exercise you will learn how to use the :ref:`buildspec_interface`. Let's build the cache by running the following::
 
-    buildtest buildspec find --root $HOME/buildtest-nersc/buildspecs --rebuild -q
+    buildtest buildspec find --directory $HOME/buildtest-nersc/buildspecs --rebuild -q
 
 .. todo::
 

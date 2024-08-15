@@ -413,8 +413,8 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
-           local shortopts="-b -e -h -n -p -q -r -t"
+           local longopts="--buildspec --count --directory --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --terse"
+           local shortopts="-b -d -e -h -n -p -q -r -t"
            local cmds="invalid"
 
            COMPREPLY=( $( compgen -W "${cmds} ${longopts} ${shortopts}" -- "${cur}" ) )

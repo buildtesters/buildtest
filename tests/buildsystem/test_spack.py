@@ -7,8 +7,7 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
-
-here = os.path.dirname(os.path.abspath(__file__))
+from buildtest.defaults import BUILDTEST_ROOT
 
 
 @pytest.mark.spack
@@ -21,7 +20,9 @@ def test_spack_examples():
         )
 
     configuration = SiteConfiguration(
-        settings_file=os.path.join(here, "spack_container.yml")
+        settings_file=os.path.join(
+            BUILDTEST_ROOT, "buildtest", "settings", "spack_container.yml"
+        )
     )
     configuration.detect_system()
     configuration.validate()
