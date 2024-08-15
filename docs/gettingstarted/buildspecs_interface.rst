@@ -124,8 +124,8 @@ Shown below, we specify a list of files to load into cache using ``--file`` opti
     We can confirm the file is loaded into cache using the `-b` option which list all buildspecs in cache and pipe via `grep` to search for `vars.yml`. Note that
     we specify ``--count=-1`` to show all buildspecs in cache.
 
-    .. command-output:: buildtest bc find -b --terse --count=-1 | grep vars.yml
-
+    .. command-output:: buildtest builspec find -b --terse --count=-1 | grep vars.yml
+       :shell:
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~~
