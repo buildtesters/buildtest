@@ -220,10 +220,12 @@ If you want buildtest to always rebuild cache you can set the following in your 
 The configuration options such as ``count``, ``format``, ``terse`` can  be tweaked to your preference. These configuration values
 can be overridden by command line option.
 
-.. _buildspec_roots:
+.. _search_buildspecs_when_building_cache:
 
-Specify Root Directories for searching buildspecs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Searching for buildspecs when building Buildspec Cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When building the buildspec cache, buildtest will search for buildspecs in a list of directories specified in the configuration file.
 
 Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``directory`` property in configuration file
 is a list of directories to search for buildspecs. The ``directory`` property is not **required** in configuration file, but it can be a good

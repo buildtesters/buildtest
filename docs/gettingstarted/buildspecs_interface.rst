@@ -78,8 +78,8 @@ Shown below is an example output.
     .. command-output:: buildtest buildspec find --buildspec
        :ellipsis: 11
 
-Find root paths where buildspecs are searched
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding buildspecs to cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec find --paths`` will display a list of root directories buildtest will search for
 buildspecs when running ``buildtest buildspec find``. One can define these directories in the configuration file
@@ -89,10 +89,8 @@ or pass them via command line.
 
     .. command-output:: buildtest buildspec find --paths
 
-buildtest will search buildspecs in :ref:`buildspecs root <buildspec_roots>` defined in your configuration,
-which is a list of directory paths to search for buildspecs.
-If you want to load buildspecs from a directory path, you can specify a directory
-via ``--directory`` option in the format: ``buildtest buildspec find --directory <path>``.
+buildtest will :ref:`search buildspecs when building cache <search_buildspecs_when_building_cache>` that can be configured via
+configuration or command line. If you want to load buildspecs from a directory, you can use the ``--directory`` option.
 buildtest will rebuild cache when `--directory` option is specified. Note that to rebuild cache you typically
 need to pass **--rebuild** option but that is not required when using **--directory** option because we want
 buildtest to load buildspecs into cache.
@@ -111,6 +109,23 @@ If you want to specify multiple root paths you can specify the  **--directory** 
 Let's rebuild the cache again by running ``buildtest buildspec find`` which will load the default buildspecs into the cache
 
 .. command-output:: buildtest buildspec find --rebuild --quiet
+
+In addition to ``--directory`` option, one can specify a list of files to load into cache using the ``--file`` option. This can be useful
+if you want to load specific buildspecs into cache without having to specify ``--directory``. You can use ``--file`` option with ``--directory``
+and buildtest will recursively search directories and load files specified in ``--file`` option.
+
+If you specify an invalid file path, a directory or file without ``.yml`` extension, buildtest will report a message and skip to next file.
+Shown below, we specify a list of files to load into cache using ``--file`` option.
+
+.. dropdown:: ``buildtest buildspec find --file $BUILDTEST_ROOT/tutorials/vars.yml``
+
+    .. command-output:: buildtest buildspec find --file $BUILDTEST_ROOT/tutorials/vars.yml
+
+    We can confirm the file is loaded into cache using the `-b` option which list all buildspecs in cache and pipe via `grep` to search for `vars.yml`. Note that
+    we specify ``--count=-1`` to show all buildspecs in cache.
+
+    .. command-output:: buildtest bc find -b --terse --count=-1 | grep vars.yml
+
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~~
