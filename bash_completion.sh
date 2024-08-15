@@ -414,7 +414,7 @@ _buildtest ()
          # completion for rest of arguments
          *)
            local longopts="--buildspec --count --directory --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --terse"
-           local shortopts="-b -e -h -n -p -q -r -t"
+           local shortopts="-b -d -e -h -n -p -q -r -t"
            local cmds="invalid"
 
            COMPREPLY=( $( compgen -W "${cmds} ${longopts} ${shortopts}" -- "${cur}" ) )
