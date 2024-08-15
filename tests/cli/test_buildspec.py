@@ -356,8 +356,9 @@ def test_buildspec_find_by_directory_and_files():
     # list of buildspec files to add to cache, we have one valid file that exists, one with invalid extension and one file that doesn't exist
     bp_files = [
         os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
-        os.path.join(BUILDTEST_ROOT, "README.rst"),
-        os.path.join(BUILDTEST_ROOT, "badfile.yml"),
+        os.path.join(BUILDTEST_ROOT, "README.rst"),  # invalid extension
+        os.path.join(BUILDTEST_ROOT, "badfile.yml"),  # file doesn't exist
+        os.path.join(BUILDTEST_ROOT),  # directory path
     ]
     # buildtest buildspec find --directory $BUILDTEST_ROOT/tests/buildsystem --directory $BUILDTEST_ROOT/tutorials
     BuildspecCache(
