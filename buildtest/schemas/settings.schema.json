@@ -108,7 +108,7 @@
               "$ref": "#/definitions/format"
             },
             "terse": { "$ref": "#/definitions/terse" },
-            "root": {
+            "directory": {
               "type": "array",
               "items": {
                 "type": "string"

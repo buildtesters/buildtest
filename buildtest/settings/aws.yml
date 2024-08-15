@@ -10,7 +10,7 @@ system:
       count: 15
       format: name,description
       terse: false
-      root:
+      directory:
       - $BUILDTEST_ROOT/aws_tutorial
     report:
       count: 25
