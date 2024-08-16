@@ -50,6 +50,7 @@ class BuildspecCache:
         filterfields=None,
         formatfields=None,
         directory=None,
+        buildspec_files=None,
         header=None,
         terse=None,
         pager=None,
@@ -71,6 +72,7 @@ class BuildspecCache:
             filterfields (str, optional): The filter options specified via ``buildtest buildspec find --filter`` that contains list of key value pairs for filtering buildspecs
             formatfields (str, optional): The format options used for formating table. The format option is a comma separated list of format fields specified via ``buildtest buildspec find --format``
             directory (list, optional): List of directories to search for buildspecs. This argument contains value of ``buildtest buildspec find --directory``
+            buildspec_files (list, optional): List of buildspec files to add to cache. This argument contains value of ``buildtest buildspec find --file``
             headers (bool, optional):  Option to control whether header are printed in terse output. This argument contains value of ``buildtest buildspec find --no-header``
             terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
             color (str, optional): An instance of a string class that selects the color to use when printing table output
@@ -106,6 +108,8 @@ class BuildspecCache:
 
         # list of buildspec directories to search for .yml files
         self.paths = []
+
+        self.buildspec_files = buildspec_files
 
         # stores invalid buildspecs and the error messages
         self.invalid_buildspecs = {}
@@ -149,12 +153,12 @@ class BuildspecCache:
         if not self.directory:
             self.paths += BUILDSPEC_DEFAULT_PATH
 
-        # for every root buildspec defined in configuration or via --root option,
+        # for every root buildspec defined in configuration or via --directory option,
         # we resolve path and if path exist add to self.paths. The path must be a
         # directory. If its file, we ignore it
         if self.directory:
-            for root in self.directory:
-                path = resolve_path(root, exist=False)
+            for dirname in self.directory:
+                path = resolve_path(dirname, exist=False)
                 if not os.path.exists(path):
                     console.print(f"[red]Path: {path} does not exist!")
 
@@ -169,6 +173,31 @@ class BuildspecCache:
         rebuild cache we remove the file and recreate cache. If cache file
         exists, we simply load from cache
         """
+        buildspecs = []
+        # this method will check if buildspec_files are valid files and end with .yml.
+        # If it's not a file or does not end with .yml we skip the file and report a message
+
+        if self.buildspec_files:
+            for buildspec in self.buildspec_files:
+                path = resolve_path(buildspec, exist=False)
+                if not os.path.exists(path):
+                    console.print(f"[red]Path: {path} does not exist!")
+                    continue
+                if not is_file(path):
+                    console.print(
+                        f"[red]{path} is not a file, please specify a file when adding buildspec to cache"
+                    )
+                    continue
+                if not path.endswith(".yml"):
+                    console.print(
+                        f"[red]{path} does not end in .yml extension, please specify a valid buildspec file"
+                    )
+                    continue
+
+                buildspecs.append(path)
+
+        # set self.buildspec_files to list of valid buildspec files which will be used to build cache
+        self.buildspec_files = buildspecs
 
         # implements buildtest buildspec find --rebuild which removes cache file
         # before finding all buildspecs. We only remove file if file exists
@@ -192,7 +221,7 @@ class BuildspecCache:
 
     def _discover_buildspecs(self):
         """This method retrieves buildspecs based on ``self.paths`` which is a
-        list of directory paths to search. If ``--root`` is specified
+        list of directory paths to search. If ``--directory`` is specified
         we process each argument and recursively find all .yml files
         """
 
@@ -209,6 +238,9 @@ class BuildspecCache:
             for path in self.paths:
                 buildspec = walk_tree(path, ".yml")
                 buildspecs += buildspec
+
+        if self.buildspec_files:
+            buildspecs += self.buildspec_files
 
         if not self.terse:
             print(f"Buildspec Paths: {self.paths}")
@@ -1405,6 +1437,7 @@ def buildspec_find(args, configuration):
         filterfields=args.filter,
         formatfields=args.format,
         directory=args.directory,
+        buildspec_files=args.file,
         configuration=configuration,
         header=args.no_header,
         terse=args.terse,

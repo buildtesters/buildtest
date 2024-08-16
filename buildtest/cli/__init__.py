@@ -1294,6 +1294,14 @@ class BuildTestParser:
                         "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
                     },
                 ),
+                (
+                    ["-f", "--file"],
+                    {
+                        "type": str,
+                        "action": "append",
+                        "help": "Specify buildspec file to load into buildspec cache.",
+                    },
+                ),
             ],
         }
 
