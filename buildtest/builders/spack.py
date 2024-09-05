@@ -27,6 +27,8 @@ class SpackBuilder(BuilderBase):
         testdir=None,
         numprocs=None,
         numnodes=None,
+        strict=None,
+        display=None,
     ):
         super().__init__(
             name=name,
@@ -37,7 +39,9 @@ class SpackBuilder(BuilderBase):
             testdir=testdir,
             numprocs=numprocs,
             numnodes=numnodes,
+            display=display,
         )
+        self.strict = strict
         self.status = deep_get(
             self.recipe, "executors", self.executor, "status"
         ) or self.recipe.get("status")
@@ -54,7 +58,8 @@ class SpackBuilder(BuilderBase):
         if sched_lines:
             lines += sched_lines
 
-        lines.append(self._emit_set_command())
+        if self.strict:
+            lines.append(self._emit_set_command())
 
         var_lines = self._get_variables(self.recipe.get("vars"))
         env_lines = self._get_environment(self.recipe.get("env"))

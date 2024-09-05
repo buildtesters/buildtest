@@ -11,6 +11,7 @@ from buildtest.defaults import (
     console,
 )
 from buildtest.executors.setup import BuildExecutor
+from buildtest.tools.cpu import cpuinfo
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import is_dir, is_file
 
@@ -25,6 +26,7 @@ def buildtest_info(configuration, buildtest_system):
     """
 
     be = BuildExecutor(configuration)
+    cpu_details = cpuinfo()
 
     buildtest_details = [
         f"[red]Buildtest Version:[/red]        [green]{BUILDTEST_VERSION}[/green]",
@@ -35,13 +37,23 @@ def buildtest_info(configuration, buildtest_system):
         f"[red]Available Executors:[/red]      [green]{be.names()}[/green]",
     ]
     system_details = [
-        f"[red]Python Path:[/red]         [green]{buildtest_system.system['python']}[/green]",
-        f"[red]Python Version:[/red]      [green]{buildtest_system.system['pyver']}[/green]",
-        f"[red]Processor:[/red]           [green]{buildtest_system.system['processor']}[/green]",
-        f"[red]Host:[/red]                [green]{buildtest_system.system['host']}[/green]",
-        f"[red]Machine:[/red]             [green]{buildtest_system.system['machine']}[/green]",
-        f"[red]Operating System:[/red]    [green]{buildtest_system.system['os']}[/green]",
-        f"[red]Module System:[/red]       [green]{buildtest_system.system['moduletool']}[/green]",
+        f"[red]Python Path:[/red]               [green]{buildtest_system.system['python']}[/green]",
+        f"[red]Python Version:[/red]            [green]{buildtest_system.system['pyver']}[/green]",
+        f"[red]Host:[/red]                      [green]{buildtest_system.system['host']}[/green]",
+        f"[red]Operating System:[/red]          [green]{buildtest_system.system['os']}[/green]",
+        f"[red]Module System:[/red]             [green]{buildtest_system.system['moduletool']}[/green]",
+        f"[red]Architecture:[/red]              [green]{cpu_details['arch']}[/green]",
+        f"[red]Vendor:[/red]                    [green]{cpu_details['vendor']}[/green]",
+        f"[red]Model:[/red]                     [green]{cpu_details['model']}[/green]",
+        f"[red]Platform:[/red]                  [green]{cpu_details['platform']}[/green]",
+        f"[red]CPU:[/red]                       [green]{cpu_details['cpu']}[/green]",
+        f"[red]Virtual CPU:[/red]               [green]{cpu_details['vcpu']}[/green]",
+        f"[red]Sockets:[/red]                   [green]{cpu_details['num_sockets']}[/green]",
+        f"[red]Cores per Socket:[/red]          [green]{cpu_details['num_cpus_per_socket']}[/green]",
+        f"[red]Virtual Memory Total:[/red]      [green]{cpu_details['virtualmemory']['total']} MB[/green]",
+        f"[red]Virtual Memory Used:[/red]       [green]{cpu_details['virtualmemory']['used']} MB[/green]",
+        f"[red]Virtual Memory Available:[/red]  [green]{cpu_details['virtualmemory']['available']} MB[/green]",
+        f"[red]Virtual Memory Free:[/red]       [green]{cpu_details['virtualmemory']['free']} MB[/green]",
     ]
 
     if is_dir(BUILD_HISTORY_DIR):

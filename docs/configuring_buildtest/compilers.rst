@@ -317,7 +317,7 @@ is the programming environment modulefile that will load the GNU compiler on Cra
 
 .. literalinclude:: ../tests/settings/nersc.yml
     :language: yaml
-    :emphasize-lines: 18-22
+    :emphasize-lines: 19-24
 
 Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
 compiler instance under the ``module``, ``load`` section. Furthermore, you will see the cray wrappers **cc**, **CC**, and **ftn** are used

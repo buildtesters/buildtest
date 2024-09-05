@@ -37,9 +37,6 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError
 from buildtest.scheduler.job import Job
-from buildtest.scheduler.lsf import LSFJob
-from buildtest.scheduler.pbs import PBSJob
-from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import (
@@ -49,9 +46,10 @@ from buildtest.utils.file import (
     resolve_path,
     write_file,
 )
+from buildtest.utils.print import print_content, print_file_content
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
-from buildtest.utils.tools import deep_get
+from buildtest.utils.tools import check_container_runtime, deep_get
 
 
 class BuilderBase(ABC):
@@ -73,6 +71,7 @@ class BuilderBase(ABC):
         numprocs=None,
         numnodes=None,
         compiler=None,
+        display=None,
     ):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
@@ -84,6 +83,7 @@ class BuilderBase(ABC):
             buildspec (str): Full path to buildspec file
             buildexecutor (:obj:`buildtest.executors.setup.BuildExecutor`): An instance of BuildExecutor class used for accessing executors
             testdir (str): Test directory where tests are written. Must be full path on filesystem.
+            display (list, optional):  Display content of output/error or test.
         """
 
         self.name = name
@@ -97,7 +97,7 @@ class BuilderBase(ABC):
         self.fflags = None
         self.ldflags = None
         self.cppflags = None
-
+        self.display = display or []
         self.metadata = {}
 
         self.duration = 0
@@ -144,7 +144,7 @@ class BuilderBase(ABC):
         self.logger.debug(f"Processing Buildspec File: {self.buildspec}")
         self.logger.debug(f"Processing Test: {self.name}")
 
-        # get type attribute from Executor class (local, slurm, cobalt, pbs, lsf)
+        # get type attribute from Executor class (local, slurm, pbs, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
         self.buildexecutor = buildexecutor
 
@@ -155,7 +155,7 @@ class BuilderBase(ABC):
 
         self._set_metadata_values()
         self.shell_detection()
-        self.sched_init()
+        self.set_scheduler_settings()
 
     @property
     def dependency(self):
@@ -178,7 +178,7 @@ class BuilderBase(ABC):
         self.shebang = (
             self.recipe.get("shebang") or f"{self.shell.shebang} {self.shell.opts}"
         )
-        self.logger.debug("Using shell %s", self.shell.name)
+        self.logger.debug(f"Using shell {self.shell.name}")
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
     def _set_metadata_values(self):
@@ -285,29 +285,10 @@ class BuilderBase(ABC):
 
         """
 
-        # import issue when putting this at top of file
-        # from buildtest.executors.local import LocalExecutor
-
-        # return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
-
         return self.buildexecutor.executors[self.executor].type == "local"
 
     def is_container_executor(self):
-        # from buildtest.executors.container import ContainerExecutor
         return self.buildexecutor.executors[self.executor].type == "container"
-
-    def is_slurm_executor(self):
-        """Return True if current builder executor type is LocalExecutor otherwise returns False.
-
-        Returns:
-            bool: returns True if builder is using executor type LocalExecutor otherwise returns False
-
-        """
-
-        # import issue when putting this at top of file
-        from buildtest.executors.slurm import SlurmExecutor
-
-        return isinstance(self.buildexecutor.executors[self.executor], SlurmExecutor)
 
     def is_batch_job(self):
         """Return True/False if builder.job attribute is of type Job instance if not returns False.
@@ -319,12 +300,10 @@ class BuilderBase(ABC):
     def start(self):
         """Keep internal timer for test using class :class:`buildtest.utils.timer.Timer`. This method will start the timer for builder which is invoked upon running test."""
 
-        # self.timer = Timer()
         self.timer.start()
 
     def stop(self):
         """Stop internal timer for builder."""
-        # self.duration += self.timer.stop()
         self.timer.stop()
 
     def retry(self, retry):
@@ -344,10 +323,11 @@ class BuilderBase(ABC):
         self._build_setup()
         self._write_test()
         self._write_build_script(modules, modulepurge, unload_modules)
+        self._write_post_run_script()
 
     def run(self, cmd, timeout=None):
-        """Run the test and record the starttime and start timer. We also return the instance
-        object of type BuildTestCommand which is used by Executors for processing output and error
+        """This is the entry point for running the test. This method will prepare test to be run, then
+        run the test. Once test is complete, we also handle test results by capturing output and error.
 
         Returns:
             If success, the return type is an object of type :class:`buildtest.utils.command.BuildTestCommand`
@@ -355,57 +335,114 @@ class BuilderBase(ABC):
             If their is a failure (non-zero) returncode we retry test and if it doesn't pass we
             raise exception of :class:`buildtest.exceptions.RuntimeFailure`
         """
+        self.prepare_run(cmd)
+        command_result = self.execute_run(cmd, timeout)
+        run_result = self.handle_run_result(command_result, timeout)
+        return run_result
+
+    def prepare_run(self, cmd):
+        """This method prepares the test to be run by recording starttime, setting state to running and starting the timer.
+        In additional we will write build environment into build-env.txt which is used for debugging purposes.
+        """
 
         self.metadata["command"] = cmd
-
         console.print(f"[blue]{self}[/]: Current Working Directory : {os.getcwd()}")
-        # capture output of 'env' and write to file 'build-env.sh' prior to running test
         command = BuildTestCommand("env")
         command.execute()
         content = "".join(command.get_output())
         self.metadata["buildenv"] = os.path.join(self.test_root, "build-env.txt")
         write_file(self.metadata["buildenv"], content)
-
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
-
         self.record_starttime()
         self.running()
         self.start()
 
+    def execute_run(self, cmd, timeout):
+        """This method will execute the test and return the instance object of type
+        BuildTestCommand which is used by Executors for processing output and error"""
+
         command = BuildTestCommand(cmd)
         command.execute(timeout=timeout)
+        return command
 
-        self.logger.debug(f"Running Test via command: {cmd}")
-        ret = command.returncode()
-        err_msg = command.get_error()
-        # limit error messages to 60 lines
-        if len(err_msg) >= 60:
-            err_msg = err_msg[-60:]
+    def execute_post_run_script(self):
+
+        if os.path.exists(self.post_run_script):
+            post_run = BuildTestCommand(self.post_run_script)
+            post_run.execute()
+            output = "".join(post_run.get_output())
+            error = "".join(post_run.get_error())
+
+            console.print(
+                f"[blue]{self}[/]: Running Post Run Script: [cyan]{self.post_run_script}[/cyan]"
+            )
+            console.print(
+                f"[blue]{self}[/]: Post run script exit code: {post_run.returncode()}"
+            )
+
+            if "output" in self.display:
+                print_content(
+                    output,
+                    title=f"[blue]{self}[/]: Start of Post Run Output",
+                    theme="monokai",
+                    lexer="text",
+                    show_last_lines=10,
+                )
+
+                print_content(
+                    error,
+                    title=f"[blue]{self}[/]: Start of Post Run Error",
+                    theme="monokai",
+                    lexer="text",
+                    show_last_lines=10,
+                )
+
+    def handle_run_result(self, command_result, timeout):
+        """This method will handle the result of running test. If the test is successful we will record endtime,
+        copy output and error file to test directory and set state to complete. If the test fails we will retry the test based on retry count.
+        If the test fails after retry we will mark test as failed.
+        """
+        launch_command = command_result.get_command()
+        self.logger.debug(f"Running Test via command: {launch_command}")
+        ret = command_result.returncode()
+        output_msg = "".join(command_result.get_output())
+        err_msg = "".join(command_result.get_error())
+
+        if "output" in self.display:
+            print_content(
+                output_msg,
+                title=f"[blue]{self}[/]: Start of Output",
+                theme="monokai",
+                lexer="text",
+                show_last_lines=10,
+            )
 
         if not self._retry or ret == 0:
-            return command
+            return command_result
 
         console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
-        console.rule(f"[red]Error Message for {self}")
-        console.print(f"[red]{' '.join(err_msg)}")
 
-        ########## Retry for failed tests  ##########
+        if "output" in self.display:
+            print_content(
+                err_msg,
+                title=f"[blue]{self}[/]: Start of Error",
+                theme="monokai",
+                lexer="text",
+                show_last_lines=30,
+            )
 
         console.print(
             f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
         )
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
-            command = BuildTestCommand(cmd)
+            command = self.execute_run(launch_command, timeout)
+
             console.print(
-                f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]"
+                f"[blue]{self}[/]: Running Test via command: [cyan]{launch_command}[/cyan]"
             )
-            command.execute(timeout=timeout)
-
-            self.logger.debug(f"Running Test via command: {cmd}")
+            self.logger.debug(f"Running Test via command: {launch_command}")
             ret = command.returncode()
-
-            # if we recieve a returncode of 0 return immediately with the instance of command
             if ret == 0:
                 return command
             console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
@@ -514,11 +551,6 @@ class BuilderBase(ABC):
 
         create_dir(self.testdir)
 
-        # num_content = len(os.listdir(self.testdir))
-        # the testid is incremented for every run, this can be done by getting
-        # length of all files in testdir and creating a directory. Subsequent
-        # runs will increment this counter
-
         self.test_root = os.path.join(self.testdir, self.testid[:8])
 
         create_dir(self.test_root)
@@ -538,10 +570,10 @@ class BuilderBase(ABC):
         self.metadata["stagedir"] = self.stage_dir
 
         # Derive the path to the test script
-        self.testpath = "%s.%s" % (
-            os.path.join(self.stage_dir, self.name),
-            self.get_test_extension(),
+        self.testpath = (
+            os.path.join(self.stage_dir, self.name) + "." + self.get_test_extension()
         )
+
         self.testpath = os.path.expandvars(self.testpath)
 
         self.metadata["testpath"] = os.path.join(
@@ -582,7 +614,7 @@ function cleanup() {
 trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU
 """
         lines.append(trap_msg)
-        lines += self._default_test_variables()
+        lines += self._set_default_test_variables()
         lines.append("# source executor startup script")
 
         if modulepurge:
@@ -608,8 +640,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             lines += [" ".join(self._emit_command())]
         elif self.is_container_executor():
             lines += self.get_container_invocation()
-            # lines += ["docker run -it --rm -v $PWD:$PWD -w $PWD " + f"-v {self.stage_dir}:/buildtest" + f" ubuntu bash -c {self.testpath}"]
-
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
@@ -639,7 +669,41 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
 
-        # console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
+        if "test" in self.display:
+            print_file_content(
+                file_path=self.build_script,
+                title=f"[blue]{self}[/]: Start of Build Script",
+                lexer="bash",
+                theme="monokai",
+            )
+
+    def _write_post_run_script(self):
+        """This method will write the content of post run script that is run after the test is complete.
+        The post run script is used to perform cleanup operations after test is complete.
+        Upon creating file we set permission of builder script to 755 so test can be run.
+        """
+
+        self.post_run_script = f"{os.path.join(self.stage_dir, self.name)}_postrun.sh"
+
+        if not self.recipe.get("post_run"):
+            return
+
+        lines = ["#!/bin/bash -v"]
+        lines += self.recipe["post_run"].split("\n")
+
+        lines = "\n".join(lines)
+        write_file(self.post_run_script, lines)
+        self._set_execute_perm(self.post_run_script)
+        console.print(
+            f"[blue]{self}[/]: Writing Post Run Script: {self.post_run_script}"
+        )
+        if "test" in self.display:
+            print_file_content(
+                file_path=self.post_run_script,
+                title=f"[blue]{self}[/]: Start of Post Run Script",
+                lexer="bash",
+                theme="monokai",
+            )
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
@@ -666,6 +730,13 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         shutil.copy2(
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
+        if "test" in self.display:
+            print_file_content(
+                file_path=self.testpath,
+                title=f"[blue]{self}[/]: Start of Test Script",
+                lexer="bash",
+                theme="monokai",
+            )
 
     def get_container_invocation(self):
         """This method returns a list of lines containing the container invocation"""
@@ -674,9 +745,14 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         image = self.buildexecutor.executors[self.executor]._settings.get("image")
         options = self.buildexecutor.executors[self.executor]._settings.get("options")
         mounts = self.buildexecutor.executors[self.executor]._settings.get("mounts")
+
+        container_path = check_container_runtime(
+            platform, self.buildexecutor.configuration
+        )
+
         if platform in ["docker", "podman"]:
             lines += [
-                f"{platform} run -it --rm -v {self.stage_dir}:/buildtest -w /buildtest"
+                f"{container_path} run -it --rm -v {self.stage_dir}:/buildtest -w /buildtest"
             ]
 
             if mounts:
@@ -688,7 +764,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 f"{image} bash -c {os.path.join('/buildtest', os.path.basename(self.testpath))}"
             ]
         elif platform == "singularity":
-            lines += [f"{platform} exec -B {self.stage_dir}/buildtest"]
+            lines += [f"{container_path} exec -B {self.stage_dir}/buildtest"]
             if mounts:
                 lines += [f"-B {mounts}"]
             if options:
@@ -728,7 +804,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return ""
 
-    def _default_test_variables(self):
+    def _set_default_test_variables(self):
         """Return a list of lines inserted in build script that define buildtest specific variables
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
@@ -747,8 +823,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return lines
 
-    def sched_init(self):
-        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub', 'cobalt'"""
+    def set_scheduler_settings(self):
+        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub'"""
         self.sbatch = deep_get(
             self.recipe, "executors", self.executor, "sbatch"
         ) or self.recipe.get("sbatch")
@@ -758,9 +834,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         self.pbs = deep_get(
             self.recipe, "executors", self.executor, "pbs"
         ) or self.recipe.get("pbs")
-        self.cobalt = deep_get(
-            self.recipe, "executors", self.executor, "cobalt"
-        ) or self.recipe.get("cobalt")
 
         self.burstbuffer = self.recipe.get("BB") or deep_get(
             self.recipe, "executors", self.executor, "BB"
@@ -796,11 +869,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             lines.append(f"#PBS -o {self.name}.o")
             lines.append(f"#PBS -e {self.name}.e")
 
-        if self.cobalt:
-            for line in self.cobalt:
-                lines.append(f"#COBALT {line}")
-            lines.append(f"#COBALT --jobname={self.name}")
-
         return lines
 
     def _get_burst_buffer(self, burstbuffer):
@@ -831,7 +899,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             datawarp (str): Data Warp configuration specified by ``DW`` property in buildspec
 
         Returns:
-            list: List of string values containing containing ``#DW`` directives written in test
+            list: List of string values containing ``#DW`` directives written in test
         """
 
         if not datawarp:
@@ -932,30 +1000,31 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return lines
 
-    def _extract_content(self, regex):
-        """Extract content based on the stream and linenum properties
-        from the regex field and return it as a string.
+    def _extract_line(self, linenum, content):
+        """Extract content based on the line number and return it as a string.
 
         Args:
-            regex (dict): regex section from the metrics field
+            linenum (int): line number
+            content (str): content to be extracted from
         """
 
-        stream = regex.get("stream")
-        content = self._output if stream == "stdout" else self._error
+        if linenum is None:
+            return content
 
-        linenum = regex.get("linenum")
-        if linenum is not None and content:
-            lines = content.split("\n")
-            try:
-                content = lines[linenum]
-            except IndexError as e:
-                content = ""
-                self.logger.error(e)
+        lines = content.split("\n")
+        # removen last line if file ends in new line character
+        if lines[-1] == "":
+            lines.pop()
+        try:
+            content = lines[linenum]
+        except IndexError as e:
+            content = ""
+            self.logger.error(e)
         return content
 
     def add_metrics(self):
         """This method will update the metrics field stored in ``self.metadata['metrics']``. The ``metrics``
-        property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
+        property can be defined in the buildspec to assign value to a metrics name based on regular expression,
         environment or variable assignment.
         """
 
@@ -963,60 +1032,73 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             return
 
         for key, metric in self.metrics.items():
-            # Default value of metric is an empty string
             self.metadata["metrics"][key] = ""
             regex = metric.get("regex")
             file_regex = metric.get("file_regex")
 
             if regex:
-
-                content = self._extract_content(regex)
-
-                if regex.get("re") == "re.match":
-                    match = re.match(regex["exp"], content, re.MULTILINE)
-                elif regex.get("re") == "re.fullmatch":
-                    match = re.fullmatch(regex["exp"], content, re.MULTILINE)
-                else:
-                    match = re.search(regex["exp"], content, re.MULTILINE)
-                if match:
-                    try:
-                        self.metadata["metrics"][key] = match.group(
-                            regex.get("item", 0)
-                        )
-                    except IndexError:
-                        self.logger.error(
-                            f"Unable to fetch match group: {regex.get('item', 0)} for metric: {key}."
-                        )
-                        continue
+                self.handle_regex_metric(key, regex)
             elif file_regex:
-                fname = file_regex["file"]
-                if fname:
-                    resolved_fname = resolve_path(fname)
-                    if not is_file(resolved_fname):
-                        msg = f"[blue]{self}[/]: Unable to resolve file path: {fname} for metric: {key}"
-                        self.logger.error(msg)
-                        console.print(msg, style="red")
-                        continue
-
-                    content = read_file(resolved_fname)
-                    match = (
-                        re.search(file_regex["exp"], content, re.MULTILINE)
-                        if content
-                        else None
-                    )
-
-                    if match:
-                        try:
-                            self.metadata["metrics"][key] = match.group(
-                                file_regex.get("item", 0)
-                            )
-                        except IndexError:
-                            self.logger.error(
-                                f"Unable to fetch match group: {file_regex.get('item', 0)} for metric: {key}."
-                            )
-                            continue
+                self.handle_file_regex_metric(key, file_regex)
 
             self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
+
+    def handle_regex_metric(self, key, regex):
+        """Handle metrics based on regular expressions."""
+
+        stream = regex.get("stream")
+        content_input = self._output if stream == "stdout" else self._error
+
+        linenum = regex.get("linenum")
+        content = self._extract_line(linenum, content_input)
+
+        match = self.get_match(regex, content)
+        if match:
+            try:
+                self.metadata["metrics"][key] = match.group(regex.get("item", 0))
+            except IndexError:
+                self.logger.error(
+                    f"Unable to fetch match group: {regex.get('item', 0)} for metric: {key}."
+                )
+
+    def handle_file_regex_metric(self, key, file_regex):
+        """Handle metrics based on file regular expressions."""
+
+        fname = file_regex["file"]
+        if fname:
+            resolved_fname = resolve_path(fname)
+            if not is_file(resolved_fname):
+                msg = f"[blue]{self}[/]: Unable to resolve file path: {fname} for metric: {key}"
+                self.logger.error(msg)
+                console.print(msg, style="red")
+                return
+
+            linenum = file_regex.get("linenum")
+            content_input = read_file(resolved_fname)
+            content = self._extract_line(linenum, content_input)
+
+            match = (
+                re.search(file_regex["exp"], content, re.MULTILINE) if content else None
+            )
+            if match:
+                try:
+                    self.metadata["metrics"][key] = match.group(
+                        file_regex.get("item", 0)
+                    )
+                except IndexError:
+                    self.logger.error(
+                        f"Unable to fetch match group: {file_regex.get('item', 0)} for metric: {key}."
+                    )
+
+    def get_match(self, regex, content):
+        """Get the match based on the regular expression."""
+
+        if regex.get("re") == "re.match":
+            return re.match(regex["exp"], content, re.MULTILINE)
+        elif regex.get("re") == "re.fullmatch":
+            return re.fullmatch(regex["exp"], content, re.MULTILINE)
+        else:
+            return re.search(regex["exp"], content, re.MULTILINE)
 
     def output(self):
         """Return output content"""
@@ -1063,6 +1145,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         # mark job is success if it finished all post run steps
         self.complete()
 
+        self.execute_post_run_script()
+
     def is_valid_metric(self, name):
         if name not in list(self.metadata["metrics"].keys()):
             return False
@@ -1084,99 +1168,51 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 self.metadata["result"]["state"] = self.status["state"]
                 return
 
-            if "returncode" in self.status:
-                self.metadata["check"]["returncode"] = returncode_check(self)
+            # Define a dictionary mapping status keys to their corresponding check functions
+            status_checks = {
+                "returncode": returncode_check,
+                "regex": regex_check,
+                "runtime": runtime_check,
+                "file_regex": file_regex_check,
+                "assert_ge": lambda builder: comparison_check(
+                    builder=builder, comparison_type="ge"
+                ),
+                "assert_le": lambda builder: comparison_check(
+                    builder=builder, comparison_type="le"
+                ),
+                "assert_gt": lambda builder: comparison_check(
+                    builder=builder, comparison_type="gt"
+                ),
+                "assert_lt": lambda builder: comparison_check(
+                    builder=builder, comparison_type="lt"
+                ),
+                "assert_eq": lambda builder: comparison_check(
+                    builder=builder, comparison_type="eq"
+                ),
+                "assert_ne": lambda builder: comparison_check(
+                    builder=builder, comparison_type="ne"
+                ),
+                "assert_range": assert_range_check,
+                "contains": lambda builder: contains_check(
+                    builder=builder, comparison_type="contains"
+                ),
+                "not_contains": lambda builder: contains_check(
+                    builder=builder, comparison_type="not_contains"
+                ),
+                "is_symlink": is_symlink_check,
+                "exists": exists_check,
+                "is_dir": is_dir_check,
+                "is_file": is_file_check,
+                "file_count": file_count_check,
+                "linecount": linecount_check,
+                "file_linecount": file_linecount_check,
+            }
 
-            # check regex against output or error stream based on regular expression defined in status property. Return value is a boolean
-            if self.status.get("regex"):
-                self.metadata["check"]["regex"] = regex_check(self)
+            # Iterate over the status_checks dictionary and perform the checks
+            for key, check_func in status_checks.items():
+                if key in self.status:
+                    self.metadata["check"][key] = check_func(self)
 
-            if self.status.get("runtime"):
-                self.metadata["check"]["runtime"] = runtime_check(self)
-
-            if self.status.get("file_regex"):
-                self.metadata["check"]["file_regex"] = file_regex_check(self)
-
-            if self.status.get("slurm_job_state") and isinstance(self.job, SlurmJob):
-                self.metadata["check"]["slurm_job_state"] = (
-                    self.status["slurm_job_state"] == self.job.state()
-                )
-
-            if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
-                self.metadata["check"]["pbs_job_state"] = (
-                    self.status["pbs_job_state"] == self.job.state()
-                )
-
-            if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
-                self.metadata["check"]["lsf_job_state"] = (
-                    self.status["lsf_job_state"] == self.job.state()
-                )
-
-            if self.status.get("assert_ge"):
-                self.metadata["check"]["assert_ge"] = comparison_check(
-                    builder=self, comparison_type="ge"
-                )
-
-            if self.status.get("assert_le"):
-                self.metadata["check"]["assert_le"] = comparison_check(
-                    builder=self, comparison_type="le"
-                )
-
-            if self.status.get("assert_gt"):
-                self.metadata["check"]["assert_gt"] = comparison_check(
-                    builder=self, comparison_type="gt"
-                )
-
-            if self.status.get("assert_lt"):
-                self.metadata["check"]["assert_lt"] = comparison_check(
-                    builder=self, comparison_type="lt"
-                )
-
-            if self.status.get("assert_eq"):
-                self.metadata["check"]["assert_eq"] = comparison_check(
-                    builder=self, comparison_type="eq"
-                )
-
-            if self.status.get("assert_ne"):
-                self.metadata["check"]["assert_ne"] = comparison_check(
-                    builder=self, comparison_type="ne"
-                )
-
-            if self.status.get("assert_range"):
-                self.metadata["check"]["assert_range"] = assert_range_check(self)
-
-            if self.status.get("contains"):
-                self.metadata["check"]["contains"] = contains_check(
-                    builder=self, comparison_type="contains"
-                )
-
-            if self.status.get("not_contains"):
-                self.metadata["check"]["not_contains"] = contains_check(
-                    builder=self, comparison_type="not_contains"
-                )
-
-            if self.status.get("is_symlink"):
-                self.metadata["check"]["is_symlink"] = is_symlink_check(builder=self)
-
-            if self.status.get("exists"):
-                self.metadata["check"]["exists"] = exists_check(builder=self)
-
-            if self.status.get("is_dir"):
-                self.metadata["check"]["is_dir"] = is_dir_check(builder=self)
-
-            if self.status.get("is_file"):
-                self.metadata["check"]["is_file"] = is_file_check(builder=self)
-
-            if self.status.get("file_count"):
-                self.metadata["check"]["file_count"] = file_count_check(builder=self)
-
-            if self.status.get("linecount"):
-                self.metadata["check"]["linecount"] = linecount_check(builder=self)
-
-            if self.status.get("file_linecount"):
-                self.metadata["check"]["file_linecount"] = file_linecount_check(
-                    builder=self
-                )
             # filter out any None values from status check
             status_checks = [
                 value for value in self.metadata["check"].values() if value is not None

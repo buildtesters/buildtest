@@ -24,8 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Get the name of the current shell
+set shell_name = `ps -p $$ -o comm=`
+
 # if shell is not csh or tcsh exit
-if (`basename "$SHELL"` != "csh" && `basename "$SHELL"` != "tcsh") then
+if (`basename $shell_name` != "csh" && `basename $shell_name` != "tcsh") then
   echo "Unsupported shell, please use 'csh' or 'tcsh' when sourcing this script"
   exit 1
 endif
@@ -62,15 +65,25 @@ if (! $?BUILDTEST_ROOT) then
     endif
 endif
 
+set python=python3
+# install pip in user environment
+curl https://bootstrap.pypa.io/get-pip.py | $python
 
 set pip=pip3
 
-if ( ! -x `command -v $pip` ) then 
-  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
-  exit 1
+if ( ! -x `which $pip` ) then
+  # If not found in PATH, check $HOME/.local/bin
+  if ( -x "$HOME/.local/bin/$pip" ) then
+    echo "$pip found in $HOME/.local/bin"
+    # Optionally, you can add $HOME/.local/bin to PATH
+    setenv PATH $HOME/.local/bin:$PATH
+  else
+    echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
+    exit 1
+  endif
 endif
 
-python3 -c "import buildtest.main" >& /dev/null
+$python -c "import buildtest.main" >& /dev/null
 
 # if we unable to import buildtest.main module then install buildtest dependencies
 if ( $status != 0 ) then

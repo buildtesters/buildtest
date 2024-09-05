@@ -34,7 +34,7 @@ system:
       terse: false
 
       # list of paths to search for buildspecs
-      #root: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
+      #directory: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
 
     # options for buildtest report command
     report:
@@ -44,6 +44,29 @@ system:
       terse: false
       # specify format fields
       format: name,id,state,runtime,returncode
+
+    # specify directory paths to search for binaries
+    #paths:
+      # directory path to search for slurm binaries.
+      #slurm: "/usr/bin"
+
+      # directory path to search for lsf binaries.
+      #lsf: "/usr/bin"
+
+      # directory path to search for pbs binaries.
+      #pbs: "/usr/bin"
+
+      # directory path to search for torque binaries.
+      #torque: "/usr/bin"
+
+      # path to docker directory
+      #docker: "/usr/local/bin"
+
+      # path to singularity directory
+      #singularity: "/usr/local/bin"
+
+      # path to podman directory
+      #podman: "/usr/local/bin"
 
     # start of executor configuration
     executors:

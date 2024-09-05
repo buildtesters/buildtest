@@ -10,78 +10,6 @@
     "spack"
   ],
   "additionalProperties": false,
-  "properties": {
-    "type": {
-      "type": "string",
-      "pattern": "^spack$",
-      "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
-    },
-    "description": { "$ref": "definitions.schema.json#/definitions/description" },
-    "summary": { "$ref": "definitions.schema.json#/definitions/summary" },
-    "executor": { "$ref": "definitions.schema.json#/definitions/executor" },
-    "env": { "$ref": "definitions.schema.json#/definitions/env" },
-    "vars": { "$ref": "definitions.schema.json#/definitions/env" },
-    "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
-    "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
-    "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
-    "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
-    "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
-    "tags": { "$ref": "definitions.schema.json#/definitions/tags" },
-    "status": { "$ref": "definitions.schema.json#/definitions/status" },
-    "metrics": { "$ref": "definitions.schema.json#/definitions/metrics" },
-    "executors": { "$ref": "definitions.schema.json#/definitions/executors" },
-    "pre_cmds": {
-      "type": "string",
-      "description": "Shell commands run before spack"
-    },
-    "post_cmds": {
-      "type": "string",
-      "description": "Shell commands run after spack"
-    },
-    "needs": {
-      "$ref": "definitions.schema.json#/definitions/needs"
-    },
-    "spack": {
-      "type": "object",
-      "description": "Entry point to spack configuration",
-      "additionalProperties": false,
-      "properties": {
-        "root": {
-          "type": "string",
-          "description": "Specify location for root of spack directory"
-        },
-        "compiler_find": {
-          "type": "boolean",
-          "description": "Run ``spack compiler find`` if set to ``True``. This is run right after sourcing spack startup script."
-        },
-        "mirror": {
-          "$ref": "definitions.schema.json#/definitions/env",
-          "description": "Add mirror by running ``spack mirror add``"
-        },
-        "env": {
-          "$ref": "#definitions/env",
-          "description": "Manage spack environments via ``spack env`` command"
-        },
-        "install": {
-          "$ref": "#definitions/install",
-          "description": "Install spack packages by running ``spack install``. "
-        },
-        "load": {
-          "$ref": "#definitions/load",
-          "description": "load spack packages by running ``spack load`` "
-        },
-        "verify_spack": {
-          "type": "boolean",
-          "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
-          "default": true
-        },
-        "test": {
-          "$ref": "#definitions/test",
-          "description": "Entry point to ``spack test``"
-        }
-      }
-    }
-  },
   "definitions": {
     "env": {
       "additionalProperties": false,
@@ -241,6 +169,78 @@
                   "description": "Report result by spec name by running ``spack test run -- <specs>``."
             }
           }
+        }
+      }
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^spack$",
+      "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
+    },
+    "description": { "$ref": "definitions.schema.json#/definitions/description" },
+    "summary": { "$ref": "definitions.schema.json#/definitions/summary" },
+    "executor": { "$ref": "definitions.schema.json#/definitions/executor" },
+    "env": { "$ref": "definitions.schema.json#/definitions/env" },
+    "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+    "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+    "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+    "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
+    "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
+    "tags": { "$ref": "definitions.schema.json#/definitions/tags" },
+    "status": { "$ref": "definitions.schema.json#/definitions/status" },
+    "metrics": { "$ref": "definitions.schema.json#/definitions/metrics" },
+    "executors": { "$ref": "definitions.schema.json#/definitions/executors" },
+    "pre_cmds": {
+      "type": "string",
+      "description": "Shell commands run before spack"
+    },
+    "post_cmds": {
+      "type": "string",
+      "description": "Shell commands run after spack"
+    },
+    "post_run": { "$ref": "definitions.schema.json#/definitions/run" },
+    "needs": {
+      "$ref": "definitions.schema.json#/definitions/needs"
+    },
+    "spack": {
+      "type": "object",
+      "description": "Entry point to spack configuration",
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "type": "string",
+          "description": "Specify location for root of spack directory"
+        },
+        "compiler_find": {
+          "type": "boolean",
+          "description": "Run ``spack compiler find`` if set to ``True``. This is run right after sourcing spack startup script."
+        },
+        "mirror": {
+          "$ref": "definitions.schema.json#/definitions/env",
+          "description": "Add mirror by running ``spack mirror add``"
+        },
+        "env": {
+          "$ref": "#/definitions/env",
+          "description": "Manage spack environments via ``spack env`` command"
+        },
+        "install": {
+          "$ref": "#/definitions/install",
+          "description": "Install spack packages by running ``spack install``. "
+        },
+        "load": {
+          "$ref": "#/definitions/load",
+          "description": "load spack packages by running ``spack load`` "
+        },
+        "verify_spack": {
+          "type": "boolean",
+          "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
+          "default": true
+        },
+        "test": {
+          "$ref": "#/definitions/test",
+          "description": "Entry point to ``spack test``"
         }
       }
     }

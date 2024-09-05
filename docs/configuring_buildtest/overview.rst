@@ -151,6 +151,38 @@ based on platform (Linux, Mac).
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
 
+Specify directory paths to search for binaries
+----------------------------------------------
+
+The ``paths`` property can be used to search for binaries for batch schedulers. If your scheduler binaries
+are installed in a non-standard location that is not in $PATH, you can use this to specify the directory path.
+
+In example below we will, we will specify directories for SLURM, LSF, PBS and TORQUE binaries that
+are not in $PATH and installed in `/usr/local/slurm/bin`, `/usr/local/lsf/bin`,
+`/usr/local/pbs/bin`, `/usr/local/torque/bin` respectively.
+
+.. code-block:: yaml
+
+    paths:
+      slurm: /usr/local/slurm/bin
+      lsf: /usr/local/lsf/bin
+      pbs: /usr/local/pbs/bin
+      torque: /usr/local/torque/bin
+
+
+You can also specify paths to container runtimes, if they are installed in a non-standard location that is not in $PATH. For
+example, if you have `docker`, `podman` and `singularity` installed in `/usr/local/bin` you can specify the following:
+
+.. code-block:: yaml
+
+    paths:
+      docker: /usr/local/bin
+      podman: /usr/local/bin
+      singularity: /usr/local/bin
+
+Buildtest will attempt to search for container runtime in the specified directory including what is available in
+$PATH.
+
 Buildspec Cache
 ----------------
 
@@ -188,26 +220,28 @@ If you want buildtest to always rebuild cache you can set the following in your 
 The configuration options such as ``count``, ``format``, ``terse`` can  be tweaked to your preference. These configuration values
 can be overridden by command line option.
 
-.. _buildspec_roots:
+.. _search_buildspecs_when_building_cache:
 
-Specify Root Directories for searching buildspecs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Searching for buildspecs when building Buildspec Cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``root`` property in configuration file
-is a list of string types which is used to search for buildspecs. The ``root`` property is not required in configuration file, but it can be a good
-idea to set this value if you have a predetermined location where buildspecs are stored.
+When building the buildspec cache, buildtest will search for buildspecs in a list of directories specified in the configuration file.
 
-You can specify the root path via command line ``buildtest buildspec find --root <dir1> --root <dir2>`` which will override the configuration value. In a
+Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``directory`` property in configuration file
+is a list of directories to search for buildspecs. The ``directory`` property is not **required** in configuration file, but it can be a good
+idea to set this value if you have a pre-determined location where buildspecs are stored.
+
+You can specify the directory path via command line ``buildtest buildspec find --directory <dir1> --directory <dir2>`` which will override the configuration value. In a
 practical situation, you will want to write your buildspecs in a separate repository which you can clone in your filesystem. Let's say they are cloned in
-your $HOME directory named **$HOME/buildtest-examples**. You have one of two options, one you can specify the root path in configuration file as shown below:
+your **$HOME** directory named **$HOME/buildtest-examples**. You have one of two options, one you can specify the  path in configuration file as shown below:
 
 .. code-block:: yaml
 
     buildspecs:
-      root: [ $HOME/buildtest-examples ]
+      directory: [ $HOME/buildtest-examples ]
 
-This above configuration will instruct buildtest to search for buildspecs in ``$HOME/buildtest-examples`` directory, and you won't
-have to specify the ``--root`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--root`` everytime
+This configuration will instruct buildtest to search for buildspecs in ``$HOME/buildtest-examples`` directory, and you won't
+have to specify the ``--directory`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--directory`` everytime
 you need to build the cache. If neither is specified, buildtest will load the default buildspecs which are **$BUILDTEST_ROOT/tutorials** and
 **$BUILDTEST_ROOT/general_tests**.
 

@@ -586,6 +586,22 @@ Next, let's build the tests via newly created profile and take note that it will
 
     .. command-output:: buildtest build --profile=python-tests
 
+
+You can also specify an alternate location to write configuration file via ``--write-config-file`` when saving profile configuration.
+This can be useful if one wants to use a new configuration file without overwriting the current file for testing purposes.
+To demonstrate this, we will save the profile to configuration file ``/tmp/my_config.yml``
+
+.. dropdown:: ``buildtest build -t python --save-profile=python --write-config-file=/tmp/my_config.yml``
+
+    .. command-output:: buildtest build -t python --save-profile=python --write-config-file=/tmp/my_config.yml
+
+    We can view the profile configuration file by specifying the path to the configuration file.
+
+    .. command-output:: buildtest --config /tmp/my_config.yml config view
+
+Please note that when using ``-write-config-file``, the path must be a file path and file must not exist. If you specify
+a directory path or file already exists you will get an error message.
+
 .. _limit_max_jobs:
 
 Limit Maximum Jobs that can run concurrently (``buildtest build --max-jobs``)
@@ -601,3 +617,47 @@ then proceed to next test.
 .. dropdown:: ``buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2``
 
     .. command-output:: buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2
+
+Strict Mode (``buildtest build --strict``)
+-------------------------------------------
+
+Buildtest has an option to enable strict mode for test execution which can be enabled via ``--strict`` option. If this
+is set, buildtest will instead ``set -eo pipefail`` in the generated test which will cause test to exit immediately if any
+commands fail. To demonstrate this we have the following buildspec, which runs an **ls** command for an invalid path followed by
+an **echo** command.
+
+.. literalinclude:: ../tutorials/strict_example.yml
+    :language: yaml
+    :emphasize-lines: 8
+
+If we were to run this test without strict mode, we see the test will pass.
+
+.. dropdown:: ``buildtest build -b tutorials/strict_example.yml``
+
+    .. command-output:: buildtest build -b tutorials/strict_example.yml
+
+Now let's run the same test with strict mode enabled, we will see the test will fail with a different return code.
+
+.. dropdown:: ``buildtest build -b tutorials/strict_example.yml --strict``
+
+    .. command-output:: buildtest build -b tutorials/strict_example.yml --strict
+
+    We can see the generated test using **buildtest inspect query -t** and we will see the test script has **set -eo pipefail** in
+    the generated test.
+
+    .. command-output:: buildtest inspect query -t linux_strict_test
+
+Display Mode (``buildtest build --display``)
+---------------------------------------------
+
+Buildtest can display output of test content and stream outout and error file to console. This can be useful
+if you want to see how the test is generated for debugging purposes.
+
+In order to use this functionality, you can specify the ``--display`` option which takes either ``output`` or ``test``.
+When ``output`` is specified, buildtest will display output and error files to console. When ``test``
+is specified, buildtest will display the content of the test and build script. You can append the ``--display`` option
+if you want to specify both options. Shown below we run a test and display both output and test.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --display output --display test``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --display output --display test

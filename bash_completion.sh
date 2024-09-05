@@ -190,7 +190,7 @@ _buildtest ()
   case "$next" in
     build|bd)
       local shortoption="-b -e -et -f -m -n -s -t -u -x -xt"
-      local longoption="--buildspec --dry-run --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --tags --timeout --unload-modules --validate"
+      local longoption="--account --buildspec --display --dry-run --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rebuild --rerun --remove-stagedir --retry --save-profile --strict --tags --testdir --timeout --unload-modules --validate --write-config-file"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- "${cur}" ) )
@@ -409,12 +409,12 @@ _buildtest ()
          case ${COMP_WORDS[3+offset]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
-           local opts="--error --help --row-count -e -h"
+           local opts="--error --help --pager --row-count --terse -e -h"
            COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
-           local shortopts="-b -e -h -n -p -q -r -t"
+           local longopts="--buildspec --count --directory --executors --file --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --terse"
+           local shortopts="-b -d -e -f -h -n -p -q -r -t"
            local cmds="invalid"
 
            COMPREPLY=( $( compgen -W "${cmds} ${longopts} ${shortopts}" -- "${cur}" ) )
@@ -468,7 +468,7 @@ _buildtest ()
         esac
         ;;
       maintainers|m)
-        local opts="--breakdown --help --row-count --terse --no-header -b -h -n find"
+        local opts="--breakdown --count  --help --no-header --pager  --row-count --terse  -b -c -h -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
 
         case ${COMP_WORDS[3+offset]} in
@@ -477,7 +477,7 @@ _buildtest ()
         esac
         ;;
       validate|val)
-        local opts="--buildspec --exclude --executor --tag -b -e -t -x "
+        local opts="--buildspec --exclude --executor --name --tag -b -e -n -t -x "
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
 
         case "${prev}" in
@@ -489,6 +489,9 @@ _buildtest ()
               ;;
           -e|--executor)
               COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "${cur}" ) )
+              ;;
+          -n|--name)
+              COMPREPLY=( $( compgen -W "$(_buildspec_test_names)" -- "${cur}" ) )
               ;;
         esac
       ;;

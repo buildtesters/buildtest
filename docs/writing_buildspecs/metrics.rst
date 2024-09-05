@@ -78,6 +78,47 @@ which shows the name of captured metrics and its corresponding values.
 
    .. command-output:: buildtest inspect query metric_regex_example_with_re
 
+Extract line numbers in Metrics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can specify ``linenum`` property in metrics to capture text from a specific line.
+In the first example, we will define 2 metrics **second_line** and **without_linenum** using ``regex``
+The former metrics captures the text ``This is line: 2``, whereas the latter captures the text ``This is line: 1``.
+
+.. literalinclude:: ../tutorials/metrics/metrics_regex_with_linenum.yml
+    :language: yaml
+    :emphasize-lines: 6-30
+
+Let's build the test and take a look at the metrics for this test.
+
+.. dropdown:: ``buildtest build -b tutorials/metrics/metrics_regex_with_linenum.yml``
+
+   .. command-output:: buildtest build -b tutorials/metrics/metrics_regex_with_linenum.yml
+
+.. dropdown:: ``buildtest inspect query metric_regex_with_linenum_example``
+
+   .. command-output:: buildtest inspect query metric_regex_with_linenum_example
+
+
+``linenum`` property can also be applied with file regular expression (``file_regex``). In the example below,
+we define 2 metrics with the same regular expression defined via `exp`. Its worth noting that the regular expression
+will attempt to find the first match. When `linenum` is specified the content from file is extracted by line first
+and regular expression is applied afterwards.
+
+.. literalinclude:: ../tutorials/metrics/metrics_file_regex_with_linenum.yml
+    :language: yaml
+    :emphasize-lines: 6-28
+
+Let's build the test and take a look at the captured metrics.
+
+.. dropdown:: ``buildtest build -b tutorials/metrics/metrics_file_regex_with_linenum.yml``
+
+   .. command-output:: buildtest build -b tutorials/metrics/metrics_file_regex_with_linenum.yml
+
+.. dropdown:: ``buildtest inspect query metric_file_regex_with_linenum_example``
+
+   .. command-output:: buildtest inspect query metric_file_regex_with_linenum_example
+
 Invalid Metrics
 ~~~~~~~~~~~~~~~~~
 

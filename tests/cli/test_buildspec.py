@@ -9,7 +9,7 @@ from rich.color import Color
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_maintainers,
-    buildspec_validate,
+    buildspec_validate_command,
     edit_buildspec_file,
     edit_buildspec_test,
     show_buildspecs,
@@ -28,7 +28,7 @@ configuration.validate()
 
 @pytest.mark.cli
 def test_buildspec_validate():
-    buildspec_validate(
+    buildspec_validate_command(
         buildspecs=[
             os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
             os.path.join(BUILDTEST_ROOT, "tutorials", "test_status"),
@@ -43,11 +43,12 @@ def test_buildspec_validate():
         ],
         tags=["pass", "python"],
         executors=["generic.local.sh"],
+        name=["hello_world"],
         configuration=configuration,
     )
 
     with pytest.raises(SystemExit):
-        buildspec_validate(
+        buildspec_validate_command(
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml")],
             configuration=configuration,
         )
@@ -313,24 +314,21 @@ def test_buildspec_find_invalid():
     with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True)
 
+    # print default table of invalid buildspecs
     with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=False)
+        cache.print_invalid_buildspecs()
 
+    # show count of invalid buildspecs via --row-count
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(row_count=True)
+
+    # the --error and --terse option can't be specified together since they will impact how printing is done
     with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True, terse=True)
 
+    # print in terse format
     with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=False, terse=True)
-
-    with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=True, terse=True, header=True)
-
-    with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=False, terse=True, header=True)
-
-    cache.print_invalid_buildspecs(
-        error=False, terse=False, header=False, row_count=True
-    )
+        cache.print_invalid_buildspecs(terse=True)
 
 
 @pytest.mark.cli
@@ -350,18 +348,30 @@ def test_edit_file():
 
 
 @pytest.mark.cli
-def test_buildspec_find_roots():
+def test_buildspec_find_by_directory_and_files():
     root_buildspecs = [
         os.path.join(BUILDTEST_ROOT, "tests", "buildsystem"),
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
-    # buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
-    BuildspecCache(roots=root_buildspecs, configuration=configuration, rebuild=False)
+    # list of buildspec files to add to cache, we have one valid file that exists, one with invalid extension and one file that doesn't exist
+    bp_files = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
+        os.path.join(BUILDTEST_ROOT, "README.rst"),  # invalid extension
+        os.path.join(BUILDTEST_ROOT, "badfile.yml"),  # file doesn't exist
+        os.path.join(BUILDTEST_ROOT),  # directory path
+    ]
+    # buildtest buildspec find --directory $BUILDTEST_ROOT/tests/buildsystem --directory $BUILDTEST_ROOT/tutorials
+    BuildspecCache(
+        directory=root_buildspecs,
+        buildspec_files=bp_files,
+        configuration=configuration,
+        rebuild=False,
+    )
 
     with pytest.raises(BuildTestError):
-        # buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
+        # buildtest buildspec find --directory $BUILDTEST_ROOT/README.rst --directory $BUILDTEST_ROOT/environment.yml
         BuildspecCache(
-            roots=[
+            directory=[
                 os.path.join(BUILDTEST_ROOT, "README.rst"),
                 os.path.join(BUILDTEST_ROOT, "tutorials", "environment.yml"),
             ],

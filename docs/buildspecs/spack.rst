@@ -343,7 +343,7 @@ Specifying Scheduler Directives
 ---------------------------------
 
 The spack schema supports all of the :ref:`scheduler scheduler directives <batch_support>` such
-as ``sbatch``, ``bsub``, ``pbs``, ``cobalt``, and ``batch`` property in the buildspec.
+as ``sbatch``, ``bsub`` and ``pbs`` property in the buildspec.
 
 The directives are applied at top of script. Shown below is a toy example that will define
 directives using **sbatch** property. Note, this test won't submit job to scheduler

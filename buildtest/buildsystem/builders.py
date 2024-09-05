@@ -34,6 +34,8 @@ class Builder:
         numnodes=None,
         executor_type=None,
         exclude_tags=None,
+        strict=None,
+        display=None,
     ):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
@@ -50,23 +52,24 @@ class Builder:
             numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --nodes``
             executor_type (str, optional): Filter test by executor type (local, batch)
             exclude_tags (list, optional): List of tags to exclude tests from buildspec file
+            strict (bool, optional): This is a boolean used for enable strict mode for test that will run the 'set' command in test.
+            display (list, optional): Show content of test or output via ``buildtest build --display``
         """
 
         self.configuration = configuration
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
         self.buildexecutor = buildexecutor
-
         self.rebuild = rebuild or 1
         self.numprocs = numprocs
         self.numnodes = numnodes
         self.executor_type = executor_type
         self.exclude_tags = exclude_tags
-
+        self.strict = strict
         self.bp = bp
         self.bc = buildtest_compilers
         self.filters = filters
-
+        self.display = display
         self.builders = []
 
         # skip property defined at top-level then skip test
@@ -169,6 +172,8 @@ class Builder:
             configuration=self.configuration,
             testdir=self.testdir,
             compiler=compiler_name,
+            strict=self.strict,
+            display=self.display,
         )
         builders.append(builder)
 
@@ -184,6 +189,8 @@ class Builder:
                     testdir=self.testdir,
                     numnodes=node,
                     compiler=compiler_name,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
         if procs:
@@ -198,6 +205,8 @@ class Builder:
                     testdir=self.testdir,
                     numprocs=proc,
                     compiler=compiler_name,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
 
@@ -222,6 +231,8 @@ class Builder:
             buildspec=self.bp.buildspec,
             buildexecutor=self.buildexecutor,
             testdir=self.testdir,
+            strict=self.strict,
+            display=self.display,
         )
         builders.append(builder)
 
@@ -235,6 +246,8 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                     numnodes=node,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
         if procs:
@@ -247,6 +260,8 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                     numprocs=proc,
+                    strict=self.strict,
+                    display=self.display,
                 )
                 builders.append(builder)
 

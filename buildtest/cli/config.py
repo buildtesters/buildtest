@@ -13,50 +13,76 @@ from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator, schema_table
 
 
-def config_cmd(args, configuration, editor, system):
+def config_cmd(command_args, configuration, editor, system):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
     Args:
-        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        command_args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         system (buildtest.system.BuildTestSystem): An instance of BuildTestSystem class
     """
 
-    if args.config in ["view", "v"]:
-        view_configuration(configuration, theme=args.theme, pager=args.pager)
+    handle_view_command(command_args, configuration)
+    handle_profiles_command(command_args, configuration)
+    handle_executors_command(command_args, configuration)
+    handle_validate_command(command_args, configuration, system)
+    handle_systems_command(command_args, configuration)
+    handle_edit_command(command_args, configuration, editor)
+    handle_path_command(command_args, configuration)
 
-    elif args.config in ["profiles", "prof"]:
-        if args.profiles in ["list", "ls"]:
-            list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
-        if args.profiles in ["remove", "rm"]:
-            remove_profiles(configuration, profile_name=args.profile_name)
+def handle_view_command(command_args, configuration):
+    if command_args.config in ["view", "v"]:
+        view_configuration(
+            configuration, theme=command_args.theme, pager=command_args.pager
+        )
 
-    elif args.config in ["executors", "ex"]:
+
+def handle_profiles_command(command_args, configuration):
+    if command_args.config in ["profiles", "prof"]:
+        if command_args.profiles in ["list", "ls"]:
+            list_profiles(
+                configuration, theme=command_args.theme, print_yaml=command_args.yaml
+            )
+
+        if command_args.profiles in ["remove", "rm"]:
+            remove_profiles(configuration, profile_name=command_args.profile_name)
+
+
+def handle_executors_command(command_args, configuration):
+    if command_args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
-        if args.executors in ["list", "ls"]:
+        if command_args.executors in ["list", "ls"]:
             view_executors(
                 configuration=configuration,
                 buildexecutor=buildexecutor,
-                json_format=args.json,
-                yaml_format=args.yaml,
-                disabled=args.disabled,
-                invalid=args.invalid,
-                all_executors=args.all,
+                display_in_json_format=command_args.json,
+                display_in_yaml_format=command_args.yaml,
+                display_disabled=command_args.disabled,
+                display_invalid=command_args.invalid,
+                display_all=command_args.all,
             )
-        if args.executors in ["remove", "rm"]:
-            remove_executors(configuration, args.executor_names)
+        if command_args.executors in ["remove", "rm"]:
+            remove_executors(configuration, command_args.executor_names)
 
-    elif args.config in ["validate", "val"]:
-        validate_config(configuration, system.system["moduletool"])
 
-    elif args.config == "systems":
+def handle_validate_command(command_args, configuration, system):
+    if command_args.config in ["validate", "val"]:
+        validate_config(configuration)
+
+
+def handle_systems_command(command_args, configuration):
+    if command_args.config == "systems":
         view_system(configuration)
 
-    elif args.config in ["edit", "e"]:
+
+def handle_edit_command(command_args, configuration, editor):
+    if command_args.config in ["edit", "e"]:
         edit_configuration(configuration, editor)
 
-    elif args.config in ["path", "p"]:
+
+def handle_path_command(command_args, configuration):
+    if command_args.config in ["path", "p"]:
         view_path(configuration)
 
 
@@ -68,7 +94,6 @@ def edit_configuration(configuration, editor):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
     """
 
-    # subprocess.call([editor, configuration.file])
     cmd = subprocess.Popen([editor, configuration.file])
     cmd.communicate()
 
@@ -103,7 +128,7 @@ def view_system(configuration):
     console.print(table)
 
 
-def validate_config(configuration, moduletool):
+def validate_config(configuration):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
     If it's not validate an exception is raised which could be
@@ -122,14 +147,13 @@ def validate_config(configuration, moduletool):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        moduletool (str): Name of moduletool for validating module system
 
     Raises:
         SystemExit: If exception is raised during validating configuration file.
     """
 
     try:
-        configuration.validate(moduletool=moduletool)
+        configuration.validate()
     except (ValidationError, ConfigurationError) as err:
         print(err)
         raise sys.exit(f"{configuration.file} is not valid")
@@ -138,7 +162,7 @@ def validate_config(configuration, moduletool):
 
 
 def view_path(configuration):
-    """Display the path to configuration file regardless if file is valid
+    """Display the path to configuration file regardless if file is valid. This implements command ``buildtest config path``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
@@ -155,8 +179,8 @@ def view_configuration(configuration, theme=None, pager=None):
     """
 
     theme = theme or "monokai"
-    with open(configuration.file, "r") as bc:
-        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme=theme)
+    with open(configuration.file, "r") as file_stream:
+        syntax = Syntax(file_stream.read(), "yaml", line_numbers=True, theme=theme)
     if pager:
         with console.pager():
             console.rule(configuration.file)
@@ -206,9 +230,12 @@ def remove_profiles(configuration, profile_name):
     if write_back:
         console.print(f"Updating configuration file: {configuration.file}")
 
-        with open(configuration.file, "w") as fd:
+        with open(configuration.file, "w") as file_descriptor:
             yaml.safe_dump(
-                configuration.config, fd, default_flow_style=False, sort_keys=False
+                configuration.config,
+                file_descriptor,
+                default_flow_style=False,
+                sort_keys=False,
             )
 
 
@@ -239,62 +266,81 @@ def list_profiles(configuration, theme=None, print_yaml=None):
         print(profile_name)
 
 
+def display_executors_in_json_format(executor_settings):
+    console.print(json.dumps(executor_settings, indent=2))
+
+
+def display_executors_in_yaml_format(executor_settings):
+    console.print(yaml.dump(executor_settings, default_flow_style=False))
+
+
+def display_disabled_executors(configuration):
+    if not configuration.disabled_executors:
+        console.print("There are no disabled executors")
+        return
+
+    for executor in configuration.disabled_executors:
+        console.print(executor)
+
+
+def display_invalid_executors(configuration):
+    if not configuration.invalid_executors:
+        console.print("There are no invalid executors")
+        return
+
+    for executor in configuration.invalid_executors:
+        console.print(executor)
+
+
+def display_all_executors(configuration):
+    names = configuration.get_all_executors()
+    for name in names:
+        print(name)
+
+
 def view_executors(
     configuration,
     buildexecutor,
-    json_format=False,
-    yaml_format=False,
-    disabled=False,
-    invalid=False,
-    all_executors=False,
+    display_in_json_format=False,
+    display_in_yaml_format=False,
+    display_disabled=False,
+    display_invalid=False,
+    display_all=False,
 ):
-    """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
+    """Display executors from buildtest configuration. This implements ``buildtest config executors list`` command.
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         buildexecutor (buildtest.executors.setup.BuildExecutor): An instance of BuildExecutor class
-        json_format (bool): Display output in json format which is specified via ``buildtest config executors --json``
-        yaml_format (bool): Display output in yaml format which is specified via ``buildtest config executors --yaml``
-        disabled (bool): Display list of disabled executors which is specified via ``buildtest config executors --disabled``
-        invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors --invalid``
-        all_executors (bool): Display all executors which is specified via ``buildtest config executors --all``
+        display_in_json_format (bool): Display output in json format which is specified via ``buildtest config executors list --json``
+        display_in_yaml_format (bool): Display output in yaml format which is specified via ``buildtest config executors list --yaml``
+        display_disabled (bool): Display list of disabled executors which is specified via ``buildtest config executors list --disabled``
+        display_invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors list --invalid``
+        display_all (bool): Display all executors which is specified via ``buildtest config executors list --all``
+
     """
+    executor_settings = {"executors": configuration.target_config.get("executors", {})}
 
-    executor_settings = {"executors": configuration.target_config["executors"]}
-
-    # display output in JSON format
-    if json_format:
-        console.print(json.dumps(executor_settings, indent=2))
+    if display_in_json_format:
+        display_executors_in_json_format(executor_settings)
         return
 
-    # display output in YAML format
-    if yaml_format:
-        console.print(yaml.dump(executor_settings, default_flow_style=False))
+    if display_in_yaml_format:
+        display_executors_in_yaml_format(executor_settings)
         return
 
-    if disabled:
-        if not configuration.disabled_executors:
-            console.print("There are no disabled executors")
-            return
-
-        for executor in configuration.disabled_executors:
-            console.print(executor)
+    if display_disabled:
+        display_disabled_executors(configuration)
         return
 
-    if invalid:
-        if not configuration.invalid_executors:
-            console.print("There are no invalid executors")
-            return
-
-        for executor in configuration.invalid_executors:
-            console.print(executor)
+    if display_invalid:
+        display_invalid_executors(configuration)
         return
 
-    if all_executors:
-        names = configuration.get_all_executors()
-        for name in names:
-            print(name)
+    if display_all:
+        display_all_executors(configuration)
         return
+
     names = buildexecutor.names()
     for name in names:
         print(name)
@@ -342,7 +388,10 @@ def remove_executors(configuration, executor_names):
     if write_back:
         console.print(f"Updating configuration file: {configuration.file}")
 
-        with open(configuration.file, "w") as fd:
+        with open(configuration.file, "w") as file_descriptor:
             yaml.safe_dump(
-                configuration.config, fd, default_flow_style=False, sort_keys=False
+                configuration.config,
+                file_descriptor,
+                default_flow_style=False,
+                sort_keys=False,
             )

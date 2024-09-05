@@ -158,14 +158,12 @@ class BaseExecutor:
     def _cancel_job_if_pendtime_exceeds_maxpendtime(self, builder):
         builder.job.pendtime = time.time() - builder.job.submittime
         builder.job.pendtime = round(builder.job.pendtime, 2)
-
         if builder.job.pendtime > self.maxpendtime:
             builder.job.cancel()
             builder.failed()
             console.print(
                 f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.job.pendtime} sec[/red] "
             )
-            return
 
     def __str__(self):
         return self.name

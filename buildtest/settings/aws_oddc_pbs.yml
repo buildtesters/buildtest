@@ -3,14 +3,14 @@ system:
     hostnames:
     - .*
     description: Generic System
-    moduletool: environment-modules
+    moduletool: 'none'
     pager: false
     buildspecs:
       rebuild: false
       count: 15
       format: name,description
       terse: false
-      root:
+      directory:
       - $BUILDTEST_ROOT/aws_oddc
     report:
       count: 25
@@ -22,8 +22,8 @@ system:
           description: submit jobs on local machine using bash shell
           shell: bash
       torque:
-        e4spro:
-          queue: e4spro-cluster
+        lbl:
+          queue: lbl-cluster
     compilers:
       find:
         gcc: ^(gcc)

@@ -12,12 +12,16 @@ system:
       format: "name,description"
       # enable terse mode
       terse: False
-
     report:
       count: 25
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
+    paths:
+      pbs: /usr/bin
+      torque: /usr/bin
+      lsf: /usr/bin
+      slurm: /usr/bin
     executors:
       local:
         bash:
@@ -31,10 +35,6 @@ system:
         batch:
           queue: batch
           options: ["-q batch", "-t 00:10"]
-      cobalt:
-        normal:
-          queue: normal
-          options: ["-n 1", "-t 10"]
       pbs:
         dev:
           queue: development

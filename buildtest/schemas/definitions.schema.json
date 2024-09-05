@@ -1,7 +1,7 @@
 {
   "$id": "definitions.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "JSON Schema Definitions File. ",
+  "title": "JSON Schema Definitions File",
   "description": "This file is used for declaring definitions that are referenced from other schemas",
   "definitions": {
     "list_of_strings": {
@@ -109,6 +109,10 @@
           "type": "integer",
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        },
+        "linenum": {
+          "type": "integer",
+          "description": "Specify the line number used to extract from the file content where regex is applied"
         },
         "re": {
           "type": "string",
@@ -668,10 +672,6 @@
       "$ref": "#/definitions/list_of_strings",
       "description": "This field is used for specifying #BSUB options in test script."
     },
-    "cobalt": {
-      "$ref": "#/definitions/list_of_strings",
-      "description": "This field is used for specifying #COBALT options in test script."
-    },
     "pbs": {
       "$ref": "#/definitions/list_of_strings",
       "description": "This field is used for specifying #PBS directives in test script."
@@ -697,9 +697,6 @@
               "$ref": "#/definitions/list_of_strings"
             },
             "pbs": {
-              "$ref": "#/definitions/list_of_strings"
-            },
-            "cobalt": {
               "$ref": "#/definitions/list_of_strings"
             },
             "BB": {

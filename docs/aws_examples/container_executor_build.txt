@@ -1,73 +1,74 @@
 $ buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml build -b $BUILDTEST_ROOT/tutorials/containers/container_executor/ubuntu.yml 
-╭─────────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────────────────────────╮                                                        
-│                                                                                                                                                                                                                 │                                                        
-│ User:               ubuntu                                                                                                                                                                                      │                                                        
-│ Hostname:           ip-172-31-96-59                                                                                                                                                                             │                                                        
-│ Platform:           Linux                                                                                                                                                                                       │                                                        
-│ Current Time:       2024/02/28 21:58:12                                                                                                                                                                         │                                                        
-│ buildtest path:     /home/ubuntu/buildtest/bin/buildtest                                                                                                                                                        │                                                        
-│ buildtest version:  1.8                                                                                                                                                                                         │                                                        
-│ python path:        /usr/bin/python3                                                                                                                                                                            │                                                        
-│ python version:     3.8.10                                                                                                                                                                                      │                                                        
-│ Configuration File: /home/ubuntu/buildtest/buildtest/settings/container_executor.yml                                                                                                                            │                                                        
-│ Test Directory:     /home/ubuntu/buildtest/var/tests                                                                                                                                                            │                                                        
-│ Report File:        /home/ubuntu/buildtest/var/report.json                                                                                                                                                      │                                                        
-│ Command:            /home/ubuntu/buildtest/bin/buildtest -c /home/ubuntu/buildtest/buildtest/settings/container_executor.yml build -b /home/ubuntu/buildtest/tutorials/containers/container_executor/ubuntu.yml │                                                        
-│                                                                                                                                                                                                                 │                                                        
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                        
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-                            Discovered buildspecs                            
-╔═══════════════════════════════════════════════════════════════════════════╗
-║ buildspec                                                                 ║
-╟───────────────────────────────────────────────────────────────────────────╢
-║ /home/ubuntu/buildtest/tutorials/containers/container_executor/ubuntu.yml ║
-╟───────────────────────────────────────────────────────────────────────────╢
-║ Total: 1                                                                  ║
-╚═══════════════════════════════════════════════════════════════════════════╝
+╭─────────────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                                                         │
+│ User:               lbladmin                                                                                                                                                                                            │
+│ Hostname:           e4spro-cluster                                                                                                                                                                                      │
+│ Platform:           Linux                                                                                                                                                                                               │
+│ Current Time:       2024/06/17 18:50:34                                                                                                                                                                                 │
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                                                                                    │
+│ buildtest version:  2.0                                                                                                                                                                                                 │
+│ python path:        /usr/bin/python3                                                                                                                                                                                    │
+│ python version:     3.10.12                                                                                                                                                                                             │
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/container_executor.yml                                                                                                                        │
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                                                                        │
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                                                                                  │
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/container_executor.yml build -b /home/lbladmin/Documents/buildtest/tutorials/containers/c │
+│                                                                                                                                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
+                                  Discovered buildspecs                                  
+╔═══════════════════════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                                             ║
+╟───────────────────────────────────────────────────────────────────────────────────────╢
+║ /home/lbladmin/Documents/buildtest/tutorials/containers/container_executor/ubuntu.yml ║
+╟───────────────────────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                                              ║
+╚═══════════════════════════════════════════════════════════════════════════════════════╝
 
 
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
-/home/ubuntu/buildtest/tutorials/containers/container_executor/ubuntu.yml: VALID
+/home/lbladmin/Documents/buildtest/tutorials/containers/container_executor/ubuntu.yml: VALID
 Total builder objects created: 1
-                                                                                              Builders by type=script                                                                                              
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ builder                           ┃ type   ┃ executor                 ┃ compiler ┃ nodes ┃ procs ┃ description                      ┃ buildspecs                                                                ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ ubuntu_container_example/6e8234e9 │ script │ generic.container.ubuntu │ None     │ None  │ None  │ run test in a container executor │ /home/ubuntu/buildtest/tutorials/containers/container_executor/ubuntu.yml │
-└───────────────────────────────────┴────────┴──────────────────────────┴──────────┴───────┴───────┴──────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
-                                                             Batch Job Builders                                                             
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ builder                           ┃ executor                 ┃ buildspecs                                                                ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ ubuntu_container_example/6e8234e9 │ generic.container.ubuntu │ /home/ubuntu/buildtest/tutorials/containers/container_executor/ubuntu.yml │
-└───────────────────────────────────┴──────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-ubuntu_container_example/6e8234e9: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/6e8234e9
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                  Builders by type=script                                                                                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                           ┃ type   ┃ executor                 ┃ compiler ┃ nodes ┃ procs ┃ description                      ┃ buildspecs                                                                        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ ubuntu_container_example/abf3ecf3 │ script │ generic.container.ubuntu │ None     │ None  │ None  │ run test in a container executor │ /home/lbladmin/Documents/buildtest/tutorials/containers/container_executor/ubuntu │
+│                                   │        │                          │          │       │       │                                  │ .yml                                                                              │
+└───────────────────────────────────┴────────┴──────────────────────────┴──────────┴───────┴───────┴──────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────┘
+                                                                   Batch Job Builders                                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                           ┃ executor                 ┃ buildspecs                                                                            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ ubuntu_container_example/abf3ecf3 │ generic.container.ubuntu │ /home/lbladmin/Documents/buildtest/tutorials/containers/container_executor/ubuntu.yml │
+└───────────────────────────────────┴──────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
+ubuntu_container_example/abf3ecf3: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3
+────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 1 processes for processing builders
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-ubuntu_container_example/6e8234e9 does not have any dependencies adding test to queue
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+ubuntu_container_example/abf3ecf3 does not have any dependencies adding test to queue
       Builders Eligible to Run       
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                           ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ ubuntu_container_example/6e8234e9 │
+│ ubuntu_container_example/abf3ecf3 │
 └───────────────────────────────────┘
-ubuntu_container_example/6e8234e9: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/6e8234e9/stage
-ubuntu_container_example/6e8234e9: Running Test via command: bash ubuntu_container_example_build.sh
-ubuntu_container_example/6e8234e9: Test completed in 0.681839 seconds with returncode: 0
-ubuntu_container_example/6e8234e9: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/6e8234e9/ubuntu_container_example.out
-ubuntu_container_example/6e8234e9: Writing error file - /home/ubuntu/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/6e8234e9/ubuntu_container_example.err
+ubuntu_container_example/abf3ecf3: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/stage
+ubuntu_container_example/abf3ecf3: Running Test via command: bash ubuntu_container_example_build.sh
+ubuntu_container_example/abf3ecf3: Test completed in 0.242506 seconds with returncode: 0
+ubuntu_container_example/abf3ecf3: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/ubuntu_container_example.out
+ubuntu_container_example/abf3ecf3: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/abf3ecf3/ubuntu_container_example.err
                                           Test Summary                                          
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                           ┃ executor                 ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ ubuntu_container_example/6e8234e9 │ generic.container.ubuntu │ PASS   │ 0          │ 0.682   │
+│ ubuntu_container_example/abf3ecf3 │ generic.container.ubuntu │ PASS   │ 0          │ 0.243   │
 └───────────────────────────────────┴──────────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -76,5 +77,5 @@ Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Adding 1 test results to report file: /home/ubuntu/buildtest/var/report.json
-Writing Logfile to /home/ubuntu/buildtest/var/logs/buildtest_8jxyimxt.log
+Adding 1 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_voydqejz.log

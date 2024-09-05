@@ -1,0 +1,16 @@
+buildspecs:
+  post_run_example:
+    type: script
+    executor: generic.local.bash
+    description: post run example that will remove symbolic link
+    run: |
+      ln -s $HOME/.bashrc $HOME/.bashrc_link
+      mkdir demo
+    post_run: |
+      unlink $HOME/.bashrc_link
+      rmdir demo
+    status:
+      is_dir:
+        - demo
+      is_symlink:
+        - $HOME/.bashrc_link

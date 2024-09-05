@@ -18,7 +18,7 @@ def test_torque():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate(moduletool="environment-modules")
+    bc.validate()
 
     cmd = BuildTest(
         configuration=bc,
@@ -57,4 +57,4 @@ def test_torque():
 
         bc = SiteConfiguration(settings_file)
         bc.detect_system()
-        bc.validate(moduletool="environment-modules")
+        bc.validate()

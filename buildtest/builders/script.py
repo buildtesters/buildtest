@@ -5,7 +5,7 @@ import shutil
 from buildtest.builders.base import BuilderBase
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import write_file
-from buildtest.utils.tools import deep_get
+from buildtest.utils.tools import check_container_runtime, deep_get
 
 
 class ScriptBuilder(BuilderBase):
@@ -25,6 +25,8 @@ class ScriptBuilder(BuilderBase):
         numprocs=None,
         numnodes=None,
         compiler=None,
+        strict=None,
+        display=None,
     ):
         super().__init__(
             name=name,
@@ -36,10 +38,12 @@ class ScriptBuilder(BuilderBase):
             numprocs=numprocs,
             numnodes=numnodes,
             compiler=compiler,
+            display=display,
         )
         self.compiler_settings = {"vars": None, "env": None, "modules": None}
 
         self.configuration = configuration
+        self.strict = strict
         self.compiler_section = self.recipe.get("compilers")
 
         # if 'compilers' property defined resolve compiler logic
@@ -96,86 +100,69 @@ class ScriptBuilder(BuilderBase):
         # lines = [f"python {script_path}"]
         # return lines
 
+    def _get_compiler_variables(self):
+        return {
+            "BUILDTEST_CC": self.cc,
+            "BUILDTEST_CXX": self.cxx,
+            "BUILDTEST_FC": self.fc,
+            "BUILDTEST_CFLAGS": self.cflags,
+            "BUILDTEST_CXXFLAGS": self.cxxflags,
+            "BUILDTEST_FFLAGS": self.fflags,
+            "BUILDTEST_CPPFLAGS": self.cppflags,
+            "BUILDTEST_LDFLAGS": self.ldflags,
+        }
+
     def generate_script(self):
         """This method builds the content of the test script which will return a list
         of shell commands that will be written to file.
-
-        A typical test will contain: shebang line, job directives, environment variables and variable declaration,
-        and content of ``run`` property. For ``shell: python`` we write a python script and
-        return immediately. The variables, environment section are not applicable
-        for python scripts
-
-        Returns:
-            List of shell commands that will be written to file
         """
 
-        # start of each test should have the shebang
-        lines = [self.shebang]
-
-        # if shell is python the generated testscript will be run via bash, we invoke
-        # python script in bash script.
-        if self.shell.name == "python":
-            lines = ["#!/bin/bash"]
+        script_lines = [self.shebang]
 
         sched_lines = self.get_job_directives()
         if sched_lines:
-            lines += sched_lines
+            script_lines += sched_lines
 
         if self.burstbuffer:
             burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
             if burst_buffer_lines:
-                lines += burst_buffer_lines
+                script_lines += burst_buffer_lines
 
         if self.datawarp:
             data_warp_lines = self._get_data_warp(self.datawarp)
 
             if data_warp_lines:
-                lines += data_warp_lines
+                script_lines += data_warp_lines
 
-        lines.append(self._emit_set_command())
+        if self.strict:
+            script_lines.append(self._emit_set_command())
 
-        # for python scripts we generate python script and return lines
         if self.shell.name == "python":
-            self.logger.debug(f"[{self.name}]: Detected python shell")
+            script_lines = ["#!/bin/bash"]
             self.write_python_script()
-
-            py_script = "%s.py" % format(os.path.join(self.stage_dir, self.name))
-
+            py_script = f"{os.path.join(self.stage_dir, self.name)}.py"
             python_wrapper = self.buildexecutor.executors[self.executor]._settings[
                 "shell"
             ]
             python_wrapper_buildspec = shlex.split(self.recipe.get("shell"))[0]
-
-            # if 'shell' property in buildspec specifies 'shell: python' or 'shell: python3' then we use this instead
             if python_wrapper_buildspec.endswith(
                 "python"
             ) or python_wrapper_buildspec.endswith("python3"):
                 python_wrapper = python_wrapper_buildspec
-
-            lines.append(f"{python_wrapper} {py_script}")
-            return lines
+            script_lines.append(f"{python_wrapper} {py_script}")
+            return script_lines
 
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)
 
         if self.compiler:
-            compiler_variables = {
-                "BUILDTEST_CC": self.cc,
-                "BUILDTEST_CXX": self.cxx,
-                "BUILDTEST_FC": self.fc,
-                "BUILDTEST_CFLAGS": self.cflags,
-                "BUILDTEST_CXXFLAGS": self.cxxflags,
-                "BUILDTEST_FFLAGS": self.fflags,
-                "BUILDTEST_CPPFLAGS": self.cppflags,
-                "BUILDTEST_LDFLAGS": self.ldflags,
-            }
-            lines += self._get_variables(compiler_variables)
+            compiler_variables = self._get_compiler_variables()
+            script_lines += self._get_variables(compiler_variables)
 
             if self.compiler_settings["env"]:
-                lines += self._get_environment(self.compiler_settings["env"])
+                script_lines += self._get_environment(self.compiler_settings["env"])
             if self.compiler_settings["vars"]:
-                lines += self._get_variables(self.compiler_settings["vars"])
+                script_lines += self._get_variables(self.compiler_settings["vars"])
 
-        # Add environment variables
         env_section = deep_get(
             self.recipe, "executors", self.executor, "env"
         ) or self.recipe.get("env")
@@ -185,47 +172,52 @@ class ScriptBuilder(BuilderBase):
 
         env_lines = self._get_environment(env_section)
         if env_lines:
-            lines += env_lines
+            script_lines += env_lines
 
         var_lines = self._get_variables(var_section)
         if var_lines:
-            lines += var_lines
+            script_lines += var_lines
 
         if self.compiler_settings["modules"]:
-            lines += self.compiler_settings["modules"]
+            script_lines += self.compiler_settings["modules"]
 
-        lines.append("# Content of run section")
+        script_lines.append("# Content of run section")
 
         if "container" in self.recipe:
-            container = self.recipe["container"]
-            container_platform = container["platform"]
-            container_command = []
-            if container_platform in ["docker", "podman"]:
-                container_command.extend(
-                    [container_platform, "run", "-v", f"{self.stage_dir}:/buildtest"]
-                )
-
-            elif container_platform in ["singularity"]:
-                container_command.extend(
-                    [f"{container_platform}", "run", f"-B {self.stage_dir}:/buildtest"]
-                )
-
-            if container.get("mounts"):
-                if container_platform in ["singularity"]:
-                    container_command.extend(["-B", container["mounts"]])
-                else:
-                    container_command.extend(["-v", container["mounts"]])
-
-            if container.get("options"):
-                container_command.append(container["options"])
-
-            container_command.append(container["image"])
-
-            if container.get("command"):
-                container_command.append(container["command"])
-
-            lines.append(" ".join(container_command))
+            container_command = self._get_container_command()
+            script_lines.append(" ".join(container_command))
 
         # Add run section
-        lines += [self.recipe["run"]]
-        return lines
+        script_lines += [self.recipe["run"]]
+        return script_lines
+
+    def _get_container_command(self):
+        """This method is responsible for generating container command for docker, podman, or singularity. This method will return a list of commands to launch container.
+        This method is called when 'container' property is defined in buildspec.
+        """
+        container_config = self.recipe["container"]
+        container_runtime = container_config["platform"]
+        container_command = []
+
+        container_path = check_container_runtime(container_runtime, self.configuration)
+        container_launch_command = {
+            "docker": [container_path, "run", "--rm", "-v"],
+            "podman": [container_path, "run", "--rm", "-v"],
+            "singularity": [container_path, "run", "-B"],
+        }
+        container_command.extend(container_launch_command[container_runtime])
+        container_command.append(f"{self.stage_dir}:/buildtest")
+
+        if container_config.get("mounts"):
+            mount_option = "-B" if container_runtime == "singularity" else "-v"
+            container_command.extend([mount_option, container_config["mounts"]])
+
+        if container_config.get("options"):
+            container_command.append(container_config["options"])
+
+        container_command.append(container_config["image"])
+
+        if container_config.get("command"):
+            container_command.append(container_config["command"])
+
+        return container_command

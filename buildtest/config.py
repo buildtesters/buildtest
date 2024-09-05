@@ -9,9 +9,9 @@ from buildtest.defaults import (
     console,
 )
 from buildtest.exceptions import BuildTestError, ConfigurationError
+from buildtest.scheduler.detection import LSF, PBS, Slurm, Torque
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, Cobalt, Slurm, Torque
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
 from buildtest.utils.tools import deep_get
@@ -46,7 +46,6 @@ class SiteConfiguration:
             "slurm": {},
             "lsf": {},
             "pbs": {},
-            "cobalt": {},
             "torque": {},
             "container": {},
         }
@@ -131,12 +130,8 @@ class SiteConfiguration:
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
 
-    def validate(self, moduletool=None):
-        """This method validates the site configuration with schema.
-
-        Args:
-             moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
-        """
+    def validate(self):
+        """This method validates the site configuration with schema."""
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
         config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
@@ -153,16 +148,6 @@ class SiteConfiguration:
 
         self._executor_check()
 
-        if (
-            self.target_config.get("moduletool") != "none"
-            and self.target_config.get("moduletool") != moduletool
-        ):
-            raise ConfigurationError(
-                self.config,
-                self.file,
-                f"There is a module tool mismatch, we have detected '{moduletool}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
-            )
-
     def _executor_check(self):
         """Validate executors"""
 
@@ -172,7 +157,6 @@ class SiteConfiguration:
         self._validate_local_executors()
         self._validate_slurm_executors()
         self._validate_lsf_executors()
-        self._validate_cobalt_executors()
         self._validate_pbs_executors()
         self._validate_torque_executors()
         self._validate_container_executors()
@@ -259,7 +243,7 @@ class SiteConfiguration:
 
         executor_type = "lsf"
 
-        lsf = LSF()
+        lsf = LSF(custom_dirs=deep_get(self.target_config, "paths", "lsf"))
         if not lsf.active():
             return
 
@@ -269,7 +253,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(lsf_executors[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            if lsf_executors[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": lsf_executors[executor]
+                }
+                continue
             if not lsf.validate_queue(executor=lsf_executors[executor]):
                 self.invalid_executors.append(executor_name)
                 continue
@@ -296,7 +284,7 @@ class SiteConfiguration:
             return
 
         executor_type = "slurm"
-        slurm = Slurm()
+        slurm = Slurm(custom_dirs=deep_get(self.target_config, "paths", "slurm"))
 
         if not slurm.active():
             return
@@ -312,6 +300,11 @@ class SiteConfiguration:
 
             if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
+                continue
+            if slurm_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": slurm_executor[executor]
+                }
                 continue
             if slurm_executor[executor].get("partition"):
                 if not slurm.validate_partition(slurm_executor[executor]):
@@ -329,49 +322,6 @@ class SiteConfiguration:
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": slurm_executor[executor]
-            }
-
-    def _validate_cobalt_executors(self):
-        """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
-        its a non-zero exit code then queue doesn't exist otherwise it is a valid
-        queue.
-        """
-
-        cobalt_executor = deep_get(self.target_config, "executors", "cobalt")
-        if not cobalt_executor:
-
-            if self.verbose:
-                console.print(
-                    "No Cobalt executors found in configuration file", style="bold blue"
-                )
-
-            return
-
-        executor_type = "cobalt"
-
-        cobalt = Cobalt()
-        if not cobalt.active():
-            return
-
-        queue_info = cobalt.queues()
-
-        for executor in cobalt_executor:
-            executor_name = f"{self.name()}.{executor_type}.{executor}"
-
-            if self.is_executor_disabled(cobalt_executor[executor]):
-                self.disabled_executors.append(executor_name)
-                continue
-
-            queue = cobalt_executor[executor].get("queue")
-            # if queue property defined in cobalt executor name check if it exists
-            if queue not in queue_info:
-                logger.error(
-                    f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {queue_info} "
-                )
-                continue
-
-            self.valid_executors[executor_type][executor_name] = {
-                "setting": cobalt_executor[executor]
             }
 
     def _validate_pbs_executors(self):
@@ -418,7 +368,7 @@ class SiteConfiguration:
 
         executor_type = "pbs"
 
-        pbs = PBS()
+        pbs = PBS(custom_dirs=deep_get(self.target_config, "paths", "pbs"))
         if not pbs.active():
             return
 
@@ -428,7 +378,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(pbs_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            if pbs_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": pbs_executor[executor]
+                }
+                continue
             queue = pbs_executor[executor].get("queue")
             if not pbs.validate_queue(queue):
                 self.invalid_executors.append(executor_name)
@@ -453,7 +407,7 @@ class SiteConfiguration:
 
         executor_type = "torque"
 
-        torque = Torque()
+        torque = Torque(custom_dirs=deep_get(self.target_config, "paths", "torque"))
         if not torque.active():
             return
 
@@ -463,7 +417,11 @@ class SiteConfiguration:
             if self.is_executor_disabled(torque_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            if torque_executor[executor].get("disable_check"):
+                self.valid_executors[executor_type][executor_name] = {
+                    "setting": torque_executor[executor]
+                }
+                continue
             if not torque.validate_queue(torque_executor[executor]):
                 self.invalid_executors.append(executor_name)
                 continue

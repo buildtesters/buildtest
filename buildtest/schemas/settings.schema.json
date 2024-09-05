@@ -108,7 +108,7 @@
               "$ref": "#/definitions/format"
             },
             "terse": { "$ref": "#/definitions/terse" },
-            "root": {
+            "directory": {
               "type": "array",
               "items": {
                 "type": "string"
@@ -126,21 +126,6 @@
             "terse": { "$ref": "#/definitions/terse" },
             "format": { "$ref": "#/definitions/format" },
             "count": { "$ref": "#/definitions/count" }
-          }
-        },
-        "processor": {
-          "type": "object",
-          "description": "Specify processor information",
-          "additionalProperties": false,
-          "properties": {
-            "numcpus": {"type": "integer", "minimum": 1, "description": "Specify Total Number of CPUs"},
-            "sockets": {"type": "integer", "minimum": 1, "description": "Specify Number of CPU Sockets"},
-            "cores": {"type": "integer", "minimum": 1, "description": "Specify Number of Physical Cores"},
-            "threads_per_core": {"type": "integer", "minimum":  1, "description": "Specify Threads per Core" },
-            "core_per_socket": {"type": "integer", "minimum": 1, "description": "Specify Cores per Socket"},
-            "model": {"type": "string", "description": "Specify Processor Model" },
-            "arch": {"type": "string", "description": "Specify processor architecture"},
-            "vendor": {"type": "string", "description": "Vendor Name"}
           }
         },
         "compilers": {
@@ -280,7 +265,7 @@
         "executors": {
             "type": "object",
             "additionalProperties": false,
-            "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
+            "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``. The executors are referenced in buildspec using ``executor`` field.",
             "required": ["local"],
             "properties": {
               "defaults": {
@@ -333,16 +318,6 @@
                   "$ref": "#/definitions/slurm"
                 }
               },
-              "cobalt": {
-                "type": "object",
-                "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
-                "propertyNames": {
-                  "pattern": "^[A-Za-z0-9_.-]+$"
-                },
-                "additionalProperties": {
-                  "$ref": "#/definitions/cobalt"
-                }
-              },
               "pbs": {
                 "type": "object",
                 "description": "The ``pbs`` section is used for declaring PBS executors for running jobs using PBS scheduler",
@@ -391,6 +366,42 @@
             "site": {
               "type": "string",
               "description": "Site Name reported in CDASH"
+            }
+          }
+        },
+        "paths":
+        {
+          "type": "object",
+          "description": "Specify paths to look up for executables",
+          "additionalProperties": false,
+          "properties": {
+            "slurm": {
+              "type": "string",
+              "description": "Specify path to slurm executable"
+            },
+            "lsf": {
+              "type": "string",
+              "description": "Specify path to lsf executable"
+            },
+            "pbs": {
+              "type": "string",
+              "description": "Specify path to pbs executable"
+            },
+            "torque": {
+              "type": "string",
+              "description": "Specify path to torque executable"
+            },
+            "docker": {
+              "type": "string",
+              "description": "Specify path to docker executable"
+            },
+            "singularity": {
+              "type": "string",
+              "description": "Specify path to singularity executable"
+            },
+            "podman": {
+              "type": "string",
+              "description": "Specify path to podman executable"
             }
           }
         },
@@ -531,7 +542,11 @@
           "$ref": "#/definitions/account"
         },
         "disable": {"$ref":  "#/definitions/disable"},
-        "module": { "$ref": "#/definitions/module" }
+        "module": { "$ref": "#/definitions/module" },
+        "disable_check": {
+          "type": "boolean",
+          "description": "Disable check for partition or qos "
+        }
       }
     },
     "lsf": {
@@ -566,39 +581,11 @@
           "$ref": "#/definitions/account"
         },
         "disable": {"$ref":  "#/definitions/disable"},
-        "module": { "$ref": "#/definitions/module" }
-      }
-    },
-    "cobalt": {
-      "type": "object",
-      "description": "An instance object of cobalt executor",
-      "additionalProperties": false,
-      "required": [ "queue" ],
-      "properties": {
-        "description": { "$ref": "#/definitions/description" },
-        "options": {
-          "type": "array",
-          "items": { "type": "string" },
-          "description": "Specify any options for ``qsub`` for this executor when running all jobs associated to this executor"
-        },
-        "queue": {
-          "type": "string",
-          "description": "Specify the lsf queue you want to use ``-q <queue>``"
-        },
-        "before_script": {
-          "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
-          "#ref": "#/definitions/script"
-        },
-        "maxpendtime": {
-          "description": "overrides default ``maxpendtime`` value",
-          "$ref": "#/definitions/maxpendtime"
-        },
-        "account": {
-          "description": "overrides default ``account`` value",
-          "$ref": "#/definitions/account"
-        },
-        "disable": {"$ref":  "#/definitions/disable"},
-        "module": { "$ref": "#/definitions/module" }
+        "module": { "$ref": "#/definitions/module" },
+        "disable_check": {
+          "type": "boolean",
+          "description": "Disable check for partition or qos "
+        }
       }
     },
     "pbs": {
@@ -630,7 +617,11 @@
           "$ref": "#/definitions/account"
         },
         "disable": {"$ref":  "#/definitions/disable"},
-        "module": { "$ref": "#/definitions/module" }
+        "module": { "$ref": "#/definitions/module" },
+        "disable_check": {
+          "type": "boolean",
+          "description": "Disable check for partition or qos "
+        }
       }
     },
     "container": {
@@ -703,6 +694,7 @@
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
         "validate": {"type": "boolean", "description": "Validate given buildspecs and buildtest will stop after parse stage"},
+        "display": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
         "dry-run": {"type": "boolean", "description": "Show a list of tests that will potentially be run"},
         "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
         "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},
@@ -719,7 +711,8 @@
           "enum": ["local", "batch"]
         },
         "remove-stagedir": {"type": "boolean", "description": "Remove stage directory after test completes"},
-        "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"}
+        "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"},
+        "strict": {"type": "boolean", "description": "Enable strict mode for buildtest"}
       }
     },
     "description": {

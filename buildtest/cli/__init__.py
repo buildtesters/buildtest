@@ -900,6 +900,15 @@ class BuildTestParser:
             ],
             "extra": [
                 (
+                    ["--display"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Display content of output/error or test",
+                        "choices": ["output", "test"],
+                    },
+                ),
+                (
                     ["--dry-run"],
                     {
                         "action": "store_true",
@@ -919,6 +928,10 @@ class BuildTestParser:
                         "type": positive_number,
                         "help": "Maximum number of jobs that can be run concurrently.",
                     },
+                ),
+                (
+                    ["--profile"],
+                    {"help": "Specify a profile to load from configuration file"},
                 ),
                 (
                     ["--remove-stagedir"],
@@ -943,10 +956,16 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--validate"],
+                    ["--save-profile"],
+                    {
+                        "help": "Save buildtest command options into a profile and update configuration file"
+                    },
+                ),
+                (
+                    ["--strict"],
                     {
                         "action": "store_true",
-                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
+                        "help": "Enable strict mode for test by setting 'set -eo pipefail' in test script",
                     },
                 ),
                 (
@@ -963,14 +982,18 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--save-profile"],
+                    ["--validate"],
                     {
-                        "help": "Save buildtest command options into a profile and update configuration file"
+                        "action": "store_true",
+                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
                     },
                 ),
                 (
-                    ["--profile"],
-                    {"help": "Specify a profile to load from configuration file"},
+                    ["--write-config-file"],
+                    {
+                        "type": str,
+                        "help": "Specify path to configuration file to write changes when saving profile",
+                    },
                 ),
             ],
         }
@@ -1000,7 +1023,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on filename",
                 "parents": [],
                 "aliases": ["ef"],
-                "args": [
+                "arguments": [
                     (["file"], {"help": "Edit buildspec file in editor", "nargs": "*"})
                 ],
             },
@@ -1009,7 +1032,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on test name",
                 "parents": [],
                 "aliases": ["et"],
-                "args": [
+                "arguments": [
                     (
                         ["name"],
                         {
@@ -1024,11 +1047,11 @@ class BuildTestParser:
                 "help": "Query information from buildspecs cache",
                 "aliases": ["f"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
                     self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
-                    self.parent_parser["count"],
                 ],
                 " args": [],
             },
@@ -1037,9 +1060,11 @@ class BuildTestParser:
                 "help": "Query maintainers from buildspecs cache",
                 "aliases": ["m"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
                 ],
                 "arguments": [
                     (
@@ -1084,7 +1109,7 @@ class BuildTestParser:
             {
                 "name": "summary",
                 "help": "Print summary of buildspec cache",
-                "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
+                "parents": [self.parent_parser["pager"]],
                 "arguments": [],
                 "aliases": ["sm"],
             },
@@ -1124,6 +1149,14 @@ class BuildTestParser:
                             "type": str,
                             "action": "append",
                             "help": "Specify buildspecs by tag name to validate",
+                        },
+                    ),
+                    (
+                        ["-n", "--name"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by name to validate",
                         },
                     ),
                 ],
@@ -1210,35 +1243,42 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--helpfilter"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
-                    },
-                ),
-                (
-                    ["--helpformat"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Format fields for --format option for formatting buildspec cache output",
-                    },
-                ),
-                (
                     ["--filterfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Filter fields for --filter option for filtering buildspec cache output",
+                        "help": "Print raw filter fields for --filter option for filtering buildspec cache output",
                     },
                 ),
                 (
                     ["--formatfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Format fields for --format option for formatting buildspec cache output",
+                        "help": "Print raw format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpformat"],
+                    {
+                        "action": "store_true",
+                        "help": "Show format fields for --format option for formatting buildspec cache output",
                     },
                 ),
             ],
             "extra": [
+                (
+                    ["-q", "--quiet"],
+                    {
+                        "action": "store_true",
+                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                    },
+                ),
                 (
                     ["-r", "--rebuild"],
                     {
@@ -1247,7 +1287,7 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--root"],
+                    ["-d", "--directory"],
                     {
                         "type": str,
                         "action": "append",
@@ -1255,10 +1295,11 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["-q", "--quiet"],
+                    ["-f", "--file"],
                     {
-                        "action": "store_true",
-                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                        "type": str,
+                        "action": "append",
+                        "help": "Specify buildspec file to load into buildspec cache.",
                     },
                 ),
             ],
@@ -1276,7 +1317,11 @@ class BuildTestParser:
             {
                 "name": "invalid",
                 "help": "Show invalid buildspecs",
-                "parents": [self.parent_parser["row-count"]],
+                "parents": [
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["pager"],
+                ],
                 "arguments": [
                     (
                         ["-e", "--error"],

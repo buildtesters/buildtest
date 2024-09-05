@@ -1,6 +1,43 @@
 CHANGELOG
 =========
 
+v2.1 (Sep 5th, 2024)
+----------------------
+
+**Changes**
+
+- Migrating from ``RefResolver`` to `Referencing <https://referencing.readthedocs.io/>`_ library to address API change in **jsonschema** `#1802 <https://github.com/buildtesters/buildtest/pull/1802>`_
+- Remove cobalt scheduler support `#1773 <https://github.com/buildtesters/buildtest/pull/1773>`_
+- Acquire system details and topology information using `archspec <https://github.com/archspec/archspec>`_, `psutil <https://github.com/giampaolo/psutil>`_ `#1772 <https://github.com/buildtesters/buildtest/pull/1772>`_
+- Add support for specifying paths for **docker**, **singularity**, and **podman** in configuration file `#1775 <https://github.com/buildtesters/buildtest/pull/1775>`_
+- Suppress output of **curl** and installation of **pip** in ``setup.sh`` script. Buildtest will automatically install pip when sourcing setup script `#1806 <https://github.com/buildtesters/buildtest/pull/1806>`_, `#1792 <https://github.com/buildtesters/buildtest/pull/1792>`_
+
+**Buildspec Changes**
+
+- Add support for ``post_run`` keyword to run commands after test is complete which does not impact test behavior `#1778 <https://github.com/buildtesters/buildtest/pull/1778>`_
+- Add support for ``paths`` keyword in configuration file to search for scheduler binaries in alternative location `#1757 <https://github.com/buildtesters/buildtest/pull/1757>`_
+- Add option to disable execute check using ``disable_check`` field `#1786 <https://github.com/buildtesters/buildtest/pull/1786>`_
+
+
+**Command Line Changes**
+
+- Add support for specifying a file path when loading buildspec into cache via ``buildtest buildspec find -f`` `#1808 <https://github.com/buildtesters/buildtest/pull/1808>`_
+- Display output and error file for each test via ``buildtest build --display`` command which can be used toggle output and error `#1784 <https://github.com/buildtesters/buildtest/pull/1784>`_, `#1779 <https://github.com/buildtesters/buildtest/pull/1779>`_
+- Add support for ``buildtest build --strict`` to toggle `set -eo pipefail` into the test which will stop execution on first error. Also improve logic for container support `#1777 <https://github.com/buildtesters/buildtest/pull/1777>`_
+- Add option ``buildtest build --write-config-file`` to allow buildtest to write configuration file to alternate location when saving profile using `--save-profile` `#1762 <https://github.com/buildtesters/buildtest/pull/1762>`_
+- Validate test by name using ``buildtest buildspec validate --name`` `#1785 <https://github.com/buildtesters/buildtest/pull/1785>`_
+
+
+**Code Refactor**
+
+- Major refactor to buildtest codebase `#1763 <https://github.com/buildtesters/buildtest/pull/1763>`_
+- Add utility modules to print rich tables `#1780 <https://github.com/buildtesters/buildtest/pull/1780>`_
+- Refactor logic for job dependency `#1798 <https://github.com/buildtesters/buildtest/pull/1798/>`_
+
+**Documentation**
+
+- Documentation for extracting line numbers in metrics fields `#1781 <https://github.com/buildtesters/buildtest/pull/1781>`_
+
 v2.0 (Apr 16th, 2024)
 ----------------------
 
@@ -13,7 +50,7 @@ for queues to ensure executor validation takes place to invalidate an executor i
 
 - Add support for Torque batch scheduler `#1734 <https://github.com/buildtesters/buildtest/pull/1734>`_
 - Improve scheduler detection logic `#1738 <https://github.com/buildtesters/buildtest/pull/1738>`_, `#1739 <https://github.com/buildtesters/buildtest/pull/1739>`_
-- Change poll command to `qstat -xf` for PBS scheduler and `qstat -f` for Torque `#1746 <https://github.com/buildtesters/buildtest/pull/1746/>`_
+- Change poll command to ``qstat -xf`` for PBS scheduler and ``qstat -f`` for Torque `#1746 <https://github.com/buildtesters/buildtest/pull/1746/>`_
 - Improvement to LSF executors such as queue validation and testing LSF executors on OLCF system on Summit `#1748 <https://github.com/buildtesters/buildtest/pull/1748>`_, `#1750 <https://github.com/buildtesters/buildtest/pull/1750>`_
 
 **Buildspecs Changes**
