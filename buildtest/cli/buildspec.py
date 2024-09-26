@@ -100,7 +100,7 @@ class BuildspecCache:
         # if --root is not specified we set to empty list instead of None
         self.search = (
             search_buildspecs
-            or self.configuration.target_config["buildspecs"].get("directory")
+            or self.configuration.target_config["buildspecs"].get("search")
             or []
         )
 
