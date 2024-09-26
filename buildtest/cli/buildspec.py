@@ -126,7 +126,6 @@ class BuildspecCache:
 
         self.cache = {}
 
-        self.load_paths()
         self.build()
 
         self._check_filter_fields()
@@ -177,31 +176,8 @@ class BuildspecCache:
         rebuild cache we remove the file and recreate cache. If cache file
         exists, we simply load from cache
         """
-        buildspecs = []
-        # this method will check if buildspec_files are valid files and end with .yml.
-        # If it's not a file or does not end with .yml we skip the file and report a message
 
-        if self.buildspec_files:
-            for buildspec in self.buildspec_files:
-                path = resolve_path(buildspec, exist=False)
-                if not os.path.exists(path):
-                    console.print(f"[red]Path: {path} does not exist!")
-                    continue
-                if not is_file(path):
-                    console.print(
-                        f"[red]{path} is not a file, please specify a file when adding buildspec to cache"
-                    )
-                    continue
-                if not path.endswith(".yml"):
-                    console.print(
-                        f"[red]{path} does not end in .yml extension, please specify a valid buildspec file"
-                    )
-                    continue
-
-                buildspecs.append(path)
-
-        # set self.buildspec_files to list of valid buildspec files which will be used to build cache
-        self.buildspec_files = buildspecs
+        self.load_paths()
 
         # implements buildtest buildspec find --rebuild which removes cache file
         # before finding all buildspecs. We only remove file if file exists
@@ -230,21 +206,20 @@ class BuildspecCache:
         """
 
         buildspecs = []
-        # add all buildspecs from each repo. walk_tree will find all .yml files
-        # recursively and add them to list
-
-        if not self.paths:
-            raise BuildTestError(
-                "Unable to search any buildspecs, please specify a directory"
-            )
-
+        # recursively search all .yml files in directory and add to list
         if self.paths:
             for path in self.paths:
                 buildspec = walk_tree(path, ".yml")
                 buildspecs += buildspec
 
-        if self.buildspec_files:
-            buildspecs += self.buildspec_files
+        if self.buildspec_files_to_add:
+            buildspecs += self.buildspec_files_to_add
+
+        # if no buildspecs found we raise an exception and exit
+        if not buildspec:
+            raise BuildTestError(
+                f"Unable to find any buildspecs, please specify a valid file or directory when searching for buildspec."
+            )
 
         if not self.terse:
             print(f"Buildspec Paths: {self.paths}")
@@ -1440,8 +1415,7 @@ def buildspec_find(args, configuration):
         rebuild=args.rebuild,
         filterfields=args.filter,
         formatfields=args.format,
-        directory=args.directory,
-        buildspec_files=args.file,
+        search_buildspecs=args.search,
         configuration=configuration,
         header=args.no_header,
         terse=args.terse,
