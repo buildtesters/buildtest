@@ -216,7 +216,7 @@ class BuildspecCache:
             buildspecs += self.buildspec_files_to_add
 
         # if no buildspecs found we raise an exception and exit
-        if not buildspec:
+        if not buildspecs:
             raise BuildTestError(
                 f"Unable to find any buildspecs, please specify a valid file or directory when searching for buildspec."
             )
