@@ -11,7 +11,7 @@ system:
       count: 15
       format: name,description
       terse: false
-      directory:
+      search:
       - $BUILDTEST_ROOT/examples
     report:
       count: 25

@@ -218,7 +218,7 @@ class BuildspecCache:
         # if no buildspecs found we raise an exception and exit
         if not buildspecs:
             raise BuildTestError(
-                f"Unable to find any buildspecs, please specify a valid file or directory when searching for buildspec."
+                "Unable to find any buildspecs, please specify a valid file or directory when searching for buildspec."
             )
 
         if not self.terse:
