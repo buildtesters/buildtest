@@ -251,8 +251,7 @@ def setup(args):
 
     # build buildspec cache file automatically if it doesn't exist
     if not is_file(BUILDSPEC_CACHE_FILE):
-        root_buildspecs = []
-        buildspec_files = []
+        search_buildspecs = []
         if hasattr(args, "search"):
             search_buildspecs = args.search
 
