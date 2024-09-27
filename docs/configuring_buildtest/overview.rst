@@ -227,23 +227,33 @@ Searching for buildspecs when building Buildspec Cache
 
 When building the buildspec cache, buildtest will search for buildspecs in a list of directories specified in the configuration file.
 
-Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``directory`` property in configuration file
-is a list of directories to search for buildspecs. The ``directory`` property is not **required** in configuration file, but it can be a good
+Buildtest will search for buildspecs by recursively searching for files with **.yml** extension. The ``search`` property in configuration file
+is a list of files or directories to search for buildspecs. The ``search`` property is not **required** in configuration file, but it can be a good
 idea to set this value if you have a pre-determined location where buildspecs are stored.
 
-You can specify the directory path via command line ``buildtest buildspec find --directory <dir1> --directory <dir2>`` which will override the configuration value. In a
-practical situation, you will want to write your buildspecs in a separate repository which you can clone in your filesystem. Let's say they are cloned in
-your **$HOME** directory named **$HOME/buildtest-examples**. You have one of two options, one you can specify the  path in configuration file as shown below:
+You can specify the file path via command line ``buildtest buildspec find --search <filepath1> --search <filepath2>`` which will override the configuration value. In a
+practical situation, you will want to write your buildspecs in a separate repository which you can clone in your filesystem. Let's say your tests are cloned in
+your **$HOME** directory named **$HOME/buildtest-examples**. To load all buildspecs from this directory you can set the following in your configuration file.:
 
 .. code-block:: yaml
 
     buildspecs:
-      directory: [ $HOME/buildtest-examples ]
+      search: [ $HOME/buildtest-examples ]
 
 This configuration will instruct buildtest to search for buildspecs in ``$HOME/buildtest-examples`` directory, and you won't
-have to specify the ``--directory`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--directory`` everytime
+have to specify the ``--search`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--search`` option everytime
 you need to build the cache. If neither is specified, buildtest will load the default buildspecs which are **$BUILDTEST_ROOT/tutorials** and
 **$BUILDTEST_ROOT/general_tests**.
+
+If you want to specify multiple directories and individual files to be loaded into buildspec cache, you can do that in configuration file. Let's assume you want
+to specify the following directories `$HOME/buildtest-examples/containers` and `$HOME/buildtest-examples/apps`  and file `$HOME/buildtest-examples/job.yml` you
+can set the following in your configuration file.
+
+.. code-block:: yaml
+
+    buildspecs:
+      search: [ $HOME/buildtest-examples/containers, $HOME/buildtest-examples/apps, $HOME/buildtest-examples/job.yml ]
+
 
 .. _configuring_buildtest_report:
 

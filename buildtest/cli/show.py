@@ -134,7 +134,7 @@ def print_buildspec_show():
         "buildtest buildspec find --pager", "Paginate output of buildspec cache"
     )
     table.add_row(
-        "buildtest buildspec find --directory /tmp --rebuild",
+        "buildtest buildspec find --search /tmp --search $BUILDTEST_ROOT/tutorials/sleep.yml --rebuild",
         "Discover buildspecs in /tmp and rebuild buildspec cache",
     )
     table.add_row(

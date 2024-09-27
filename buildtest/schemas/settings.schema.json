@@ -108,12 +108,12 @@
               "$ref": "#/definitions/format"
             },
             "terse": { "$ref": "#/definitions/terse" },
-            "directory": {
+            "search": {
               "type": "array",
               "items": {
                 "type": "string"
               },
-              "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
+              "description": "Specify a list of file paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
             }
           }
         },

@@ -20,6 +20,8 @@ system:
       format: "name,description"
       # enable terse mode
       terse: False
+      # search for buildspecs in these directories
+      search: ["$BUILDTEST_ROOT/tutorials/containers"]
 
     report:
       count: 25

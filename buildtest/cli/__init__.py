@@ -1287,19 +1287,11 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["-d", "--directory"],
+                    ["-s", "--search"],
                     {
                         "type": str,
                         "action": "append",
-                        "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
-                    },
-                ),
-                (
-                    ["-f", "--file"],
-                    {
-                        "type": str,
-                        "action": "append",
-                        "help": "Specify buildspec file to load into buildspec cache.",
+                        "help": "Search for buildspecs to load into cache. This can be a file or a directory. A file must end in '.yml' extension, for directory buildtest will recursively search for all '.yml' extensions. This option can be specified multiple times to search multiple files",
                     },
                 ),
             ],

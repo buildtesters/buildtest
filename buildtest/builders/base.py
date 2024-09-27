@@ -606,7 +606,7 @@ class BuilderBase(ABC):
 function cleanup() {
     echo "Signal trapped. Performing cleanup before exiting."
     exitcode=$?
-    echo "buildtest: command \`$BASH_COMMAND' failed (exit code: $exitcode)"
+    echo "buildtest: command '$BASH_COMMAND' failed (exit code: $exitcode)"
     exit $exitcode
 }
 

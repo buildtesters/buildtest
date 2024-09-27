@@ -90,36 +90,26 @@ or pass them via command line.
     .. command-output:: buildtest buildspec find --paths
 
 buildtest will :ref:`search buildspecs when building cache <search_buildspecs_when_building_cache>` that can be configured via
-configuration or command line. If you want to load buildspecs from a directory, you can use the ``--directory`` option.
-buildtest will rebuild cache when `--directory` option is specified. Note that to rebuild cache you typically
-need to pass **--rebuild** option but that is not required when using **--directory** option because we want
-buildtest to load buildspecs into cache.
+configuration or command line. If you want to load buildspecs from the command line you can specify ``--search`` option.
+buildtest will rebuild cache when `--search` option is specified.
 
-The **--directory** option must be path to a directory, if you specify a file path then buildtest will report an error message similar
-to one below
+.. Note:: You can rebuild cache via **--rebuild** option, but this is automatically done when  **--search** option is specified
 
-.. dropdown:: ``buildtest buildspec find --directory $BUILDTEST_ROOT/README.rst``
-   :color: warning
 
-    .. command-output:: buildtest buildspec find --directory $BUILDTEST_ROOT/README.rst
-       :returncode: 1
-
-If you want to specify multiple root paths you can specify the  **--directory** options multiple times.
+If you want to specify multiple file paths, you can specify the  **--search** options multiple times.
 
 Let's rebuild the cache again by running ``buildtest buildspec find`` which will load the default buildspecs into the cache
 
 .. command-output:: buildtest buildspec find --rebuild --quiet
 
-In addition to ``--directory`` option, one can specify a list of files to load into cache using the ``--file`` option. This can be useful
-if you want to load specific buildspecs into cache without having to specify ``--directory``. You can use ``--file`` option with ``--directory``
-and buildtest will recursively search directories and load files specified in ``--file`` option.
+You can specify a file path with ``--search`` option to load specific buildspecs into cache, which can be useful if want to load specific buildspecs.
 
 If you specify an invalid file path, a directory or file without ``.yml`` extension, buildtest will report a message and skip to next file.
 Shown below, we specify a list of files to load into cache using ``--file`` option.
 
-.. dropdown:: ``buildtest buildspec find --file $BUILDTEST_ROOT/tutorials/vars.yml``
+.. dropdown:: ``buildtest buildspec find --search $BUILDTEST_ROOT/tutorials/vars.yml``
 
-    .. command-output:: buildtest buildspec find --file $BUILDTEST_ROOT/tutorials/vars.yml
+    .. command-output:: buildtest buildspec find --search $BUILDTEST_ROOT/tutorials/vars.yml
 
     We can confirm the file is loaded into cache using the `-b` option which list all buildspecs in cache and pipe via `grep` to search for `vars.yml`. Note that
     we specify ``--count=-1`` to show all buildspecs in cache.

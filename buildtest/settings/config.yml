@@ -33,8 +33,8 @@ system:
       # display output in terse mode
       terse: false
 
-      # list of paths to search for buildspecs
-      #directory: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
+      # list of paths to search for buildspecs where it can be file or directory
+      # search: ["$BUILDTEST_ROOT/tutorials/containers", "$BUILDTEST_ROOT/examples", "demo.yml"]
 
     # options for buildtest report command
     report:
