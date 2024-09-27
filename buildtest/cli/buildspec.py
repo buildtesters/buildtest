@@ -97,7 +97,7 @@ class BuildspecCache:
         )
         self.row_count = row_count
 
-        # if --root is not specified we set to empty list instead of None
+        # if --search is not specified we set to empty list instead of None
         self.search = (
             search_buildspecs
             or self.configuration.target_config["buildspecs"].get("search")
