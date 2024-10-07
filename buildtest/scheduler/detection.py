@@ -151,7 +151,7 @@ class Slurm(Scheduler):
             f"{self.sched_cmds['sinfo']} -p {slurm_executor['partition']} -h -O available"
         )
 
-        if part_state != "up":
+        if "up" not in part_state:
             self.logger.error(
                 f"partition - {slurm_executor['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
             )
