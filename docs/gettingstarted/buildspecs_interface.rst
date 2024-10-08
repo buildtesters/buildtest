@@ -148,10 +148,9 @@ associated tag field in test.
 In addition, we can query buildspecs by schema type using ``type`` property. In this
 example we query all tests by **type** property
 
-.. dropdown:: ``buildtest buildspec find --filter type=script``
+.. dropdown:: ``buildtest buildspec find --filter type=script --count=5``
 
-    .. command-output:: buildtest buildspec find --filter type=script
-        :ellipsis: 21
+    .. command-output:: buildtest buildspec find --filter type=script --count=5
 
 Finally, we can combine multiple filter fields separated by comma, in the next example
 we can query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh``, and ``type=script``
