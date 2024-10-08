@@ -110,12 +110,17 @@ Shown below, we specify a list of files to load into cache using ``--file`` opti
 .. dropdown:: ``buildtest buildspec find --search $BUILDTEST_ROOT/tutorials/vars.yml``
 
     .. command-output:: buildtest buildspec find --search $BUILDTEST_ROOT/tutorials/vars.yml
+        :shell:
 
     We can confirm the file is loaded into cache using the `-b` option which list all buildspecs in cache and pipe via `grep` to search for `vars.yml`. Note that
     we specify ``--count=-1`` to show all buildspecs in cache.
 
     .. command-output:: buildtest buildspec find -b --terse --count=-1 | grep vars.yml
        :shell:
+
+Let's rebuild the buildspec cache with the default buildspecs
+
+.. command-output:: buildtest buildspec find --rebuild
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~~
@@ -143,10 +148,9 @@ associated tag field in test.
 In addition, we can query buildspecs by schema type using ``type`` property. In this
 example we query all tests by **type** property
 
-.. dropdown:: ``buildtest buildspec find --filter type=script``
+.. dropdown:: ``buildtest buildspec find --filter type=script --count=5``
 
-    .. command-output:: buildtest buildspec find --filter type=script
-        :ellipsis: 21
+    .. command-output:: buildtest buildspec find --filter type=script --count=5
 
 Finally, we can combine multiple filter fields separated by comma, in the next example
 we can query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh``, and ``type=script``
@@ -239,20 +243,20 @@ Terse Output
 
 You can use the ``--terse`` option to print output of ``buildtest buildspec find`` in terse format that can
 be useful if you want to parse content of file. In example below, we will print output of tags in terse format, the
-first entry ``tags`` is the header followed by list of unique tags.  The ``--no-header`` option
-can be used to disable printing of header title.
+first entry ``tags`` is the header followed by list of unique tags.
 
 .. dropdown:: ``buildtest buildspec find -t --terse``
 
     .. command-output:: buildtest buildspec find -t --terse
 
 
-You can also use ``--count`` with terse option, note that heading is not counted as an element, the --count will only limit number
-of entries reported from the buildspec cache. Shown below we retrieve 5 test results in terse mode and disable heading via `-n` option.
+You can use ``--count`` with terse option to restrict output. The ``--no-header`` option
+can be used to disable headers which can be useful if you want to parse output.
+Shown below we retrieve 5 test results in terse mode without headers.
 
-.. dropdown:: ``buildtest buildspec find --terse -n --count=5``
+.. dropdown:: ``buildtest buildspec find --terse --no-header --count=5``
 
-    .. command-output:: buildtest buildspec find --terse -n --count=5
+    .. command-output:: buildtest buildspec find --terse --no-header --count=5
 
 Invalid Buildspecs - ``buildtest buildspec find invalid``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
