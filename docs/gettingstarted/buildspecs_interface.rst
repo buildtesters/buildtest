@@ -118,6 +118,10 @@ Shown below, we specify a list of files to load into cache using ``--file`` opti
     .. command-output:: buildtest buildspec find -b --terse --count=-1 | grep vars.yml
        :shell:
 
+Let's rebuild the buildspec cache with the default buildspecs
+
+.. command-output:: buildtest buildspec find --rebuild
+
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~~
 
