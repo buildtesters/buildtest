@@ -551,12 +551,6 @@ class Report:
         if count or count == 0:
             self.count = count
 
-        terse = (
-            self.configuration.target_config["report"].get("terse")
-            if terse is None
-            else terse
-        )
-
         consoleColor = checkColor(color)
         tdata = [self.display_table[key] for key in self.display_table.keys()]
         tdata = [list(i) for i in zip(*tdata)]
