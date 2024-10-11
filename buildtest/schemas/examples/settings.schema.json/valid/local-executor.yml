@@ -25,8 +25,6 @@ system:
 
     report:
       count: 25
-      #enable terse mode for report
-      terse: False
       format: "name,id,state,runtime,returncode"
     executors:
       local:
