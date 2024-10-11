@@ -14,7 +14,6 @@ system:
       - $BUILDTEST_ROOT/aws_tutorial
     report:
       count: 25
-      terse: false
       format: name,id,state,runtime,returncode
     executors:
       local:
