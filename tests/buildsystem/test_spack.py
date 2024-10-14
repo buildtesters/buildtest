@@ -14,7 +14,7 @@ from buildtest.defaults import BUILDTEST_ROOT
 def test_spack_examples():
     # spack builds must run in container  ghcr.io/buildtesters/buildtest_spack:latest which comes with username 'spack' and home directory '/home/spack'
     # if not (getpass.getuser() == "spack" and os.path.expanduser("~") == "/home/spack"):
-    if not (getpass.getuser() in ["root", "spack"] and shutil.which("spack")):
+    if not (getpass.getuser() in ["root", "spack", "runner"] and shutil.which("spack")):
         pytest.skip(
             "Unable to run this test requires docker container:  ghcr.io/buildtesters/buildtest_spack:spack-sc23"
         )

@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "buildtest"
 dynamic = ["version"]
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = "MIT"
 authors = [
   { name = "Shahzeb Siddiqui", email = "shahzebmsiddiqui@gmail.com" },
@@ -84,7 +84,8 @@ testpaths = ["tests"]
 markers = [
     "schema: run schema tests",
     "utility: run test for utility methods used throughout codebase",
-    "cli: run test for targetting buildtest command line features"
+    "cli: run test for targetting buildtest command line features",
+    "spack: run spack tests"
 ]
 
 [tool.coverage.run]
