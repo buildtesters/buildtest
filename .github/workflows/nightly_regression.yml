@@ -39,10 +39,6 @@ jobs:
         if [ $returncode != 0 ]; then exit $returncode; fi
         buildtest cdash upload --site=github nightly-$(date)
 
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 30
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
