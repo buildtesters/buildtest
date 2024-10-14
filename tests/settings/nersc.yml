@@ -14,7 +14,6 @@ system:
       terse: False
     report:
       count: 25
-      terse: False
       format: "name,id,state,runtime,returncode"
     compilers:
       enable_prgenv: true

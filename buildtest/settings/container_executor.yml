@@ -37,8 +37,7 @@ system:
     report:
       # number of records to display
       count: 25
-      # display output in terse mode
-      terse: false
+
       # specify format fields
       format: name,id,state,runtime,returncode
 

@@ -10,11 +10,10 @@ system:
       count: 15
       format: name,description
       terse: false
-      directory:
+      search:
       - $BUILDTEST_ROOT/aws_oddc
     report:
       count: 25
-      terse: false
       format: name,id,state,runtime,returncode
     executors:
       local:
