@@ -69,6 +69,8 @@ def print_by_query(
                 console.print(f"[red]Error File: {test['errfile']}")
                 console.print(f"[red]Log File: {test['logpath']}")
 
+                buildspec = report.get_buildspec_by_test(name)
+
                 if test["metrics"]:
                     table = Table(
                         Column("Name", overflow="fold", header_style="blue"),
@@ -80,26 +82,32 @@ def print_by_query(
 
                     console.print(table)
 
+                if buildspec:
+                    print_file_content(
+                        buildspec, f"Buildspec File: {buildspec} ", "shell", theme
+                    )
                 # print content of output file when 'buildtest inspect query --output' is set
                 if output:
-                    print_file_content(test["outfile"], "Output File: ", "text", theme)
+                    print_file_content(test["outfile"], "Output File ", "text", theme)
 
                 # print content of error file when 'buildtest inspect query --error' is set
                 if error:
-                    print_file_content(test["errfile"], "Error File: ", "text", theme)
+                    print_file_content(test["errfile"], "Error File ", "text", theme)
 
                 # print content of testpath when 'buildtest inspect query --testpath' is set
                 if testpath:
-                    print_file_content(test["testpath"], "Test File: ", "shell", theme)
+                    print_file_content(test["testpath"], "Test File ", "shell", theme)
 
                 # print content of build script when 'buildtest inspect query --buildscript' is set
                 if buildscript:
                     print_file_content(
-                        test["build_script"], "Build Script File: ", "shell", theme
+                        test["build_script"], "Build Script File ", "shell", theme
                     )
 
                 if buildenv:
-                    print_file_content(test["buildenv"], "Test File: ", "text", theme)
+                    print_file_content(
+                        test["buildenv"], "Build Environment File ", "text", theme
+                    )
 
 
 def fetch_test_names(report, names):

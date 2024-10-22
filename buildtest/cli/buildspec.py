@@ -7,7 +7,6 @@ import sys
 import time
 
 from jsonschema.exceptions import ValidationError
-from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
 
@@ -1310,12 +1309,6 @@ def summary_print(configuration, color=None):
     [yellow]Total Maintainers:[/yellow]             [cyan]{len(cache.get_maintainers())}[/cyan] 
     """
     console.print(Panel.fit(msg))
-    layout = Layout()
-    layout.split_column(Layout(name="top"), Layout(name="bottom"))
-    layout["top"].split_row(
-        Layout(name="top-left"), Layout(name="top-center"), Layout(name="top-right")
-    )
-    layout["top"].ratio = 2
 
     tag_table = create_table(
         title="Tag Breakdown",
@@ -1337,23 +1330,31 @@ def summary_print(configuration, color=None):
         column_style=consoleColor,
     )
 
-    layout["top-left"].update(tag_table)
-    layout["top-center"].update(executor_table)
-    layout["top-right"].update(maintainer_table)
-
     tdata = [[buildspec] for buildspec in cache.get_invalid_buildspecs()]
 
     invalid_buildspecs_table = create_table(
         title="Invalid Buildspecs",
         columns=["Buildspecs"],
         data=tdata,
-        column_style=consoleColor,
-        show_lines=True,
+        column_style="red",
+        show_lines=False,
     )
 
-    layout["bottom"].update(invalid_buildspecs_table)
+    tdata = [[buildspec] for buildspec in cache.get_valid_buildspecs()]
 
-    console.print(layout)
+    valid_buildspecs_table = create_table(
+        title="Valid Buildspecs",
+        columns=["Buildspecs"],
+        data=tdata,
+        column_style="green",
+        show_lines=False,
+    )
+
+    print_table(tag_table)
+    print_table(executor_table)
+    print_table(maintainer_table)
+    print_table(valid_buildspecs_table)
+    print_table(invalid_buildspecs_table)
 
 
 def buildspec_maintainers(

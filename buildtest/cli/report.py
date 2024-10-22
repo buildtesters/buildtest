@@ -723,6 +723,15 @@ class Report:
 
         return records
 
+    def get_buildspec_by_test(self, name):
+        """Retrieve buildspec file by test name. This method will return buildspec file for a given test name."""
+
+        for buildspec in self.filtered_buildspecs:
+            if name in self.report[buildspec]:
+                return buildspec
+
+        return None
+
 
 def list_report():
     """This method will list all report files. This method will implement ``buildtest report list`` command."""
