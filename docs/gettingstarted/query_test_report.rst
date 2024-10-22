@@ -556,30 +556,45 @@ of test names ``root_disk_usage`` and ``python_hello``
 
 If you want to query specific test ID, you can specify name of test followed by `/` and test ID. You don't need to specify
 the full ID however tab completion is available to help fill in the names. For example if you want to query test record for
-`circle_area/8edce927-2ecc-4991-ac40-e376c03394b4` shown in tab completion you can type a first few characters to query the record
+``circle_area/566399ce-e25b-4630-8bb8-fbf09f6de7d0`` shown in tab completion you can type a first few characters to query the record
 
 .. code-block:: console
 
     $ buildtest inspect query circle_area/
-    circle_area/08f20b50-d2e2-41ab-a75e-a7df75e5afcc  circle_area/8edce927-2ecc-4991-ac40-e376c03394b4  circle_area/d47b6ba8-71b6-4531-b8cd-b6ba9b5f0c6c
-    circle_area/237c3a96-fad0-4ab7-ab1f-3e7ed1816955  circle_area/baea2e9b-a187-4f9f-bcea-75e768ccb0e0  circle_area/e6652700-4cdb-4f6b-80c5-261e4f448876
-    circle_area/2c279160-1abf-4c70-957f-d9e4608f521b  circle_area/bf8f1762-ebf9-458e-92e2-af3fc6e73eac  circle_area/e7cc7138-a650-4cd8-aca8-b904f901a0da
+    circle_area/566399ce-e25b-4630-8bb8-fbf09f6de7d0  circle_area/69b29a2c-55ee-47d0-ac8c-aaa23566619b  circle_area/a6df47b6-4db4-4e5b-b5c4-fadb510ee1d2  circle_area/ace1b02f-1761-443d-b3d8-b6f9ba20291d
 
-    $ buildtest inspect query circle_area/8ed
-    ──────────────────────────────────────────────────────────────────────────────────────────── circle_area/8edce927-2ecc-4991-ac40-e376c03394b4 ─────────────────────────────────────────────────────────────────────────────────────────────
+
+    $ buildtest inspect query circle_area/56
+    ──────────────────────────────────────────────────────────────────────────────────────── circle_area/566399ce-e25b-4630-8bb8-fbf09f6de7d0 ─────────────────────────────────────────────────────────────────────────────────────────
     Executor: generic.local.bash
     Description: Calculate circle of area given a radius
     State: PASS
     Returncode: 0
-    Runtime: 0.360774 sec
-    Starttime: 2021/12/23 12:37:25
-    Endtime: 2021/12/23 12:37:25
-    Command: bash --norc --noprofile -eo pipefail circle_area_build.sh
-    Test Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-shell/circle_area/8edce927/circle_area.sh
-    Build Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-shell/circle_area/8edce927/circle_area_build.sh
-    Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-shell/circle_area/8edce927/circle_area.out
-    Error File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-shell/circle_area/8edce927/circle_area.err
-    Log File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_c5dnun2l.log
+    Runtime: 0.318187 sec
+    Starttime: 2024/10/22 12:39:00
+    Endtime: 2024/10/22 12:39:00
+    Command: bash circle_area_build.sh
+    Test Script: /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/python-shell/circle_area/566399ce/circle_area.sh
+    Build Script: /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/python-shell/circle_area/566399ce/circle_area_build.sh
+    Output File: /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/python-shell/circle_area/566399ce/circle_area.out
+    Error File: /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/python-shell/circle_area/566399ce/circle_area.err
+    Log File: /Users/siddiq90/Documents/buildtest/var/logs/buildtest_t6dmyvv3.log
+    ───────────────────────────────────────────────────────────────────────── Buildspec File: /Users/siddiq90/Documents/buildtest/tutorials/python-shell.yml  ─────────────────────────────────────────────────────────────────────────
+    buildspecs:
+      circle_area:
+        executor: generic.local.bash
+        type: script
+        shell: python
+        description: "Calculate circle of area given a radius"
+        tags: [tutorials, python]
+        run: |
+          import math
+          radius = 2
+          area = math.pi * radius * radius
+          print("Circle Radius ", radius)
+          print("Area of circle ", area)
+
+    ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 buildtest will search for test ID using `re.match <https://docs.python.org/3/library/re.html#re.match>`_ so it is possible to apply a regular expression to seek
 out multiple test records. The tests must be enclosed in quotes ``"`` in-order to have a valid regular expression. Here are few examples that can be useful
@@ -619,6 +634,6 @@ The report file must be valid JSON file that buildtest understands in order to u
     │ python_hello                                                       │ dd447e43                                      │
     └────────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────┘
 
-You can view path to all report files via ``buildtest report list`` which keeps track of any new report files created when using ``buildtest build -r`` option.
+You can view path to all report files via ``buildtest report list`` which keeps track of any new report files created when using ``buildtest -r <report_file> build`` option.
 
 .. command-output:: buildtest report list
