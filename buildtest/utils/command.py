@@ -1,3 +1,4 @@
+import logging
 import os
 import shlex
 import shutil
@@ -6,6 +7,8 @@ import tempfile
 
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import read_file
+
+logger = logging.getLogger(__name__)
 
 
 class Capturing:
@@ -92,21 +95,17 @@ class BuildTestCommand:
             timeout (int, optional): The timeout value in number of seconds for a process. This argument is passed to `Popen.communicate <https://docs.python.org/3/library/subprocess.html#subprocess.Popen.communicate>`_
         """
         # Reset the output and error records
-        self.out = []
-        self.err = []
+        self.reset_output()
 
         # The executable must be found, return code 1 if not
-        executable = shutil.which(self.cmd[0])
+        executable = self.find_executable()
         if not executable:
-            self.err = ["%s not found." % self.cmd[0]]
+            self.err.append(f"{self.cmd[0]} not found.")
             self._returncode = 1
             return (self.out, self.err)
 
-        # remove the original executable
-        args = self.cmd[1:]
-
         # Use updated command with executable and remainder (list)
-        cmd = [executable] + args
+        cmd = [executable] + self.cmd[1:]
 
         # Capturing provides temporary output and error files
         with Capturing() as capture:
@@ -120,26 +119,30 @@ class BuildTestCommand:
                 process.communicate(timeout=timeout)
             except subprocess.TimeoutExpired:
                 process.kill()
-                # os.kill(process.pid, signal.SIGTERM)
+                logger.error("Process timed out")
+                self._returncode = 1
 
             self._returncode = process.wait()
-
-            # returncode = process.poll()
-
-            # Iterate through the output
-            # while returncode is None:
-            #    returncode = process.poll()
-
-        # Get the remainder of lines, add return code. The self.decode avoids UTF-8 decode error
-        self.out += ["%s\n" % x for x in self.decode(capture.out).split("\n") if x]
-        self.err += ["%s\n" % x for x in self.decode(capture.err).split("\n") if x]
-
-        # self.out += ["%s\n" % x for x in capture.out.split("\n") if x]
-        # self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
-        # Cleanup capture files and save final return code
-        capture.cleanup()
+            # Get the remainder of lines, add return code. The self.decode avoids UTF-8 decode error
+            self.out += self.decode_output(capture.out)
+            self.err += self.decode_output(capture.err)
+            # Cleanup capture files and save final return code
+            capture.cleanup()
 
         return (self.out, self.err)
+
+    def reset_output(self):
+        """Reset output and error content"""
+        self.out = []
+        self.err = []
+
+    def find_executable(self):
+        """Find the executable for the command."""
+        return shutil.which(self.cmd[0])
+
+    def decode_output(self, output):
+        """Decode the output to avoid UTF-8 decode error."""
+        return [f"{x}\n" for x in output.split("\n") if x]
 
     def returncode(self):
         """Returns the return code from shell command
