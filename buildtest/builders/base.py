@@ -371,7 +371,9 @@ class BuilderBase(ABC):
         return command
 
     def execute_post_run_script(self):
-
+        """This method will execute the post run script which is invoked after test is complete. This is called
+        if ``post_run`` is defined in buildspec.
+        """
         if os.path.exists(self.post_run_script):
             post_run = BuildTestCommand(self.post_run_script)
             post_run.execute()
@@ -389,7 +391,9 @@ class BuilderBase(ABC):
             self._display_output_content(error, title="Start of Post Run Error")
 
     def _display_output_content(self, output, title, show_last_lines=10):
-        """This method will display content of output or error results.
+        """This method will display content of output or error results. The ``output`` is content of file to display. A title
+        is displayed at top which can be customized via ``title``. We can configure number of lines to display from end of file via
+        ```show_last_lines``.
 
         Args:
             output (str): Output content to display
@@ -406,10 +410,29 @@ class BuilderBase(ABC):
                 show_last_lines=show_last_lines,
             )
 
+    def _display_test_content(self, filepath, title) -> None:
+        """Display content of test file, given a path to file and title to display.
+        Args:
+            filepath (str): Path to file to display content
+            title (str): Title to display before content
+        """
+
+        if "test" in self.display:
+            print_file_content(
+                file_path=filepath,
+                title=f"[blue]{self}[/]: {title}",
+                lexer="bash",
+                theme="monokai",
+            )
+
     def handle_run_result(self, command_result, timeout):
         """This method will handle the result of running test. If the test is successful we will record endtime,
         copy output and error file to test directory and set state to complete. If the test fails we will retry the test based on retry count.
         If the test fails after retry we will mark test as failed.
+
+        Args:
+            command_result (BuildTestCommand): An instance object of BuildTestCommand
+            timeout (int): Timeout value for test run
         """
         launch_command = command_result.get_command()
         self.logger.debug(f"Running Test via command: {launch_command}")
@@ -562,18 +585,11 @@ class BuilderBase(ABC):
     ) -> None:
         """Write the content of build script."""
         lines = self._generate_build_script_lines(modules, modulepurge, unload_modules)
-        write_file(self.build_script, "\n".join(lines))
+        lines = "\n".join(lines)
+        write_file(self.build_script, lines)
         self._set_execute_perm(self.build_script)
         self._copy_build_script_to_test_root()
-
-    def _display_test_content(self, filepath, title) -> None:
-        if "test" in self.display:
-            print_file_content(
-                file_path=filepath,
-                title=f"[blue]{self}[/]: {title}",
-                lexer="bash",
-                theme="monokai",
-            )
+        self.metadata["buildscript_content"] = lines
 
     def _generate_build_script_lines(
         self, modules: List[str], modulepurge: bool, unload_modules: List[str]
@@ -636,90 +652,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
 
-    def _write_build_script1(self, modules=None, modulepurge=None, unload_modules=None):
-        """This method will write the content of build script that is run for when invoking
-        the builder run method. Upon creating file we set permission of builder script to 755
-        so test can be run.
-        """
-
-        lines = ["#!/bin/bash"]
-
-        trap_msg = """
-# Function to handle all signals and perform cleanup
-function cleanup() {
-    echo "Signal trapped. Performing cleanup before exiting."
-    exitcode=$?
-    echo "buildtest: command '$BASH_COMMAND' failed (exit code: $exitcode)"
-    exit $exitcode
-}
-
-# Trap all signals and call the cleanup function
-trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU
-"""
-        lines.append(trap_msg)
-        lines += self._set_default_test_variables()
-        lines.append("# source executor startup script")
-
-        if modulepurge:
-            lines.append("module purge")
-
-        if unload_modules:
-            lines.append("# Specify list of modules to unload")
-            for module in unload_modules.split(","):
-                lines.append(f"module unload {module}")
-
-        if modules:
-            lines.append("# Specify list of modules to load")
-            for module in modules.split(","):
-                lines.append(f"module load {module}")
-
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
-        ]
-
-        lines.append("# Run generated script")
-        # local executor
-        if self.is_local_executor():
-            lines += [" ".join(self._emit_command())]
-        elif self.is_container_executor():
-            lines += self.get_container_invocation()
-        # batch executor
-        else:
-            launcher = self.buildexecutor.executors[self.executor].launcher_command(
-                numprocs=self.numprocs, numnodes=self.numnodes
-            )
-            lines += [" ".join(launcher) + " " + f"{self.testpath}"]
-
-        lines.append("# Get return code")
-
-        # get returncode of executed script which is retrieved by '$?'
-        lines.append("returncode=$?")
-
-        lines.append("# Exit with return code")
-        lines.append("exit $returncode")
-
-        lines = "\n".join(lines)
-        write_file(self.build_script, lines)
-        self.metadata["buildscript_content"] = lines
-        self.logger.debug(f"Writing build script: {self.build_script}")
-        self._set_execute_perm(self.build_script)
-
-        # copying build script into test_root directory since stage directory will be removed
-        dest = os.path.join(self.test_root, os.path.basename(self.build_script))
-        shutil.copy2(self.build_script, dest)
-        self.logger.debug(f"Copying build script to: {dest}")
-
-        self.build_script = dest
-        self.metadata["build_script"] = self.build_script
-
-        if "test" in self.display:
-            print_file_content(
-                file_path=self.build_script,
-                title=f"[blue]{self}[/]: Start of Build Script",
-                lexer="bash",
-                theme="monokai",
-            )
-
     def _write_post_run_script(self):
         """This method will write the content of post run script that is run after the test is complete.
         The post run script is used to perform cleanup operations after test is complete.
@@ -753,19 +685,15 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         # Implementation to write file generate.sh
         lines = []
-
         lines += self.generate_script()
-
         lines = "\n".join(lines)
 
         self.logger.info(f"Opening Test File for Writing: {self.testpath}")
-
         write_file(self.testpath, lines)
 
         self.metadata["test_content"] = lines
-
         self._set_execute_perm(self.testpath)
-        # copy testpath to run_dir
+        # copy testpath to root test directory
         shutil.copy2(
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
