@@ -117,28 +117,27 @@ class ScriptBuilder(BuilderBase):
         of shell commands that will be written to file.
         """
 
-        script_lines = [self.shebang]
+        lines = [self.shebang]
 
-        sched_lines = self.get_job_directives()
-        if sched_lines:
-            script_lines += sched_lines
+        batch_directives = self.get_job_directives()
+        if batch_directives:
+            lines += batch_directives
 
-        if self.burstbuffer:
-            burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
-            if burst_buffer_lines:
-                script_lines += burst_buffer_lines
+        """    
+        burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
+        if burst_buffer_lines:
+            lines += burst_buffer_lines
 
-        if self.datawarp:
-            data_warp_lines = self._get_data_warp(self.datawarp)
+        data_warp_lines = self._get_data_warp(self.datawarp)
 
-            if data_warp_lines:
-                script_lines += data_warp_lines
-
+        if data_warp_lines:
+            lines += data_warp_lines
+        """
         if self.strict:
-            script_lines.append(self._emit_set_command())
+            lines.append(self._emit_set_command())
 
         if self.shell.name == "python":
-            script_lines = ["#!/bin/bash"]
+            lines = ["#!/bin/bash"]
             self.write_python_script()
             py_script = f"{os.path.join(self.stage_dir, self.name)}.py"
             python_wrapper = self.buildexecutor.executors[self.executor]._settings[
@@ -149,19 +148,19 @@ class ScriptBuilder(BuilderBase):
                 "python"
             ) or python_wrapper_buildspec.endswith("python3"):
                 python_wrapper = python_wrapper_buildspec
-            script_lines.append(f"{python_wrapper} {py_script}")
-            return script_lines
+            lines.append(f"{python_wrapper} {py_script}")
+            return lines
 
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)
 
         if self.compiler:
             compiler_variables = self._get_compiler_variables()
-            script_lines += self._get_variables(compiler_variables)
+            lines += self._get_variables(compiler_variables)
 
             if self.compiler_settings["env"]:
-                script_lines += self._get_environment(self.compiler_settings["env"])
+                lines += self._get_environment(self.compiler_settings["env"])
             if self.compiler_settings["vars"]:
-                script_lines += self._get_variables(self.compiler_settings["vars"])
+                lines += self._get_variables(self.compiler_settings["vars"])
 
         env_section = deep_get(
             self.recipe, "executors", self.executor, "env"
@@ -172,24 +171,24 @@ class ScriptBuilder(BuilderBase):
 
         env_lines = self._get_environment(env_section)
         if env_lines:
-            script_lines += env_lines
+            lines += env_lines
 
         var_lines = self._get_variables(var_section)
         if var_lines:
-            script_lines += var_lines
+            lines += var_lines
 
         if self.compiler_settings["modules"]:
-            script_lines += self.compiler_settings["modules"]
+            lines += self.compiler_settings["modules"]
 
-        script_lines.append("# Content of run section")
+        lines.append("# Content of run section")
 
         if "container" in self.recipe:
             container_command = self._get_container_command()
-            script_lines.append(" ".join(container_command))
+            lines.append(" ".join(container_command))
 
         # Add run section
-        script_lines += [self.recipe["run"]]
-        return script_lines
+        lines += [self.recipe["run"]]
+        return lines
 
     def _get_container_command(self):
         """This method is responsible for generating container command for docker, podman, or singularity. This method will return a list of commands to launch container.

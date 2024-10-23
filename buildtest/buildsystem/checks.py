@@ -282,12 +282,10 @@ def is_file_check(builder):
     Returns:
         bool: A boolean for is_file status check
     """
-
-    assert_is_file = all(is_file(file) for file in builder.status["is_file"])
-    console.print(
-        f"[builder]{builder}[/]: Test all files:  {builder.status['is_file']}  existences "
-    )
-    for fname in builder.status["is_file"]:
+    file_list = builder.status["is_file"]
+    assert_is_file = all(is_file(file) for file in file_list)
+    console.print(f"[builder]{builder}[/]: Test all files:  {file_list}  existences ")
+    for fname in file_list:
         resolved_fname = resolve_path(fname, exist=True)
         if is_file(resolved_fname):
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} is a file ")
@@ -309,11 +307,10 @@ def is_dir_check(builder):
         bool: A boolean for ``is_dir`` status check
     """
 
-    assert_is_dir = all(is_dir(file) for file in builder.status["is_dir"])
-    console.print(
-        f"[blue]{builder}[/]: Test all files:  {builder.status['is_dir']}  existences "
-    )
-    for dirname in builder.status["is_dir"]:
+    dir_list = builder.status["is_dir"]
+    assert_is_dir = all(is_dir(file) for file in dir_list)
+    console.print(f"[blue]{builder}[/]: Test all files:  {dir_list}  existences ")
+    for dirname in dir_list:
         resolved_dirname = resolve_path(dirname)
         if is_dir(resolved_dirname):
             console.print(
