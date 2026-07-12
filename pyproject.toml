@@ -19,7 +19,7 @@ dependencies=[
    'PyYAML >= 5.12',
    'requests',
    'rich',
-   'urllib3>=2.1.0',
+   'urllib3>=2.7.0',
     # both coverage and pytest required for running 'buildtest tutorial-examples'
    'coverage',
    'pytest',
