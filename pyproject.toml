@@ -55,7 +55,7 @@ docs = [
     "sphinx-argparse==0.5.2",
     "sphinx-rtd-theme==3.1.0",
     "sphinx-autoapi==3.0.0",
-    "sphinxcontrib-programoutput==0.17",
+    "sphinxcontrib-programoutput==0.20",
     "sphinxext-remoteliteralinclude==0.4.0",
     "sphinx-copybutton==0.5.2",
     "sphinx-design==0.7.0"
