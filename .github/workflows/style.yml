@@ -17,10 +17,10 @@ jobs:
 
       # use isort github action see
       #https://pycqa.github.io/isort/docs/configuration/github_action.html
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5.0.0
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Check imports with pyflakes
         run: |
