@@ -180,7 +180,7 @@ def _sysfs_topo():
     cpuinfo["topology"]["cores"] = sorted(list(cores))
     cpuinfo["topology"]["caches"] = []
     for cache_type, cpusets in caches.items():
-        (cache_level, cache_size, cache_linesize, cache_associativity, num_cpus) = (
+        cache_level, cache_size, cache_linesize, cache_associativity, num_cpus = (
             cache_type
         )
         c = {
