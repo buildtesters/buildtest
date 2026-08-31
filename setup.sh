@@ -69,7 +69,9 @@ if [ $returncode -ne 0 ]; then
 fi
 
 export BUILDTEST_ROOT=$buildtest_root
-export COVERAGE_PROCESS_START=$buildtest_root/.coveragerc
+if [ -f "$buildtest_root/.coveragerc" ]; then
+  export COVERAGE_PROCESS_START="$buildtest_root/.coveragerc"
+fi
 export PATH=${buildtest_root}/bin:$PATH
 
 # for ZSH shell need to run autoload see https://stackoverflow.com/questions/3249432/can-a-bash-tab-completion-script-be-used-in-zsh
