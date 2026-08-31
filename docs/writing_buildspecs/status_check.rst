@@ -518,11 +518,11 @@ We can confirm the files are not present by checking existence of these files by
 
     .. command-output:: ls -l $HOME/.bashrc_link
         :shell:
-        :returncode: 1
+        :returncode: 2
 
 We can retrieve the full path to stage directory via ``buildtest path -s`` command given the name of test. The **demo** directory is created in stage directory
 so if we run the following command we should see this directory is not present.
 
     .. command-output:: ls -l $(buildtest path -s post_run_example)/demo
         :shell:
-        :returncode: 1
+        :returncode: 2
