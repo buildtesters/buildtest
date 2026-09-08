@@ -24,9 +24,7 @@ def test_slurm_regression():
     configuration.validate()
 
     build = BuildTest(
-        configuration=configuration,
-        buildspecs=[buildspec],
-        poll_interval=1,
+        configuration=configuration, buildspecs=[buildspec], poll_interval=1
     )
     build.build()
 
