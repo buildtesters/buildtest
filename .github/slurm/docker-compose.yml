@@ -68,6 +68,8 @@ services:
     hostname: c1
     privileged: true
     working_dir: /data
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-buildtest-slurm}
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
