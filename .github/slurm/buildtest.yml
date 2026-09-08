@@ -1,11 +1,14 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: none
+    moduletool: N/A
     poolsize: 1
     testdir: /tmp/buildtest-ci
     paths:
       slurm: /usr/bin
+    buildspecs:
+      rebuild: false
+      count: 15
     report:
       format: "name,id,state,runtime,returncode"
     compilers:
