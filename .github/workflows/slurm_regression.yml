@@ -108,17 +108,18 @@ jobs:
             export BUILDTEST_ROOT=/data/buildtest-regression
             export BUILDTEST_SLURM_REGRESSION=1
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
-            echo "Sourcing Buildtest setup: $BUILDTEST_ROOT/setup.sh"
-            source "$BUILDTEST_ROOT/setup.sh"
-            setup_status=$?
-            echo "Buildtest setup exit code: $setup_status"
+            export COVERAGE_PROCESS_START=$BUILDTEST_ROOT/.coveragerc
+            export PATH=$BUILDTEST_ROOT/bin:$PATH
+            export PYTHONPATH=$BUILDTEST_ROOT${PYTHONPATH:+:$PYTHONPATH}
             cd "$BUILDTEST_ROOT"
             command -v python3
             python3 --version
             python3 -c "import pytest, buildtest; print('pytest and buildtest imports succeeded')"
             import_status=$?
             echo "Python import exit code: $import_status"
-            python3 $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+            python3 $BUILDTEST_ROOT/buildtest/tools/unittests.py \
+              --coverage \
+              --configfile "$BUILDTEST_CONFIGFILE"
             regression_status=$?
             echo "Buildtest regression exit code: $regression_status"
             python3 -m coverage xml -o /data/buildtest-ci/coverage.xml
