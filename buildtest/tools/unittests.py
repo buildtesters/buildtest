@@ -20,10 +20,21 @@ from buildtest.defaults import (
     VAR_DIR,
     console,
 )
-from buildtest.utils.file import is_dir, resolve_path
+from buildtest.utils.file import is_dir, is_file, resolve_path
 
 
-def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
+def resolve_unittest_config(config_file=None):
+    """Resolve the requested unittest configuration or use the default file."""
+    config_file = config_file or os.getenv("BUILDTEST_CONFIGFILE")
+    config_file = resolve_path(config_file) if config_file else DEFAULT_SETTINGS_FILE
+    if not config_file or not is_file(config_file):
+        raise SystemExit(f"Unable to find unittest configuration file: {config_file}")
+    return config_file
+
+
+def run_unit_tests(
+    pytestopts=None, sourcefiles=None, enable_coverage=False, config_file=None
+):
     """Entry point for running buildtest unit tests. This method can be invoked via ``buildtest unittests`` or run
     via command line as standalone program. The unit tests are run via `pytest <https://docs.pytest.org/>`_ and `coverage <https://coverage.readthedocs.io/en/6.2/>`_
     for measuring coverage report. This method will report coverage results that can be viewable in html or json.
@@ -32,6 +43,8 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
         pytestopts (str): Specify options to pytest command.
         sourcefiles (list): List of source files to run with pytest
         enable_coverage (bool): Enable coverage when running regression test
+        config_file (str): Optional configuration file to use for the regression
+            test. The default configuration is used when omitted.
     """
 
     if not os.getenv("BUILDTEST_ROOT"):
@@ -41,7 +54,8 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
     os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
     settings_file = os.path.join(os.environ["BUILDTEST_CI_DIR"], "config.yml")
-    shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
+    config_file = resolve_unittest_config(config_file)
+    shutil.copyfile(config_file, settings_file)
 
     console.rule("Running buildtest unit tests")
     console.print("BUILDTEST_CI_DIR", os.getenv("BUILDTEST_CI_DIR"))
@@ -76,10 +90,10 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
     # run regression test
     retcode = pytest.main(pytest_cmd)
+    console.print(f"pytest exit code: {retcode}")
 
-    # if there is a failure in pytest raise exit 1
-    if retcode == pytest.ExitCode.TESTS_FAILED:
-        sys.exit(1)
+    if retcode != pytest.ExitCode.OK:
+        sys.exit(int(retcode))
 
     if enable_coverage:
         cov.stop()
@@ -113,10 +127,16 @@ if __name__ == "__main__":
         help="Specify path to file or directory when running regression test",
         action="append",
     )
+    parser.add_argument(
+        "--configfile",
+        type=str,
+        help="Specify the configuration file to use for the regression test",
+    )
     args = parser.parse_args()
 
     run_unit_tests(
         pytestopts=args.pytestopts,
         sourcefiles=args.sourcefiles,
         enable_coverage=args.coverage,
+        config_file=args.configfile,
     )

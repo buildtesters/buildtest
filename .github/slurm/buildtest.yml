@@ -1,0 +1,31 @@
+system:
+  generic:
+    hostnames: ['.*']
+    moduletool: none
+    poolsize: 1
+    testdir: /data/buildtest-ci
+    paths:
+      slurm: /usr/bin
+    buildspecs:
+      rebuild: false
+      count: 15
+    report:
+      format: "name,id,state,runtime,returncode"
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+    executors:
+      defaults:
+        pollinterval: 1
+        maxpendtime: 30
+      local:
+        bash:
+          shell: bash
+      slurm:
+        ci:
+          partition: cpu
+          options: ["-N 1", "-n 1"]

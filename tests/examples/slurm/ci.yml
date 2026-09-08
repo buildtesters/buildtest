@@ -1,0 +1,40 @@
+buildspecs:
+  slurm_completed:
+    type: script
+    executor: generic.slurm.ci
+    description: Verify a successful Slurm job is gathered as COMPLETED
+    sbatch: ["-t 00:01"]
+    run: |
+      echo "hello from slurm"
+      hostname
+      test -n "$SLURM_JOB_ID"
+    status:
+      slurm_job_state: COMPLETED
+      returncode: 0
+
+  slurm_failed:
+    type: script
+    executor: generic.slurm.ci
+    description: Verify a failed Slurm job is gathered as FAILED
+    sbatch: ["-t 00:01"]
+    run: |
+      echo "intentional failure"
+      exit 7
+    status:
+      slurm_job_state: FAILED
+      returncode: 7
+
+  slurm_metadata:
+    type: script
+    executor: generic.slurm.ci
+    description: Verify Slurm metadata is available to the job
+    sbatch: ["-t 00:01"]
+    run: |
+      test -n "$SLURM_JOB_ID"
+      test -n "$SLURM_JOB_PARTITION"
+      test -n "$SLURMD_NODENAME"
+      echo "job=$SLURM_JOB_ID"
+      echo "partition=$SLURM_JOB_PARTITION"
+      echo "node=$SLURMD_NODENAME"
+    status:
+      returncode: 0
