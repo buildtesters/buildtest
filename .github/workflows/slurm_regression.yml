@@ -110,7 +110,10 @@ jobs:
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             source "$BUILDTEST_ROOT/setup.sh"
             cd "$BUILDTEST_ROOT"
-            python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+            command -v python3
+            python3 --version
+            python3 -c "import pytest, buildtest; print('pytest and buildtest imports succeeded')"
+            python3 $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
             python3 -m coverage xml -o /data/buildtest-ci/coverage.xml
           '
 
