@@ -1,0 +1,16 @@
+buildspecs:
+  file_linecount:
+    type: script
+    executor: generic.local.bash
+    description: "Perform linecount comparison on files"
+    run: |
+      for i in {1..10}; do
+        echo $i >> count.txt
+      done
+      echo "hello world" > hello.txt
+    status:
+      file_linecount:
+        - file: count.txt
+          count: 10
+        - file: hello.txt
+          count: 1

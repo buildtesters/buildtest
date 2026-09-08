@@ -12,22 +12,22 @@ def stats_cmd(name, configuration, report_file=None):
         report_file (str, optional): Path to report file for querying results
     """
     results = Report(
-        filter_args={"name": name},
-        format_args="name,state,returncode,starttime,endtime,runtime",
+        filter={"name": name},
+        format="name,state,returncode,starttime,endtime,runtime",
         report_file=report_file,
         configuration=configuration,
     )
 
     first_result = Report(
-        filter_args={"name": name},
-        format_args="starttime",
+        filter={"name": name},
+        format="starttime",
         report_file=report_file,
         oldest=True,
         configuration=configuration,
     )
     last_result = Report(
-        filter_args={"name": name},
-        format_args="starttime",
+        filter={"name": name},
+        format="starttime",
         report_file=report_file,
         latest=True,
         configuration=configuration,

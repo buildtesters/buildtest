@@ -13,3 +13,6 @@ buildspecs:
         activate:
           name: 'manifest_example'
         concretize: true
+    post_cmds: |
+      spack env deactivate
+      spack env remove -y manifest_example

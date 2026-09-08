@@ -52,9 +52,6 @@
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |nightly_regression_test| image:: https://github.com/buildtesters/buildtest/actions/workflows/nightly_regression.yml/badge.svg
-    :target: https://github.com/buildtesters/buildtest/actions
-
 .. |gh_pages_devel| image:: https://github.com/buildtesters/buildtest/workflows/Schema%20Documentation/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
@@ -64,7 +61,7 @@
 buildtest
 ---------
 
-| |license| |docs| |codecov| |release| |installation| |regressiontest| |nightly_regression_test| |gh_pages_devel| |checkurls| |codefactor| |style|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |codefactor| |style|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 =======
 
 `buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop

@@ -1,18 +1,18 @@
 import os
 
-from jsonschema import Draft7Validator, RefResolver
+from jsonschema import Draft7Validator
+from referencing import Registry, Resource
 
 from buildtest.schemas.utils import load_schema
 
 here = os.path.dirname(os.path.abspath(__file__))
 
 schema_table = {}
-schema_table["types"] = ["script", "compiler", "spack"]
+schema_table["types"] = ["script", "spack"]
 schema_table["names"] = [
     "global.schema.json",
     "definitions.schema.json",
     "settings.schema.json",
-    "compiler.schema.json",
     "spack.schema.json",
     "script.schema.json",
 ]
@@ -26,13 +26,6 @@ schema_table["script.schema.json"] = {}
 schema_table["script.schema.json"]["path"] = os.path.join(here, "script.schema.json")
 schema_table["script.schema.json"]["recipe"] = load_schema(
     schema_table["script.schema.json"]["path"]
-)
-schema_table["compiler.schema.json"] = {}
-schema_table["compiler.schema.json"]["path"] = os.path.join(
-    here, "compiler.schema.json"
-)
-schema_table["compiler.schema.json"]["recipe"] = load_schema(
-    schema_table["compiler.schema.json"]["path"]
 )
 
 
@@ -65,9 +58,6 @@ schema_store = {
     schema_table["global.schema.json"]["recipe"]["$id"]: schema_table[
         "global.schema.json"
     ]["recipe"],
-    schema_table["compiler.schema.json"]["recipe"]["$id"]: schema_table[
-        "compiler.schema.json"
-    ]["recipe"],
     schema_table["script.schema.json"]["recipe"]["$id"]: schema_table[
         "script.schema.json"
     ]["recipe"],
@@ -82,16 +72,18 @@ schema_store = {
     ]["recipe"],
 }
 
-resolver = RefResolver.from_schema(
-    schema_table["definitions.schema.json"]["recipe"], store=schema_store
+registry = Registry().with_resources(
+    [(key, Resource.from_contents(recipe)) for key, recipe in schema_store.items()]
 )
 
 
 def custom_validator(recipe, schema):
-    """This is a custom validator for validating JSON documents. We implement a
-    custom resolver using `RefResolver <https://python-jsonschema.readthedocs.io/en/stable/references/#jsonschema.RefResolver>`_
-    to find schemas locally in order to validate buildspecs with schema files on local filesystem. This ensures changes to
-    schema can be done in sync with change to code base.
+    """
+    Validate a JSON document against a given schema using a custom validator.
+
+    This function utilizes `Registry` from the `referencing <https://python-jsonschema.readthedocs.io/en/latest/referencing/>`
+    library to handle schema references locally and validate buildspecs with schema files on the
+    local filesystem, ensuring that schema changes are synchronized with the code base updates.
 
     This method uses `Draft7Validator <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.Draft7Validator>`_
     for validating schemas. If there is an error during validation jsonschema will raise an exception of type
@@ -109,5 +101,5 @@ def custom_validator(recipe, schema):
     assert isinstance(recipe, dict)
     assert isinstance(schema, dict)
 
-    validator = Draft7Validator(schema, resolver=resolver)
+    validator = Draft7Validator(schema, registry=registry)
     validator.validate(recipe)

@@ -1,8 +1,0 @@
-buildspecs:
-  hostname_test:
-    executor: jlse.cobalt.testing
-    type: script
-    tags: [jobs]
-    description: Run hostname on testing queue
-    cobalt: ["-n 1", "-t 10"]
-    run: hostname

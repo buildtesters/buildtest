@@ -128,27 +128,20 @@ def upload_test_cdash(
     project_name = configuration.target_config["cdash"]["project"]
 
     if not build_name:
-        sys.exit("Please specify a buildname")
+        raise SystemExit("Please specify a buildname")
 
     try:
         requests.get(cdash_url)
-    except requests.ConnectionError:
+    except requests.exceptions.ConnectionError:
         print(
             "\nShown below is the CDASH settings from configuration file:",
             configuration.file,
         )
         print(yaml.dump(configuration.target_config["cdash"], indent=2))
         console.print_exception()
-        raise requests.ConnectionError
+        raise requests.exceptions.ConnectionError
 
     upload_url = urljoin(cdash_url, f"submit.php?project={project_name}")
-
-    r = requests.get(upload_url)
-    # output of text property is the following:
-    # '<cdash version="3.0.3">\n  <status>OK</status>\n  <message></message>\n  <md5>d41d8cd98f00b204e9800998ecf8427e</md5>\n</cdash>\n'
-    if not re.search("<status>OK</status>", r.text):
-        console.print("[red]Malformed XML, please check if project exist on CDASH!")
-        sys.exit(f"Invalid URL: {upload_url}")
 
     # For best CDash results, builds names should be consistent (ie not change every time).
 

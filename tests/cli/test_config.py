@@ -5,6 +5,7 @@ import tempfile
 import pytest
 
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import buildspec_validate_command
 from buildtest.cli.config import (
     list_profiles,
     remove_executors,
@@ -16,7 +17,7 @@ from buildtest.cli.config import (
     view_system,
 )
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
+from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
@@ -27,9 +28,9 @@ pytest_root = os.path.dirname(os.path.dirname(__file__))
 
 system = BuildTestSystem()
 
-configuration = SiteConfiguration()
+configuration = SiteConfiguration(verbose=True)
 configuration.detect_system()
-configuration.validate(moduletool=system.system["moduletool"])
+configuration.validate()
 
 
 @pytest.mark.cli
@@ -44,6 +45,15 @@ def test_config_systems():
         view_system(configuration)
 
 
+def test_container_executor():
+    settings_file = os.path.join(
+        pytest_root, "configuration", "container_executors.yml"
+    )
+    config = SiteConfiguration(settings_file=settings_file)
+    config.detect_system()
+    config.validate()
+
+
 def test_remove_executors():
     temp_config_file = tempfile.NamedTemporaryFile(suffix=".yml")
     shutil.copy(configuration.file, temp_config_file.name)
@@ -51,7 +61,7 @@ def test_remove_executors():
     print(temp_config_file.name)
     config = SiteConfiguration(settings_file=temp_config_file.name)
     config.detect_system()
-    configuration.validate(moduletool=system.system["moduletool"])
+    configuration.validate()
 
     remove_executors(config, executor_names=["generic.local.bash", "generic.local.sh"])
 
@@ -82,7 +92,7 @@ def test_valid_config_schemas():
 
 @pytest.mark.cli
 def test_config_validate():
-    validate_config(configuration=configuration, moduletool=system.system["moduletool"])
+    validate_config(configuration=configuration)
 
 
 @pytest.mark.cli
@@ -97,13 +107,10 @@ class TestProfiles:
 
     buildtest_config = SiteConfiguration(settings_file=tf.name)
     buildtest_config.detect_system()
-    buildtest_config.validate(moduletool=system.system["moduletool"])
+    buildtest_config.validate()
 
     cmd = BuildTest(
-        configuration=buildtest_config,
-        buildtest_system=system,
-        tags=["python"],
-        save_profile="python",
+        configuration=buildtest_config, tags=["python"], save_profile="python"
     )
     cmd.build()
 
@@ -137,64 +144,33 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=True,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-        all_executors=False,
+        display_in_json_format=True,
     )
 
     # buildtest config executors list --yaml
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=True,
-        disabled=False,
-        invalid=False,
-        all_executors=False,
+        display_in_yaml_format=True,
     )
 
     # buildtest config executors list --all
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-        all_executors=True,
+        configuration=configuration, buildexecutor=buildexecutor, display_all=True
     )
 
     # buildtest config executors list --disabled
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=True,
-        invalid=False,
+        configuration=configuration, buildexecutor=buildexecutor, display_disabled=True
     )
 
     # buildtest config executors list --invalid
     view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=True,
+        configuration=configuration, buildexecutor=buildexecutor, display_invalid=True
     )
 
     # buildtest config executors list
-    view_executors(
-        configuration=configuration,
-        buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-    )
+    view_executors(configuration=configuration, buildexecutor=buildexecutor)
 
 
 def test_disabled_invalid_executors():
@@ -208,21 +184,25 @@ def test_disabled_invalid_executors():
     print("reading config file:", configfile)
     be = BuildExecutor(configuration)
     # buildtest config executors list --disabled
-    view_executors(
-        configuration=configuration,
-        buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
-        disabled=True,
-        invalid=False,
-    )
+    view_executors(configuration=configuration, buildexecutor=be, display_disabled=True)
 
     # buildtest config executors list --invalid
-    view_executors(
-        configuration=configuration,
-        buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
-        disabled=False,
-        invalid=True,
-    )
+    view_executors(configuration=configuration, buildexecutor=be, display_invalid=True)
+
+
+def test_file_traversal_limit_in_config():
+    here = os.path.dirname(os.path.abspath(__file__))
+
+    configfile = os.path.join(here, "configuration", "file_traversal_example.yml")
+    configuration = SiteConfiguration(settings_file=configfile)
+    configuration.detect_system()
+    configuration.validate()
+
+    # exception can be raised when buildspec is invalid
+    with pytest.raises(SystemExit):
+        buildspec_validate_command(
+            buildspecs=[
+                os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executors.yml")
+            ],
+            configuration=configuration,
+        )

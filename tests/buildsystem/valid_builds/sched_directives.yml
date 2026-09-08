@@ -13,13 +13,6 @@ buildspecs:
     bsub: ["-n 1", "-W 10"]
     run: hostname
 
-  cobalt_hostname:
-    type: script
-    executor: generic.local.bash
-    description: Cobalt batch generation check
-    cobalt: ["-n 1", "-t 10"]
-    run: hostname
-
   pbs_hostname:
     type: script
     executor: generic.local.bash

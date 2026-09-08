@@ -1,0 +1,9 @@
+buildspecs:
+  linux_strict_test:
+    type: script
+    executor: generic.local.bash
+    description: "This example test will show how returncode will change when using --strict flag"
+    run: |
+      echo "This is a test"
+      ls -l /BAD_PATH
+      echo "This is another test"

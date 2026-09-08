@@ -57,7 +57,6 @@ def returncode_check(builder):
     console.print(
         f"[blue]{builder}[/]: Checking returncode - {builder.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
     )
-
     return returncode_match
 
 
@@ -102,7 +101,6 @@ def file_regex_check(builder):
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-
     Returns:
         bool: Returns True if there is a regex match otherwise returns False.
     """
@@ -111,6 +109,8 @@ def file_regex_check(builder):
 
     for file_check in builder.status["file_regex"]:
         fname = file_check["file"]
+        regex_type = file_check.get("re")
+        pattern = file_check["exp"]
         resolved_fname = resolve_path(fname)
         if not resolved_fname:
             msg = f"[blue]{builder}[/]: Unable to resolve file path: {fname}"
@@ -128,13 +128,22 @@ def file_regex_check(builder):
 
         # read file and apply regex
         content = read_file(resolved_fname)
-        regex = re.search(file_check["exp"], content)
+        content = content.strip()
+        match = None
+
+        if regex_type == "re.match":
+            match = re.match(pattern, content, re.MULTILINE)
+        elif regex_type == "re.fullmatch":
+            match = re.fullmatch(pattern, content, re.MULTILINE)
+        else:
+            match = re.search(pattern, content, re.MULTILINE)
+
         console.print(
-            f"[blue]{builder}[/]: Performing regex expression '{file_check['exp']}' on file {resolved_fname}"
+            f"[blue]{builder}[/]: Performing regex expression '{pattern}' on file {resolved_fname}"
         )
 
-        if not regex:
-            msg = f"[blue]{builder}[/]: Regular expression: '{file_check['exp']}' is not found in file: {resolved_fname}"
+        if not match:
+            msg = f"[blue]{builder}[/]: Regular expression: '{pattern}' not found in file: {resolved_fname}"
             logger.error(msg)
             console.print(msg, style="red")
             assert_file_regex.append(False)
@@ -167,6 +176,8 @@ def regex_check(builder):
     """
 
     file_stream = None
+    regex_type = builder.status["regex"].get("re")
+    pattern = builder.status["regex"]["exp"]
     if builder.status["regex"]["stream"] == "stdout":
         logger.debug(
             f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
@@ -183,14 +194,20 @@ def regex_check(builder):
 
         file_stream = builder.metadata["errfile"]
 
-    logger.debug(f"Applying re.search with exp: {builder.status['regex']['exp']}")
-
-    regex = re.search(builder.status["regex"]["exp"], content)
+    logger.debug(f"Applying re.search with exp: {pattern}")
+    # remove any new lines
+    content = content.strip()
+    if regex_type == "re.match":
+        match = re.match(pattern, content, re.MULTILINE)
+    elif regex_type == "re.fullmatch":
+        match = re.fullmatch(pattern, content, re.MULTILINE)
+    else:
+        match = re.search(pattern, content, re.MULTILINE)
 
     console.print(
-        f"[blue]{builder}[/]: performing regular expression - '{builder.status['regex']['exp']}' on file: {file_stream}"
+        f"[blue]{builder}[/]: performing regular expression - '{pattern}' on file: {file_stream}"
     )
-    if not regex:
+    if not match:
         console.print(f"[blue]{builder}[/]: Regular Expression Match - [red]Failed![/]")
         return False
 
@@ -265,12 +282,10 @@ def is_file_check(builder):
     Returns:
         bool: A boolean for is_file status check
     """
-
-    assert_is_file = all(is_file(file) for file in builder.status["is_file"])
-    console.print(
-        f"[builder]{builder}[/]: Test all files:  {builder.status['is_file']}  existences "
-    )
-    for fname in builder.status["is_file"]:
+    file_list = builder.status["is_file"]
+    assert_is_file = all(is_file(file) for file in file_list)
+    console.print(f"[builder]{builder}[/]: Test all files:  {file_list}  existences ")
+    for fname in file_list:
         resolved_fname = resolve_path(fname, exist=True)
         if is_file(resolved_fname):
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} is a file ")
@@ -292,11 +307,10 @@ def is_dir_check(builder):
         bool: A boolean for ``is_dir`` status check
     """
 
-    assert_is_dir = all(is_dir(file) for file in builder.status["is_dir"])
-    console.print(
-        f"[blue]{builder}[/]: Test all files:  {builder.status['is_dir']}  existences "
-    )
-    for dirname in builder.status["is_dir"]:
+    dir_list = builder.status["is_dir"]
+    assert_is_dir = all(is_dir(file) for file in dir_list)
+    console.print(f"[blue]{builder}[/]: Test all files:  {dir_list}  existences ")
+    for dirname in dir_list:
         resolved_dirname = resolve_path(dirname)
         if is_dir(resolved_dirname):
             console.print(
@@ -356,12 +370,12 @@ def comparison_check(builder, comparison_type):
     """
 
     COMPARISON_OPERATIONS = {
-        "ge": (lambda x, y: x >= y, ">=", "Greater Equal Check"),
-        "gt": (lambda x, y: x > y, ">", "Greater Check"),
-        "le": (lambda x, y: x <= y, "<=", "Less Than Equal Check"),
-        "lt": (lambda x, y: x < y, "<", "Less Than Check"),
-        "eq": (lambda x, y: x == y, "==", "Equality Check"),
-        "ne": (lambda x, y: x != y, "!=", "Not Equal Check"),
+        "ge": (lambda x, y: x >= y, ">="),
+        "gt": (lambda x, y: x > y, ">"),
+        "le": (lambda x, y: x <= y, "<="),
+        "lt": (lambda x, y: x < y, "<"),
+        "eq": (lambda x, y: x == y, "=="),
+        "ne": (lambda x, y: x != y, "!="),
     }
 
     # a list containing booleans to evaluate reference check for each metric
@@ -370,9 +384,11 @@ def comparison_check(builder, comparison_type):
     metric_names = list(builder.metadata["metrics"].keys())
 
     if comparison_type not in COMPARISON_OPERATIONS:
-        raise BuildTestError(
+        # raise BuildTestError(
+        console.print(
             f"comparison_type: {comparison_type} is not a valid comparison type. Valid comparison types are: {list(COMPARISON_OPERATIONS.keys())}"
         )
+        return False
 
     comparison_dict = builder.status[f"assert_{comparison_type}"]
     # iterate over each metric in buildspec and determine reference check for each metric
@@ -419,7 +435,7 @@ def comparison_check(builder, comparison_type):
             assert_check.append(False)
             continue
 
-        comparison_op, symbol, log_message = COMPARISON_OPERATIONS[comparison_type]
+        comparison_op, symbol = COMPARISON_OPERATIONS[comparison_type]
         bool_check = comparison_op(conv_value, ref_value)
         console.print(
             f"[blue]{builder}[/]: testing metric: {name} if {conv_value} {symbol} {ref_value} - Check: {bool_check}"
@@ -432,7 +448,7 @@ def comparison_check(builder, comparison_type):
     else:
         bool_check = all(assert_check)
 
-    console.print(f"[blue]{builder}[/]: {log_message}: {bool_check}")
+    console.print(f"[blue]{builder}[/]: {comparison_type} check: {bool_check}")
 
     return bool_check
 
@@ -646,3 +662,64 @@ def file_count_check(builder):
 
     console.print(f"[blue]{builder}[/]: File Count Check: {bool_check}")
     return bool_check
+
+
+def linecount_check(builder):
+    """This method is used to perform line count check when ``linecount`` property is specified
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+    content = None
+    fname = None
+    if builder.status["linecount"]["stream"] == "stdout":
+        logger.debug(
+            f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
+        )
+        content = builder.output()
+        fname = builder.metadata["outfile"]
+    else:
+        content = builder.error()
+        fname = builder.metadata["errfile"]
+
+    comparison = len(content.splitlines()) == builder.status["linecount"]["count"]
+
+    console.print(
+        f"[blue]{builder}[/]: Performing line count check on file: {fname} with {builder.status['linecount']['count']} (ref count) == {len(content.splitlines())} (actual count). linecount Check: {comparison}"
+    )
+    return comparison
+
+
+def file_linecount_check(builder):
+    """This method is used to perform line count check when ``file_linecount`` property is specified
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+    assert_check = []
+    for file_check in builder.status["file_linecount"]:
+        resolved_fname = resolve_path(file_check["file"])
+        if not resolved_fname:
+            msg = (
+                f"[blue]{builder}[/]: Unable to resolve file path: {file_check['file']}"
+            )
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_check.append(False)
+            continue
+
+        if not is_file(resolved_fname):
+            msg = f"[blue]{builder}[/]: File: {resolved_fname} is not a file"
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_check.append(False)
+            continue
+
+        content = read_file(resolved_fname)
+        comparison = len(content.splitlines()) == file_check["count"]
+        console.print(
+            f"[blue]{builder}[/]: Performing line count check on file: {resolved_fname} with {file_check['count']} (ref count) == {len(content.splitlines())} (actual count). linecount Check: {comparison}"
+        )
+        assert_check.append(comparison)
+
+    return all(assert_check)

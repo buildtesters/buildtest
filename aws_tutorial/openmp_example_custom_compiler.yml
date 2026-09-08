@@ -1,0 +1,19 @@
+buildspecs:
+  hello_world_openmp_custom_compiler:
+    type: script
+    executor: 'generic.local.bash'
+    description: Hello World OpenMP example with custom compiler settings
+    compilers:
+      name: ["gcc"]
+      config:
+        gcc_12.3.0:
+          env: 
+            OMP_NUM_THREADS: "2"
+          cflags: "-O1 -fopenmp"  
+        gcc_11.4.0:
+          env: 
+            OMP_NUM_THREADS: "6"
+          cflags: "-O2 -fopenmp"  
+    run: |
+      $BUILDTEST_CC $BUILDTEST_CFLAGS -o openmp_hello openmp_hello.c
+      ./openmp_hello

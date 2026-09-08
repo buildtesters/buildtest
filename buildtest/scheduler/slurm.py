@@ -1,4 +1,5 @@
 import logging
+import re
 import time
 
 from buildtest.scheduler.job import Job
@@ -14,9 +15,10 @@ class SlurmJob(Job):
     command which can retrieve pending, running and complete jobs.
     """
 
-    def __init__(self, jobID, cluster=None):
+    def __init__(self, jobID, slurm_cmds, cluster=None):
         super().__init__(jobID)
         self.cluster = cluster
+        self.slurm_cmds = slurm_cmds
 
     def is_pending(self):
         """If job is pending return ``True`` otherwise return ``False``. Slurm Job state for pending
@@ -45,7 +47,7 @@ class SlurmJob(Job):
         """If job is complete return ``True`` otherwise return ``False``. Slurm will report ``COMPLETED``
         for job state."""
 
-        return self._state == "COMPLETED"
+        return self._state in ["COMPLETED", "FAILED", "TIMEOUT", "OUT_OF_MEMORY"]
 
     def is_failed(self):
         """If job failed return ``True`` otherwise return ``False``. Slurm will report ``FAILED``
@@ -89,19 +91,16 @@ class SlurmJob(Job):
 
         return self._workdir
 
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
     def cancel(self):
         """Cancel job by running ``scancel <jobid>``. If job is specified to a slurm
         cluster we cancel job using ``scancel <jobid> --clusters=<cluster>``. This method
         is called if job exceeds `maxpendtime`."""
 
-        query = f"scancel {self.jobid}"
+        query = f"{self.slurm_cmds['scancel']} {self.jobid}"
         if self.cluster:
-            query = f"scancel {self.jobid} --clusters={self.cluster}"
+            query = (
+                f"{self.slurm_cmds['scancel']} {self.jobid} --clusters={self.cluster}"
+            )
 
         cmd = BuildTestCommand(query)
         cmd.execute()
@@ -123,7 +122,7 @@ class SlurmJob(Job):
             PENDING
         """
 
-        query = f"sacct -j {self.jobid} -o State -n -X -P"
+        query = f"{self.slurm_cmds['sacct']} -j {self.jobid} -o State -n -X -P"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -148,8 +147,80 @@ class SlurmJob(Job):
         if self.is_running() and not self.starttime:
             self.starttime = time.time()
 
-    def gather(self):
-        """Gather job record which is called after job completion. We use `sacct` to gather
+    def get_output_and_error_files(self):
+        """This method will extract file paths to StdOut and StdErr using ``scontrol show job <jobid>`` command that will
+        be used to set output and error file.
+
+        .. code-block:: console
+
+            siddiq90@login07> scontrol show job 23608796
+            JobId=23608796 JobName=perlmutter-gpu.slurm
+                UserId=siddiq90(92503) GroupId=siddiq90(92503) MCS_label=N/A
+                Priority=69119 Nice=0 Account=nstaff_g QOS=gpu_debug
+                JobState=PENDING Reason=Priority Dependency=(null)
+                Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+                RunTime=00:00:00 TimeLimit=00:05:00 TimeMin=N/A
+                SubmitTime=2024-03-28T12:36:05 EligibleTime=2024-03-28T12:36:05
+                AccrueTime=2024-03-28T12:36:05
+                StartTime=2024-03-28T12:36:14 EndTime=2024-03-28T12:41:14 Deadline=N/A
+                SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-03-28T12:36:12 Scheduler=Backfill:*
+                Partition=gpu_ss11 AllocNode:Sid=login07:1529462
+                ReqNodeList=(null) ExcNodeList=(null)
+                NodeList=
+                NumNodes=1-1 NumCPUs=4 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+                ReqTRES=cpu=4,mem=229992M,node=1,billing=4,gres/gpu=1
+                AllocTRES=(null)
+                Socks/Node=* NtasksPerN:B:S:C=4:0:*:* CoreSpec=*
+                MinCPUsNode=4 MinMemoryNode=0 MinTmpDiskNode=0
+                Features=gpu&a100 DelayBoot=00:00:00
+                OverSubscribe=NO Contiguous=0 Licenses=u1:1 Network=(null)
+                Command=/global/u1/s/siddiq90/jobs/perlmutter-gpu.slurm
+                WorkDir=/global/u1/s/siddiq90/jobs
+                StdErr=/global/u1/s/siddiq90/jobs/slurm-23608796.out
+                StdIn=/dev/null
+                StdOut=/global/u1/s/siddiq90/jobs/slurm-23608796.out
+                Power=
+                TresPerJob=gres:gpu:1
+
+
+        """
+
+        query = f"{self.slurm_cmds['scontrol']} show job {self.jobid}"
+        if self.cluster:
+            query += f" --clusters={self.cluster}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        logger.debug(f"Querying JobID: '{self.jobid}' by running: '{query}'")
+        content = " ".join(cmd.get_output())
+
+        logger.debug(f"Output of scontrol show job {self.jobid}:\n{content}")
+
+        pattern = r"StdOut=(?P<stdout>.+)"
+        match = re.search(pattern, content)
+        logger.debug(
+            f"Extracting StdOut file by applying regular expression: {pattern}"
+        )
+        if match:
+            self._outfile = match.group("stdout")
+        else:
+            logger.error(f"Unable to extract StdOut file from output: {content}")
+
+        pattern = r"StdErr=(?P<stderr>.+)"
+        match = re.search(pattern, content)
+        logger.debug(
+            f"Extracting StdOut file by applying regular expression: {pattern}"
+        )
+        if match:
+            self._errfile = match.group("stderr")
+        else:
+            logger.error(f"Unable to extract StdErr file from error: {content}")
+
+        logger.debug(f"Output File: {self._outfile}")
+        logger.debug(f"Error File: {self._errfile}")
+
+    def retrieve_jobdata(self):
+        """This method will get job record which is called after job completion. We use `sacct` to gather
         job record and return the job record as a dictionary. The command we run is
         ``sacct -j <jobid> -X -n -P -o <field1>,<field2>,...,<fieldN>``. We retrieve the following
         format fields from job record:
@@ -219,7 +290,9 @@ class SlurmJob(Job):
             "WorkDir",
         ]
 
-        query = f"sacct -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        query = (
+            f"{self.slurm_cmds['sacct']} -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        )
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -236,8 +309,8 @@ class SlurmJob(Job):
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only about first number
         self._exitcode = int(exitcode.split(":")[0])
         self._workdir = workdir
-
-        query = f"sacct -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
+        logger.debug(f"JobID: '{self.jobid}' finished with exitcode: {self._exitcode}")
+        query = f"{self.slurm_cmds['sacct']} -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
         if self.cluster:
@@ -253,4 +326,4 @@ class SlurmJob(Job):
         for field, value in zip(sacct_fields, out):
             job_data[field] = value
 
-        return job_data
+        self._jobdata = job_data

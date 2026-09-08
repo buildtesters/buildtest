@@ -34,6 +34,16 @@ def get_shells():
     out = cmd.get_output()
     out = [item.strip() for item in out]
 
+    # sometimes /etc/shells doesn't have all shells so we will use shutil.which to find shells
+    csh = shutil.which("csh")
+    zsh = shutil.which("zsh")
+
+    # if csh and zsh are found and not in list, then we add them to list.
+    if csh is not None and csh not in out:
+        out.append(csh)
+    if zsh is not None and zsh not in out:
+        out.append(zsh)
+
     return out
 
 
@@ -151,16 +161,6 @@ class Shell:
 
         self._opts = " ".join(shell.split()[1:])
         self.path = self.name
-        self.default_opts = None
-
-        if self.name == "bash":
-            self.default_opts = "--norc --noprofile -eo pipefail"
-        elif self.name == "csh":
-            self.default_opts = "-ef"
-        elif self.name == "zsh":
-            self.default_opts = "-f"
-        else:
-            self.default_opts = ""
 
     @property
     def opts(self):

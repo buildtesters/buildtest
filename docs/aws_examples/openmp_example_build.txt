@@ -1,0 +1,88 @@
+$ buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/openmp_example_custom_compiler.yml 
+╭─────────────────────────────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                                                         │
+│ User:               lbladmin                                                                                                                                                                                            │
+│ Hostname:           e4spro-cluster                                                                                                                                                                                      │
+│ Platform:           Linux                                                                                                                                                                                               │
+│ Current Time:       2024/06/17 18:50:29                                                                                                                                                                                 │
+│ buildtest path:     /home/lbladmin/Documents/buildtest/bin/buildtest                                                                                                                                                    │
+│ buildtest version:  2.0                                                                                                                                                                                                 │
+│ python path:        /usr/bin/python3                                                                                                                                                                                    │
+│ python version:     3.10.12                                                                                                                                                                                             │
+│ Configuration File: /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml                                                                                                                                       │
+│ Test Directory:     /home/lbladmin/Documents/buildtest/var/tests                                                                                                                                                        │
+│ Report File:        /home/lbladmin/Documents/buildtest/var/report.json                                                                                                                                                  │
+│ Command:            /home/lbladmin/Documents/buildtest/bin/buildtest -c /home/lbladmin/Documents/buildtest/buildtest/settings/aws.yml build -b /home/lbladmin/Documents/buildtest/aws_tutorial/openmp_example_custom_co │
+│                                                                                                                                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────
+                                Discovered buildspecs                                 
+╔════════════════════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                                          ║
+╟────────────────────────────────────────────────────────────────────────────────────╢
+║ /home/lbladmin/Documents/buildtest/aws_tutorial/openmp_example_custom_compiler.yml ║
+╟────────────────────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                                           ║
+╚════════════════════════════════════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+─────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/lbladmin/Documents/buildtest/aws_tutorial/openmp_example_custom_compiler.yml: VALID
+Total builder objects created: 2
+                                                                                                  Builders by type=script                                                                                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                                     ┃ type   ┃ executor           ┃ compiler   ┃ nodes ┃ procs ┃ description                                            ┃ buildspecs                                            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_world_openmp_custom_compiler/2e7a2ed5 │ script │ generic.local.bash │ gcc_11.4.0 │ None  │ None  │ Hello World OpenMP example with custom compiler        │ /home/lbladmin/Documents/buildtest/aws_tutorial/openm │
+│                                             │        │                    │            │       │       │ settings                                               │ p_example_custom_compiler.yml                         │
+├─────────────────────────────────────────────┼────────┼────────────────────┼────────────┼───────┼───────┼────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ hello_world_openmp_custom_compiler/bedcd5b5 │ script │ generic.local.bash │ gcc_12.3.0 │ None  │ None  │ Hello World OpenMP example with custom compiler        │ /home/lbladmin/Documents/buildtest/aws_tutorial/openm │
+│                                             │        │                    │            │       │       │ settings                                               │ p_example_custom_compiler.yml                         │
+└─────────────────────────────────────────────┴────────┴────────────────────┴────────────┴───────┴───────┴────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_openmp_custom_compiler/2e7a2ed5: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5
+hello_world_openmp_custom_compiler/bedcd5b5: Creating Test Directory: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5
+────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 4 processes for processing builders
+─────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_openmp_custom_compiler/2e7a2ed5 does not have any dependencies adding test to queue
+hello_world_openmp_custom_compiler/bedcd5b5 does not have any dependencies adding test to queue
+           Builders Eligible to Run            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_world_openmp_custom_compiler/2e7a2ed5 │
+│ hello_world_openmp_custom_compiler/bedcd5b5 │
+└─────────────────────────────────────────────┘
+hello_world_openmp_custom_compiler/bedcd5b5: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/stage
+hello_world_openmp_custom_compiler/2e7a2ed5: Current Working Directory : /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/stage
+hello_world_openmp_custom_compiler/2e7a2ed5: Running Test via command: bash hello_world_openmp_custom_compiler_build.sh
+hello_world_openmp_custom_compiler/bedcd5b5: Running Test via command: bash hello_world_openmp_custom_compiler_build.sh
+hello_world_openmp_custom_compiler/2e7a2ed5: Test completed in 0.066805 seconds with returncode: 0
+hello_world_openmp_custom_compiler/2e7a2ed5: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/hello_world_openmp_custom_compiler.out
+hello_world_openmp_custom_compiler/2e7a2ed5: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/2e7a2ed5/hello_world_openmp_custom_compiler.err
+hello_world_openmp_custom_compiler/bedcd5b5: Test completed in 0.070316 seconds with returncode: 0
+hello_world_openmp_custom_compiler/bedcd5b5: Writing output file -  /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/hello_world_openmp_custom_compiler.out
+hello_world_openmp_custom_compiler/bedcd5b5: Writing error file - /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/openmp_example_custom_compiler/hello_world_openmp_custom_compiler/bedcd5b5/hello_world_openmp_custom_compiler.err
+                                            Test Summary                                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                                     ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ hello_world_openmp_custom_compiler/2e7a2ed5 │ generic.local.bash │ PASS   │ 0          │ 0.067   │
+├─────────────────────────────────────────────┼────────────────────┼────────┼────────────┼─────────┤
+│ hello_world_openmp_custom_compiler/bedcd5b5 │ generic.local.bash │ PASS   │ 0          │ 0.070   │
+└─────────────────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
+
+
+
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+Adding 2 test results to report file: /home/lbladmin/Documents/buildtest/var/report.json
+Writing Logfile to /home/lbladmin/Documents/buildtest/var/logs/buildtest_x83ex5kh.log

@@ -29,23 +29,6 @@ to see status of coverage report during PR review process. The codecov file
 `.codecov.yml <https://github.com/buildtesters/buildtest/blob/devel/.codecov.yml>`_
 is used for configuration codecov. For more details on codecov yaml file see https://docs.codecov.io/docs/codecov-yaml.
 
-Gitlab CI checks
-------------------
-
-buildtest has automated CI checks on gitlab servers: https://software.nersc.gov (NERSC) and https://code.ornl.gov (OLCF). The
-gitlab pipelines are stored in `.gitlab <https://github.com/buildtesters/buildtest/tree/devel/.gitlab>`_ directory found
-in root of repository. We have imported the buildtest project using the `Gitlab CI/CD for external repositories <https://docs.gitlab.com/ee/ci/ci_cd_for_external_repos/>`_ feature
-to automatically pull mirror and run CI/CD from incoming Pull Request to buildtest project on GitHub.
-
-The project mirrors are located in the following location
-
-- NERSC: https://software.nersc.gov/NERSC/buildtest
-- OLCF: https://code.ornl.gov/ecpcitest/buildtest
-
-We have configured each gitlab project to point to the gitlab configuration file. For instance, at NERSC we use
-`.gitlab/nersc.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/nersc.yml>`_ that runs CI on Cori, this can be configured at
-**Settings > CI/CD > General pipelines** with the path to gitlab configuration. For more details see https://docs.gitlab.com/ee/ci/pipelines/settings.html#custom-cicd-configuration-path
-
 GitHub Bots
 -----------
 

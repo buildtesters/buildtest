@@ -3,10 +3,6 @@
 Summary of buildtest
 ======================
 
-
-.. contents::
-   :backlinks: none
-
 Background
 ------------
 
@@ -81,8 +77,8 @@ You can run ``buildtest show`` followed by name of command and it will provide a
 Target Audience & Use Case
 ---------------------------
 
-buildtest target audience is `HPC Staff` that wants to perform acceptance &
-regression testing of their HPC system.
+buildtest target audience is **HPC Staff**, **Developers**, and **Vendors** that wants to
+perform acceptance & regression testing of their HPC system.
 
 buildtest is not
 
@@ -98,8 +94,7 @@ Typical use-case:
   - Run weekly/biweekly test on medium/large workload including micro-benchmark
   - Run tests for newly installed software package typically requested by user.
 
-If you are interested trying out buildtest check out :ref:`getting_started` and
-`Join Slack Channel <https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation>`_.
+If you are interested trying out buildtest check out :ref:`getting_started`.
 
 Related Projects and community efforts
 ---------------------------------------

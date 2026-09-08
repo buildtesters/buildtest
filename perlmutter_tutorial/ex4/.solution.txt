@@ -24,6 +24,7 @@ buildspecs:
           item: 1
     status:
       assert_ge:
+        comparisons:
         - name: copy
           ref: 8000
         - name: scale

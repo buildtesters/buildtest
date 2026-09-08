@@ -88,6 +88,7 @@ with stdout stream.
 
 .. literalinclude:: ../tutorials/shebang.yml
     :language: yaml
+    :emphasize-lines: 5,17
 
 Now let's run this test as we see the following.
 
@@ -112,6 +113,7 @@ Here is a python example calculating area of circle
 
 .. literalinclude:: ../tutorials/python-shell.yml
    :language: yaml
+   :emphasize-lines: 5,8-13
 
 
 .. note::

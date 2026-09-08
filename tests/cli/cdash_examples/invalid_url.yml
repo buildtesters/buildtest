@@ -3,7 +3,17 @@ system:
     hostnames:
     - .*
     description: Generic System
-    moduletool: N/A
+    moduletool: none
+    file_traversal_limit: 1000
+    buildspecs:
+      rebuild: false
+      count: 15
+      # specify format fields
+      #format: name,description
+      terse: false
+    report:
+      count: 25
+      format: name,id,state,runtime,returncode
     cdash:
       url: "https://my.cdash.XYZ.org"
       project: buildtest

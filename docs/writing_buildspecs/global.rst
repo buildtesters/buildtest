@@ -3,9 +3,10 @@
 Global Schema
 ==============
 
-The global schema is validated with for all buildspecs and this schema defines the top-level structure of the buildspec file.
-Please refer to `global schema documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_ that
-provides a summary .
+The global schema file (`global.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/global.schema.json>`_)
+is validated with for all buildspecs and this schema defines the top-level structure of the buildspec file. In particular this will validate
+the ``buildspecs`` keyword which is a JSON object that defines one or more tests (buildspecs). Each test must be unique name.
+
 
 Schema Definition
 ------------------
@@ -32,7 +33,7 @@ method. The test section within ``hello_world`` is validated by sub-schema by lo
 on ``type`` field.
 
 Every sub-schema requires **type** field in this case, ``type: script`` informs
-buildtest to validate with the :ref:`script_schema` which will use schema `script.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/script.schema.json>`_.
+buildtest to validate with the :ref:`script_schema` which will use schema `script.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/script.schema.json>`_
 
 To learn more about how buildtest validates the buildspec, please see :ref:`parsing buildspecs <parse_buildspecs>`.
 

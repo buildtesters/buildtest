@@ -8,7 +8,6 @@ from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.history import BUILD_HISTORY_DIR, list_build_history, query_builds
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
-from buildtest.system import BuildTestSystem
 
 
 def test_build_history_list():
@@ -42,12 +41,9 @@ def test_build_history_query():
     configuration.detect_system()
     configuration.validate()
 
-    system = BuildTestSystem()
-
     with Tee(fname):
         cmd = BuildTest(
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")],
-            buildtest_system=system,
             configuration=configuration,
         )
         cmd.build()

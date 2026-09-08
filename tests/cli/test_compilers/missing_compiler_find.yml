@@ -9,10 +9,7 @@ system:
       terse: False
     report:
       count: 25
-      terse: False
       format: "name,id,state,runtime,returncode"
-      latest: True
-      oldest: False
     executors:
       local:
         bash:

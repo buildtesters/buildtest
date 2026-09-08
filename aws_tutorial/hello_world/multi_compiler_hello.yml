@@ -1,0 +1,14 @@
+buildspecs:
+  hello_world_multi_compiler:
+    type: script
+    executor: generic.local.bash
+    description: Hello world compilation in C, C++ and Fortran with multiple compilers
+    compilers:
+      name: ['gcc']
+    run: |
+      $BUILDTEST_CC hello.c -o hello_c
+      $BUILDTEST_CXX hello.cpp -o hello_cpp
+      $BUILDTEST_FC hello.f90 -o hello_f90
+      ./hello_c
+      ./hello_cpp
+      ./hello_f90	

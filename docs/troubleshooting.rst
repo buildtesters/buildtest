@@ -66,7 +66,7 @@ file, the most convenient way is to run::
   buildtest buildspec validate -b <file>
 
 If your buildspec is valid, your next step is to run the test. You should check if test is generated properly,
-this can be done by running ``buildtest build -b <file> --stage=build`` which will generate
+this can be done by running ``buildtest build -b <file> --dry-run`` which will generate
 the test and stop execution. Next you can navigate to the generated test and inspect
 the content of test and run your test manually.
 

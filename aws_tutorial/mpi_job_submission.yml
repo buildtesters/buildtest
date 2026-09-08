@@ -1,0 +1,11 @@
+buildspecs:
+  mpi_job_submission:
+    type: script
+    executor: generic.torque.e4spro-cluster
+    description: Run MPI Proc Name test
+    pbs: ["-l nodes=1:ppn=2,walltime=1:00"]
+    run: |
+      cd $HOME/examples/mpi-procname            
+      mpicc -o mpiprocname mpiprocname.c
+      mpirun -np 2 ./mpiprocname
+      rm mpiprocname

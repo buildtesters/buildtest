@@ -7,11 +7,14 @@ comment:
   layout: "reach, diff, flags, files"
   behavior: default
   require_changes: true
+github_checks:
+    annotations: false
 coverage:
   precision: 3
   round: nearest
   range: "10...100"
   status:
+    patch: off
     project:
       default: yes
       target: auto

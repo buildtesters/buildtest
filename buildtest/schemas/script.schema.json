@@ -28,9 +28,6 @@
     "bsub": {
       "$ref": "definitions.schema.json#/definitions/bsub"
     },
-    "cobalt": {
-      "$ref": "definitions.schema.json#/definitions/cobalt"
-    },
     "pbs": {
       "$ref": "definitions.schema.json#/definitions/pbs"
     },
@@ -61,6 +58,9 @@
       "description": "Specify a custom shebang line. If not specified buildtest will automatically add it in the test script."
     },
     "run": {
+      "$ref": "definitions.schema.json#/definitions/run"
+    },
+    "post_run": {
       "$ref": "definitions.schema.json#/definitions/run"
     },
     "status": {
@@ -98,28 +98,28 @@
           "additionalProperties": false,
           "properties": {
             "gcc": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "intel": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "pgi": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "cray": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "clang": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "cuda": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "upcxx": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             },
             "nvhpc": {
-              "$ref": "#definitions/default_compiler_config"
+              "$ref": "#/definitions/default_compiler_config"
             }
           }
         },
@@ -128,7 +128,7 @@
           "description": "Specify compiler configuration based on named compilers.",
           "patternProperties": {
             "^.*$": {
-              "$ref": "#definitions/compiler_declaration"
+              "$ref": "#/definitions/compiler_declaration"
             }
           }
         }
@@ -213,45 +213,6 @@
         },
         "module": {
           "$ref": "definitions.schema.json#/definitions/module"
-        }
-      },
-      "default_compiler_config": {
-        "type": "object",
-        "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
-        "properties": {
-          "cc": {
-            "$ref": "definitions.schema.json#/definitions/cc"
-          },
-          "fc": {
-            "$ref": "definitions.schema.json#/definitions/fc"
-          },
-          "cxx": {
-            "$ref": "definitions.schema.json#/definitions/cxx"
-          },
-          "cflags": {
-            "$ref": "definitions.schema.json#/definitions/cflags"
-          },
-          "fflags": {
-            "$ref": "definitions.schema.json#/definitions/fflags"
-          },
-          "cxxflags": {
-            "$ref": "definitions.schema.json#/definitions/cxxflags"
-          },
-          "ldflags": {
-            "$ref": "definitions.schema.json#/definitions/ldflags"
-          },
-          "cppflags": {
-            "$ref": "definitions.schema.json#/definitions/cppflags"
-          },
-          "env": {
-            "$ref": "definitions.schema.json#/definitions/env"
-          },
-          "vars": {
-            "$ref": "definitions.schema.json#/definitions/env"
-          },
-          "run": {
-            "$ref": "definitions.schema.json#/definitions/run"
-          }
         }
       }
     },

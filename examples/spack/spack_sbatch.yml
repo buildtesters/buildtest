@@ -8,4 +8,4 @@ buildspecs:
     spack:
       root: $HOME/spack
       install:
-        specs: ['zlib@1.2.11%clang', 'zlib@1.2.8%clang']
+        specs: ['zlib%clang', 'zlib%gcc']

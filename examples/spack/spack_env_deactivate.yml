@@ -4,6 +4,8 @@ buildspecs:
     executor: generic.local.bash
     description: "deactivate a spack environment first prior to activating it"
     tags: [spack]
+    pre_cmds: |
+      rm -rf $HOME/spack-envs/m4
     spack:
       root: $HOME/spack
       env:

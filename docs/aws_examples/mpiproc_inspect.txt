@@ -1,0 +1,26 @@
+$ buildtest inspect query -o mpiprocname 
+──────────────────────────────────────────────────────────────────────────────────── mpiprocname/7801542b-a666-4b9b-aff6-81dcd5a6ac4d ─────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run MPI Proc Name test
+State: PASS
+Returncode: 0
+Runtime: 0.844294 sec
+Starttime: 2024/06/17 18:50:24
+Endtime: 2024/06/17 18:50:25
+Command: bash mpiprocname_build.sh
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/mpiprocname.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/mpiprocname_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/mpiprocname.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/mpiproc/mpiprocname/7801542b/mpiprocname.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_kbnu_bz5.log
+────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
+Hello, world.  I am 2 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 3 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 0 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 4 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 1 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 7 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 5 of 8 on e4spro-cluster                                                                                                                                                                               
+Hello, world.  I am 6 of 8 on e4spro-cluster                                                                                                                                                                               
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

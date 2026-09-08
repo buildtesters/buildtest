@@ -1,0 +1,13 @@
+buildspecs:
+  linecount_stream_check:
+    type: script
+    executor: generic.local.bash
+    description: "This test will fail because stream is not valid. It must be (stdout, stderr)"
+    run: |      
+      for i in {1..10}; do
+        echo $i
+      done
+    status:
+      linecount:
+        stream: foo
+        count: 10

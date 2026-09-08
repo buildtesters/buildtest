@@ -6,6 +6,7 @@ import tempfile
 import pytest
 from rich.color import Color
 
+from buildtest.cli.build import BuildTest
 from buildtest.cli.report import (
     Report,
     clear_report,
@@ -32,6 +33,11 @@ def test_report():
 
     result.print_report()
 
+    # buildtest report --count 0
+    result.print_report(count=-1)
+    # buildtest report --count 0 --terse
+    result.print_report(count=-1, terse=True)
+
     # run 'buildtest --color <Color> report --format name,state,returncode,buildspec --terse'
     result.print_report(terse=True, color=Color.default().name)
 
@@ -39,10 +45,9 @@ def test_report():
 
     # run 'buildtest report --format name,state,returncode,buildspec'
     result = Report(
-        configuration=configuration, format_args="name,state,returncode,buildspec"
+        configuration=configuration, format="name,state,returncode,buildspec"
     )
     result.print_report()
-
     result = Report(configuration, pager=True)
     result.print_report()
     result = Report(configuration, color="red")
@@ -57,11 +62,11 @@ def test_report():
 
 def test_report_detailed():
     # buildtest report --detailed
-    Report(configuration=configuration, format_detailed=True)
+    Report(configuration=configuration, detailed=True)
 
     # buildtest report --detailed --format name
     with pytest.raises(BuildTestError):
-        Report(configuration=configuration, format_detailed=True, format_args="name")
+        Report(configuration=configuration, detailed=True, format="name")
 
 
 @pytest.mark.cli
@@ -75,7 +80,7 @@ def test_report_format():
 
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
-        Report(configuration, format_args="XYZ")
+        Report(configuration, format="XYZ")
 
 
 @pytest.mark.cli
@@ -90,68 +95,82 @@ def test_report_filter():
     # run 'buildtest report --helpfilter'
     report.print_format_fields()
 
-    report = Report(configuration, filter_args={"state": "PASS"})
+    report = Report(configuration, filter={"state": "PASS"})
     report.print_report()
 
-    report = Report(
-        configuration, filter_args={"state": "PASS"}, format_args="name,state"
-    )
+    report = Report(configuration, filter={"state": "PASS"}, format="name,state")
     report.print_report()
 
     # run 'buildtest report --filter returncode=0,executor=generic.local.bash --format name,returncode,executor
     report = Report(
         configuration=configuration,
-        filter_args={"returncode": "0", "executor": "generic.local.bash"},
-        format_args="name,returncode,executor",
+        filter={"returncode": "0", "executor": "generic.local.bash"},
+        format="name,returncode,executor",
     )
     report.print_report()
 
     # run 'buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,returncode,buildspec
     Report(
         configuration=configuration,
-        filter_args={
+        filter={
             "buildspec": os.path.join(
                 BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"
             )
         },
-        format_args="name,returncode,buildspec",
+        format="name,returncode,buildspec",
     )
 
     # run 'buildtest report --filter name=exit1_pass --format name,returncode,state
     Report(
         configuration=configuration,
-        filter_args={"name": "exit1_pass"},
-        format_args="name,returncode,state",
+        filter={"name": "exit1_pass"},
+        format="name,returncode,state",
     )
 
     # run 'buildtest report --filter returncode=-999 to ensure _filter_test_by_returncode returns True
-    Report(configuration=configuration, filter_args={"returncode": "-999"})
+    Report(configuration=configuration, filter={"returncode": "-999"})
 
     # Testing multiple filter fields. 'buildtest report --filter tags=tutorials,executor=generic.local.bash,state=PASS,returncode=0 --format name,returncode,state,executor,tags
     Report(
         configuration=configuration,
-        filter_args={
+        filter={
             "tags": "tutorials",
             "executor": "generic.local.bash",
             "state": "PASS",
             "returncode": 0,
         },
-        format_args="name,returncode,state,executor,tags",
+        format="name,returncode,state,executor,tags",
     )
+
+
+def test_report_with_metrics():
+    buildspecs = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks", "assert_ge.yml")
+    ]
+    build_cmd = BuildTest(configuration=configuration, buildspecs=buildspecs)
+    build_cmd.build()
+
+    # see if metrics are printed properly
+    cmd = Report(
+        configuration=configuration,
+        filter={"buildspec": buildspecs[0]},
+        format="name,metrics",
+    )
+    cmd.print_report()
 
 
 @pytest.mark.cli
 def test_report_oldest_and_latest():
     # buildtest report --filter tags=tutorials --latest
-    Report(configuration=configuration, filter_args={"tags": "tutorials"}, latest=True)
+    Report(configuration=configuration, filter={"tags": "tutorials"}, latest=True)
 
     # buildtest report --filter tags=tutorials --oldest
-    Report(configuration=configuration, filter_args={"tags": "tutorials"}, oldest=True)
+    Report(configuration=configuration, filter={"tags": "tutorials"}, oldest=True)
 
     # buildtest report --filter tags=tutorials --oldest --latest
     Report(
         configuration=configuration,
-        filter_args={"tags": "tutorials"},
+        filter={"tags": "tutorials"},
         oldest=True,
         latest=True,
     )
@@ -160,13 +179,13 @@ def test_report_oldest_and_latest():
 @pytest.mark.cli
 def test_report_failure():
     # buildtest report --filter tags=tutorials --fail
-    Report(configuration=configuration, filter_args={"tags": "tutorials"}, failure=True)
+    Report(configuration=configuration, filter={"tags": "tutorials"}, failure=True)
 
 
 @pytest.mark.cli
 def test_report_passed():
     # buildtest report --filter tags=tutorials --pass
-    Report(configuration=configuration, filter_args={"tags": "tutorials"}, passed=True)
+    Report(configuration=configuration, filter={"tags": "tutorials"}, passed=True)
 
 
 @pytest.mark.cli
@@ -175,17 +194,15 @@ def test_report_start_and_end():
     end_date = datetime.datetime.now()
 
     # buildtest report --filter tags=tutorials --start
-    Report(
-        configuration=configuration, filter_args={"tags": "tutorials"}, start=start_date
-    )
+    Report(configuration=configuration, filter={"tags": "tutorials"}, start=start_date)
 
     # buildtest report --filter tags=tutorials --end
-    Report(configuration=configuration, filter_args={"tags": "tutorials"}, end=end_date)
+    Report(configuration=configuration, filter={"tags": "tutorials"}, end=end_date)
 
     # buildtest report --filter tags=tutorials --start --end
     Report(
         configuration=configuration,
-        filter_args={"tags": "tutorials"},
+        filter={"tags": "tutorials"},
         start=start_date,
         end=end_date,
     )
@@ -198,8 +215,8 @@ def test_invalid_filters():
     with pytest.raises(BuildTestError):
         Report(
             configuration=configuration,
-            filter_args={"state": "UNKNOWN"},
-            format_args="name,state",
+            filter={"state": "UNKNOWN"},
+            format="name,state",
         )
 
     tf = tempfile.NamedTemporaryFile(delete=True)
@@ -208,8 +225,8 @@ def test_invalid_filters():
     with pytest.raises(BuildTestError):
         Report(
             configuration=configuration,
-            filter_args={"buildspec": tf.name},
-            format_args="name,returncode,state",
+            filter={"buildspec": tf.name},
+            format="name,returncode,state",
         )
 
     # run 'buildtest report --filter buildspec=$HOME/.bashrc --format name,returncode,state
@@ -217,17 +234,17 @@ def test_invalid_filters():
     with pytest.raises(BuildTestError):
         Report(
             configuration=configuration,
-            filter_args={"buildspec": "$HOME/.bashrc"},
-            format_args="name,returncode,state",
+            filter={"buildspec": "$HOME/.bashrc"},
+            format="name,returncode,state",
         )
 
     # buildtest report --filter returncode=1.5 is invalid returncode (must be INT)
     with pytest.raises(BuildTestError):
-        Report(configuration=configuration, filter_args={"returncode": "1.5"})
+        Report(configuration=configuration, filter={"returncode": "1.5"})
 
     # buildtest report --filter XYZ=tutorials is invalid filter field
     with pytest.raises(BuildTestError):
-        Report(configuration=configuration, filter_args={"XYZ": "tutorials"})
+        Report(configuration=configuration, filter={"XYZ": "tutorials"})
 
 
 @pytest.mark.cli

@@ -1,0 +1,12 @@
+buildspecs:
+  hello_world_c_cpp:
+    type: script
+    executor: generic.local.bash
+    description: Hello world compilation in C and C++
+    compilers:
+      name: ['builtin_gcc']
+    run: |
+      $BUILDTEST_CC hello.c -o hello_c
+      $BUILDTEST_CXX hello.cpp -o hello_cpp
+      ./hello_c
+      ./hello_cpp

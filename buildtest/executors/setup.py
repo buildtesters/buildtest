@@ -1,14 +1,14 @@
 """
 This module is responsible for setup of executors defined in buildtest
 configuration. The BuildExecutor class initializes the executors and chooses the
-executor class (LocalExecutor, LSFExecutor, SlurmExecutor, CobaltExecutor) to call depending
-on executor name.
+executor class to call depending on executor name.
 """
 
 import logging
 import multiprocessing as mp
 import os
 import shutil
+import sys
 import time
 
 from rich.table import Column, Table
@@ -17,10 +17,10 @@ from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, ExecutorError
 from buildtest.executors.base import BaseExecutor
-from buildtest.executors.cobalt import CobaltExecutor
+from buildtest.executors.container import ContainerExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
-from buildtest.executors.pbs import PBSExecutor
+from buildtest.executors.pbs import PBSExecutor, TorqueExecutor
 from buildtest.executors.slurm import SlurmExecutor
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
@@ -91,7 +91,8 @@ class BuildExecutor:
             "slurm": SlurmExecutor,
             "lsf": LSFExecutor,
             "pbs": PBSExecutor,
-            "cobalt": CobaltExecutor,
+            "torque": TorqueExecutor,
+            "container": ContainerExecutor,
         }
 
         for executor_type, executor_cls in executor_types.items():
@@ -124,12 +125,7 @@ class BuildExecutor:
 
     def get_validbuilders(self):
         """Return a list of valid builders that were run"""
-        complete_builders = []
-        for builder in self.builders:
-            if builder.is_complete():
-                complete_builders.append(builder)
-
-        return complete_builders
+        return [builder for builder in self.builders if builder.is_complete()]
 
     def _choose_executor(self, builder):
         """Choose executor is called at the onset of a run and poll stage. Given a builder
@@ -213,6 +209,7 @@ class BuildExecutor:
                         )
                         break
                 else:
+
                     testname = list(name.keys())[0]
 
                     if testname not in testnames.keys():
@@ -223,66 +220,66 @@ class BuildExecutor:
                         console.print(
                             f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {testnames[testname]} [/red]"
                         )
-                        break
+                        continue
 
                     if "state" in name[testname]:
-                        match_state = (
-                            name[testname]["state"]
-                            == testnames[testname].metadata["result"]["state"]
-                        )
-
-                        if not match_state:
-                            if testnames[testname].is_pending():
-                                builder.dependency = True
-                                console.print(
-                                    f"[blue]{builder}[/blue] skipping test because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
-                                )
-                                break
-                            # if there is no match but in 'state' property but job is not pending then we cancel job
-                            else:
-                                builder.failed()
-
-                                builder.dependency = True
-                                console.print(
-                                    f"[red]{builder} is cancelled because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
-                                )
+                        self.check_state(builder, testnames, name, testname)
 
                     if "returncode" in name[testname]:
-                        rc = []
-                        if isinstance(name[testname]["returncode"], int):
-                            rc.append(name[testname]["returncode"])
-                        else:
-                            rc = name[testname]["returncode"]
-
-                        no_match = (
-                            testnames[testname].metadata["result"]["returncode"]
-                            not in rc
-                        )
-                        if no_match:
-                            if testnames[testname].is_pending():
-                                console.print(
-                                    f"[red]{builder} is cancelled because it expects one of these returncode {rc} from {testnames[testname]} but test has {testnames[testname].metadata['result']['returncode']} "
-                                )
-                                builder.dependency = True
-
-                            # if test is not complete we check if test returncode with value specified in needs property for corresponding test
-                            else:
-                                builder.dependency = True
-                                builder.failed()
-                                continue
+                        self.check_returncode(builder, testnames, name, testname)
 
             if builder.dependency:
                 continue
 
             run_builders.add(builder)
 
-        builders = []
-        for builder in run_builders:
-            if builder.is_pending():
-                builders.append(builder)
+        builders = [builder for builder in run_builders if builder.is_pending()]
 
         # console.print(f"In this iteration we will run the following tests: {builders}", )
         return builders
+
+    def check_state(self, builder, testnames, name, testname):
+        """Check the state of the job and set the builder dependency accordingly."""
+        match_state = (
+            name[testname]["state"] == testnames[testname].metadata["result"]["state"]
+        )
+
+        if not match_state:
+
+            builder.dependency = True
+
+            if testnames[testname].is_pending():
+                console.print(
+                    f"[blue]{builder}[/blue] skipping test because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
+                )
+            else:
+                builder.failed()
+                console.print(
+                    f"[red]{builder} is cancelled because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
+                )
+
+    def check_returncode(self, builder, testnames, name, testname):
+        """Check the returncode of the job and set the builder dependency accordingly."""
+        matching_returncode = []
+        if isinstance(name[testname]["returncode"], int):
+            matching_returncode.append(name[testname]["returncode"])
+        else:
+            matching_returncode = name[testname]["returncode"]
+
+        no_match = (
+            testnames[testname].metadata["result"]["returncode"]
+            not in matching_returncode
+        )
+        if no_match:
+
+            builder.dependency = True
+
+            if testnames[testname].is_pending():
+                console.print(
+                    f"[red]{builder} is cancelled because it expects one of these returncode {matching_returncode} from {testnames[testname]} but test has {testnames[testname].metadata['result']['returncode']} "
+                )
+            else:
+                builder.failed()
 
     def run(self, builders):
         """This method is responsible for running the build script for each builder async and
@@ -345,12 +342,11 @@ class BuildExecutor:
                     if isinstance(task, BuilderBase):
                         self.builders.add(task)
 
-                pending_jobs = {
+                pending_jobs = [
                     builder
                     for builder in self.builders
                     if builder.is_batch_job() and builder.is_running()
-                }
-
+                ]
                 self.poll(pending_jobs)
 
                 # remove any failed jobs from list
@@ -368,25 +364,8 @@ class BuildExecutor:
                 if terminate:
                     break
         except KeyboardInterrupt:
-            console.print("[red]Caught KeyboardInterrupt, terminating workers")
-
-            for builder in self.builders:
-                console.print(
-                    f"[blue]{builder}[/blue]: [red]Removing test directory: {builder.test_root}"
-                )
-                try:
-                    shutil.rmtree(builder.test_root)
-                except OSError as err:
-                    console.print(
-                        f"[blue]{builder}[/blue]: [red]Unable to delete test directory {builder.test_root} with error: {err.strerror}"
-                    )
-                    continue
-
-                if builder.is_batch_job():
-                    console.print(
-                        f"[blue]{builder}[/blue]: [red]Cancelling Job {builder.job.get()}"
-                    )
-                    builder.job.cancel()
+            console.print("[red]Terminating workers due to exception")
+            self._cleanup_when_exception()
 
             # close the worker pool by preventing any more tasks from being submitted
             pool.close()
@@ -394,7 +373,8 @@ class BuildExecutor:
             # terminate all worker processes
             pool.join()
 
-            raise KeyboardInterrupt
+            sys.exit()
+
         # close the worker pool by preventing any more tasks from being submitted
         pool.close()
 
@@ -405,36 +385,32 @@ class BuildExecutor:
         """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
-        # only add builders that are batch jobs
+
+        jobs = pending_jobs
 
         # poll until all pending jobs are complete
-        while pending_jobs:
+        while jobs:
             print(f"Polling Jobs in {self.pollinterval} seconds")
             time.sleep(self.pollinterval)
 
-            # time.sleep(self.pollinterval)
-            jobs = pending_jobs.copy()
-
             # for every pending job poll job and mark if job is finished or cancelled
             for job in jobs:
-                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
+                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor
                 executor = self.get(job.executor)
-                # if builder is local executor we shouldn't be polling so we set job to
-                # complete and return
 
                 executor.poll(job)
 
-                if job.is_complete():
-                    pending_jobs.remove(job)
+            self._print_job_details(jobs)
 
-                elif job.is_failed():
-                    pending_jobs.remove(job)
-                    # need to remove builder from self._validbuilders when job is cancelled because these builders are ones
-                    # self._validbuilders.remove(job)
+            jobs = [
+                builder
+                for builder in jobs
+                if builder.job.is_running()
+                or builder.job.is_pending()
+                or builder.job.is_suspended()
+            ]
 
-            self.print_job_details(jobs)
-
-    def print_job_details(self, active_jobs):
+    def _print_job_details(self, active_jobs):
         """Print pending jobs in table format during each poll step
 
         args:
@@ -450,11 +426,29 @@ class BuildExecutor:
             "elapsedtime",
             "pendtime",
         ]
-        pending_jobs_table = Table(
-            title="Pending and Suspended Jobs", header_style="blue"
+        pend_count = len(
+            [
+                builder
+                for builder in active_jobs
+                if builder.job.is_pending() or builder.job.is_suspended()
+            ]
         )
-        running_jobs_table = Table(title="Running Jobs", header_style="blue")
-        completed_jobs_table = Table(title="Completed Jobs", header_style="blue")
+        run_count = len(
+            [builder for builder in active_jobs if builder.job.is_running()]
+        )
+        complete_count = len(
+            [builder for builder in active_jobs if builder.job.is_complete()]
+        )
+
+        pending_jobs_table = Table(
+            title=f"Pending and Suspended Jobs ({pend_count})", header_style="blue"
+        )
+        running_jobs_table = Table(
+            title=f"Running Jobs ({run_count})", header_style="blue"
+        )
+        completed_jobs_table = Table(
+            title=f"Completed Jobs ({complete_count})", header_style="blue"
+        )
 
         for column in table_columns:
             pending_jobs_table.add_column(column, overflow="fold")
@@ -504,3 +498,23 @@ class BuildExecutor:
 
         if completed_jobs_table.row_count:
             console.print(completed_jobs_table)
+
+    def _cleanup_when_exception(self):
+        """This method is invoked by cleaning up any builders that are when exception is raised"""
+        for builder in self.builders:
+            console.print(
+                f"[blue]{builder}[/blue]: [red]Removing test directory: {builder.test_root}"
+            )
+            try:
+                shutil.rmtree(builder.test_root)
+            except OSError as err:
+                console.print(
+                    f"[blue]{builder}[/blue]: [red]Unable to delete test directory {builder.test_root} with error: {err.strerror}"
+                )
+                continue
+
+            if builder.is_batch_job():
+                console.print(
+                    f"[blue]{builder}[/blue]: [red]Cancelling Job {builder.job.get()}"
+                )
+                builder.job.cancel()

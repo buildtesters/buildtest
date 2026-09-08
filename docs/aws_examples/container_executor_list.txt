@@ -1,0 +1,16 @@
+$ buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml config executors list --yaml 
+executors:
+  container:
+    python:
+      description: submit jobs on python container
+      image: python:3.11.0
+      platform: docker
+    ubuntu:
+      description: submit jobs on ubuntu container
+      image: ubuntu:20.04
+      platform: docker
+  local:
+    bash:
+      description: submit jobs on local machine using bash shell
+      shell: bash
+

@@ -122,8 +122,7 @@ Sanity Check
 -------------
 
 Once test is complete, buildtest will run a series of sanity check to determine state of test which can be ``PASS`` or ``FAIL``.
-The default behavior is returncode, if its 0 test is ``PASS`` otherwise its a ``FAIL``. buildtest supports several :ref:`status <status>` checks
-in addition to :ref:`performance checks <perf_checks>`.
+The default behavior is returncode, if its 0 test is ``PASS`` otherwise its a ``FAIL``. buildtest supports several :ref:`status <status>` checks.
 
 .. _update_report_stage:
 

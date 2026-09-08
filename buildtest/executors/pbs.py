@@ -1,11 +1,13 @@
 """This module implements PBSExecutor class that defines how executors submit
 job to PBS Scheduler"""
+
 import logging
 import os
 
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
-from buildtest.scheduler.pbs import PBSJob
+from buildtest.scheduler.pbs import PBSJob, TorqueJob
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -36,9 +38,21 @@ class PBSExecutor(BaseExecutor):
         )
 
         self.queue = self._settings.get("queue")
+        self.custom_dirs = None
+
+        if isinstance(self, PBSExecutor):
+            self.custom_dirs = deep_get(site_configs.target_config, "paths", "pbs")
+        elif isinstance(self, TorqueExecutor):
+            self.custom_dirs = deep_get(site_configs.target_config, "paths", "torque")
 
     def launcher_command(self, numprocs=None, numnodes=None):
-        batch_cmd = ["qsub"]
+        batch_cmd = []
+
+        self.pbs_cmds = check_binaries(
+            ["qsub", "qstat", "qdel"], custom_dirs=self.custom_dirs
+        )
+
+        batch_cmd += [self.pbs_cmds["qsub"]]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]
@@ -70,7 +84,7 @@ class PBSExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+        cmd = f"{self.shell} {os.path.basename(builder.build_script)}"
 
         self.timeout = self.timeout or self._buildtestsettings.target_config.get(
             "timeout"
@@ -85,9 +99,10 @@ class PBSExecutor(BaseExecutor):
         out = command.get_output()
         JobID = " ".join(out).strip()
 
-        builder.metadata["jobid"] = JobID
-
-        builder.job = PBSJob(JobID)
+        if isinstance(self, TorqueExecutor):
+            builder.job = TorqueJob(JobID, self.pbs_cmds)
+        elif isinstance(self, PBSExecutor):
+            builder.job = PBSJob(JobID, self.pbs_cmds)
 
         # store job id
         builder.metadata["jobid"] = builder.job.get()
@@ -97,3 +112,7 @@ class PBSExecutor(BaseExecutor):
         self.logger.debug(msg)
 
         return builder
+
+
+class TorqueExecutor(PBSExecutor):
+    """This class is a sub-class of PBSExecutor class and is responsible for Torque Executor"""

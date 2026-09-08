@@ -13,14 +13,12 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.exceptions import (
-    BuildTestError,
     ExecutorError,
     InvalidBuildspec,
     InvalidBuildspecExecutor,
     InvalidBuildspecSchemaType,
 )
 from buildtest.executors.setup import BuildExecutor
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -96,28 +94,9 @@ def test_BuildspecParser(tmp_path):
     config.validate()
     executors = BuildExecutor(config)
 
-    system = BuildTestSystem()
-
-    directory = os.path.join(here, "invalid_builds")
     # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
     # even though they are valid buildspecs.\
     bc = BuildtestCompilers(configuration=config)
-    for buildspec in walk_tree(directory, ".yml"):
-        bp = BuildspecParser(buildspec, executors)
-
-        with pytest.raises(BuildTestError):
-            builder = Builder(
-                bp=bp,
-                buildtest_compilers=bc,
-                buildexecutor=executors,
-                configuration=config,
-                filters=[],
-                testdir=tmp_path,
-                buildtest_system=system,
-            )
-            builders = builder.get_builders()
-            for test in builders:
-                test.build()
 
     # Examples folder
     valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
@@ -138,7 +117,6 @@ def test_BuildspecParser(tmp_path):
             configuration=config,
             filters=filters,
             testdir=tmp_path,
-            buildtest_system=system,
         )
         builders = builders.get_builders()
         assert builders

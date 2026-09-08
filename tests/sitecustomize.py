@@ -1,3 +1,7 @@
+import os
+
 import coverage
 
-coverage.process_startup()
+config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".coveragerc")
+if os.path.exists(config_path):
+    coverage.process_startup()

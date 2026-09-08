@@ -1,0 +1,9 @@
+buildspecs:
+  hello_world_singularity:
+    type: script
+    executor: generic.local.bash
+    description: run hello-world container using singularity
+    container:
+      platform: "singularity"
+      image: 'docker://hello-world'
+    run: echo 'Test Complete!'

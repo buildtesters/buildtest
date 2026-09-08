@@ -17,10 +17,10 @@ jobs:
 
       # use isort github action see
       #https://pycqa.github.io/isort/docs/configuration/github_action.html
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4.7.0
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: 3.8
+          python-version: 3.10
 
       - name: Check imports with pyflakes
         run: |
@@ -40,7 +40,6 @@ jobs:
         with:
           options: "--check --verbose"
           src: "buildtest tests scripts"
-          version: "~= 23.3.0"
 
       - name: Run yamllint
         run: |

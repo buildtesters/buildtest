@@ -8,6 +8,9 @@ from buildtest.defaults import console
 
 
 def print_debug_report(system, configuration):
+    """This method will print debug report for buildtest. This will print system information,
+    configuration and last buildtest log file"""
+
     """
     console.print("Vendor: ", system.system["vendor"])
     console.print("Machine: ", system.system["machine"])
@@ -20,7 +23,7 @@ def print_debug_report(system, configuration):
     console.print("Python: ", system.system["python"])
     console.print("Python Version: ", system.system["pyver"])
     console.print("BUILDTEST_VERSION: ", BUILDTEST_VERSION)
-    # console.print("CPU Features:", system.system["features"])
+    console.print("Machine: ", system.system["machine"])
 
     view_configuration(configuration)
 

@@ -1,0 +1,93 @@
+$ buildtest inspect query -o osu_bandwidth osu_bandwidth_perf 
+─────────────────────────────────────────────────────────────────────────────────── osu_bandwidth/5b6a6022-53b8-449c-adda-5f1341711fdd ────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run OSU Bandwidth Test
+State: PASS
+Returncode: 0
+Runtime: 1.075386 sec
+Starttime: 2024/06/17 18:50:26
+Endtime: 2024/06/17 18:50:27
+Command: bash osu_bandwidth_build.sh
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/5b6a6022/osu_bandwidth.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/5b6a6022/osu_bandwidth_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/5b6a6022/osu_bandwidth.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth/5b6a6022/osu_bandwidth.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_ay4679yy.log
+────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
+# OSU MPI Bandwidth Test v7.3                                                                                                                                                                                              
+# Size      Bandwidth (MB/s)                                                                                                                                                                                               
+# Datatype: MPI_CHAR.                                                                                                                                                                                                      
+1                       5.77                                                                                                                                                                                               
+2                      11.10                                                                                                                                                                                               
+4                      18.22                                                                                                                                                                                               
+8                      44.51                                                                                                                                                                                               
+16                     86.73                                                                                                                                                                                               
+32                    175.56                                                                                                                                                                                               
+64                    341.96                                                                                                                                                                                               
+128                   611.27                                                                                                                                                                                               
+256                  1413.40                                                                                                                                                                                               
+512                  2440.32                                                                                                                                                                                               
+1024                 3179.99                                                                                                                                                                                               
+2048                 4395.94                                                                                                                                                                                               
+4096                 6680.31                                                                                                                                                                                               
+8192                 7974.70                                                                                                                                                                                               
+16384                8754.07                                                                                                                                                                                               
+32768                9285.44                                                                                                                                                                                               
+65536               16754.46                                                                                                                                                                                               
+131072              16720.23                                                                                                                                                                                               
+262144              13243.39                                                                                                                                                                                               
+524288              12519.46                                                                                                                                                                                               
+1048576             12644.59                                                                                                                                                                                               
+2097152             12278.21                                                                                                                                                                                               
+4194304             12180.92                                                                                                                                                                                               
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────────────────────── osu_bandwidth_perf/7b147273-72e1-4439-9b5f-f6a64ac4cef0 ─────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run OSU Bandwidth Performance Test
+State: FAIL
+Returncode: 0
+Runtime: 1.066617 sec
+Starttime: 2024/06/17 18:50:26
+Endtime: 2024/06/17 18:50:27
+Command: bash osu_bandwidth_perf_build.sh
+Test Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/7b147273/osu_bandwidth_perf.sh
+Build Script: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/7b147273/osu_bandwidth_perf_build.sh
+Output File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/7b147273/osu_bandwidth_perf.out
+Error File: /home/lbladmin/Documents/buildtest/var/tests/generic.local.bash/osu_bandwidth_test/osu_bandwidth_perf/7b147273/osu_bandwidth_perf.err
+Log File: /home/lbladmin/Documents/buildtest/var/logs/buildtest_ay4679yy.log
+      Metrics       
+┏━━━━━━━━┳━━━━━━━━━┓
+┃ Name   ┃ Value   ┃
+┡━━━━━━━━╇━━━━━━━━━┩
+│ osu_bw │ 9291.32 │
+└────────┴─────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────── Output File:  ──────────────────────────────────────────────────────────────────────────────────────────────────────
+# OSU MPI Bandwidth Test v7.3                                                                                                                                                                                              
+# Size      Bandwidth (MB/s)                                                                                                                                                                                               
+# Datatype: MPI_CHAR.                                                                                                                                                                                                      
+1                       5.81                                                                                                                                                                                               
+2                      10.66                                                                                                                                                                                               
+4                      22.52                                                                                                                                                                                               
+8                      45.15                                                                                                                                                                                               
+16                     92.11                                                                                                                                                                                               
+32                    180.50                                                                                                                                                                                               
+64                    362.67                                                                                                                                                                                               
+128                   712.86                                                                                                                                                                                               
+256                  1262.76                                                                                                                                                                                               
+512                  2401.10                                                                                                                                                                                               
+1024                 3307.80                                                                                                                                                                                               
+2048                 4857.36                                                                                                                                                                                               
+4096                 6495.22                                                                                                                                                                                               
+8192                 8303.84                                                                                                                                                                                               
+16384                9291.32                                                                                                                                                                                               
+32768                9459.18                                                                                                                                                                                               
+65536               12795.71                                                                                                                                                                                               
+131072              16870.14                                                                                                                                                                                               
+262144              13644.36                                                                                                                                                                                               
+524288              12525.87                                                                                                                                                                                               
+1048576             12634.52                                                                                                                                                                                               
+2097152             12676.00                                                                                                                                                                                               
+4194304             12385.52                                                                                                                                                                                               
+                                                                                                                                                                                                                           
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

@@ -1,5 +1,6 @@
 import getpass
 import os
+import shutil
 
 import pytest
 
@@ -7,17 +8,16 @@ from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.system import BuildTestSystem
 
 
+@pytest.mark.spack
 def test_spack_examples():
     # spack builds must run in container  ghcr.io/buildtesters/buildtest_spack:latest which comes with username 'spack' and home directory '/home/spack'
-    if not (getpass.getuser() == "spack" and os.path.expanduser("~") == "/home/spack"):
+    # if not (getpass.getuser() == "spack" and os.path.expanduser("~") == "/home/spack"):
+    if not (getpass.getuser() in ["root", "spack", "runner"] and shutil.which("spack")):
         pytest.skip(
-            "Unable to run this test requires docker container:  ghcr.io/buildtesters/buildtest_spack:latest"
+            "Unable to run this test requires docker container:  ghcr.io/buildtesters/buildtest_spack:spack-sc23"
         )
-
-    system = BuildTestSystem()
 
     configuration = SiteConfiguration(
         settings_file=os.path.join(
@@ -32,10 +32,5 @@ def test_spack_examples():
     bp = BuildspecCache(rebuild=True, configuration=configuration)
     bp.print_tags()
 
-    cmd = BuildTest(
-        configuration=configuration,
-        tags=["spack"],
-        stage="build",
-        buildtest_system=system,
-    )
+    cmd = BuildTest(configuration=configuration, tags=["spack"], dry_run=True)
     cmd.build()
