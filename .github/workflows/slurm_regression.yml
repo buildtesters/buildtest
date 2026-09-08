@@ -67,6 +67,8 @@ jobs:
         working-directory: .github/slurm
         run: |
           docker compose exec -T slurmctld bash -lc '
+            export BUILDTEST_CI_DIR=/tmp/buildtest-ci
+            mkdir -p "$BUILDTEST_CI_DIR"
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             /workspace/buildtest/bin/buildtest config validate
           '
@@ -75,6 +77,8 @@ jobs:
         working-directory: .github/slurm
         run: |
           docker compose exec -T slurmctld bash -lc '
+            export BUILDTEST_CI_DIR=/tmp/buildtest-ci
+            mkdir -p "$BUILDTEST_CI_DIR"
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             cd /workspace/buildtest
             ./bin/buildtest build -b tests/examples/slurm/ci.yml --pollinterval=1
