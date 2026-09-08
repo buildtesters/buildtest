@@ -14,7 +14,7 @@ on:
 jobs:
   slurm_regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     env:
       SLURM_VERSION: 26.05.2
@@ -97,19 +97,19 @@ jobs:
             grep -q "smoke error" /data/slurm-smoke-"${job_id}".err
           '
 
-      - name: Run Buildtest Slurm regression
+      - name: Run Buildtest regression suite
         working-directory: .github/slurm
         run: |
           docker compose exec -T slurmctld bash -lc '
-            export BUILDTEST_CI_DIR=/data/buildtest-ci
-            mkdir -p "$BUILDTEST_CI_DIR"
-            export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
-            cd /workspace/buildtest
-            export COVERAGE_FILE="$BUILDTEST_CI_DIR/.coverage"
-            python3 -m coverage run --source=/workspace/buildtest \
-              /workspace/buildtest/bin/buildtest build \
-              -b tests/examples/slurm/ci.yml --pollinterval=1
-            python3 -m coverage xml -o "$BUILDTEST_CI_DIR/coverage.xml"
+            set -euo pipefail
+            rm -rf /data/buildtest-regression
+            mkdir -p /data/buildtest-regression
+            cp -a /workspace/buildtest/. /data/buildtest-regression/
+            export BUILDTEST_ROOT=/data/buildtest-regression
+            source "$BUILDTEST_ROOT/setup.sh"
+            cd "$BUILDTEST_ROOT"
+            python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+            python3 -m coverage xml -o /data/buildtest-ci/coverage.xml
           '
 
       - name: Download coverage report
