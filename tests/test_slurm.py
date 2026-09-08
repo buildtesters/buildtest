@@ -14,6 +14,7 @@ if os.getenv("BUILDTEST_SLURM_REGRESSION") != "1":
     )
 
 
+@pytest.mark.slurm
 def test_slurm_regression():
     buildtest_root = os.environ["BUILDTEST_ROOT"]
     config_file = os.environ["BUILDTEST_CONFIGFILE"]

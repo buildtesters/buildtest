@@ -116,6 +116,7 @@ jobs:
             python3 --version
             python3 $BUILDTEST_ROOT/buildtest/tools/unittests.py \
               --coverage \
+              --pytestopts "-m slurm" \
               --configfile "$BUILDTEST_CONFIGFILE"
             regression_status=$?
             echo "Buildtest regression exit code: $regression_status"
