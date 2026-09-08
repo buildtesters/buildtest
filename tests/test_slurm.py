@@ -4,7 +4,6 @@ import pytest
 
 from buildtest.cli.build import BuildTest
 from buildtest.config import SiteConfiguration
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import is_file
 
 if os.getenv("BUILDTEST_SLURM_REGRESSION") != "1":
@@ -20,7 +19,6 @@ def test_slurm_regression():
     config_file = os.environ["BUILDTEST_CONFIGFILE"]
     buildspec = os.path.join(buildtest_root, "tests", "examples", "slurm", "ci.yml")
 
-    system = BuildTestSystem()
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
     configuration.validate()
@@ -28,7 +26,6 @@ def test_slurm_regression():
     build = BuildTest(
         configuration=configuration,
         buildspecs=[buildspec],
-        buildtest_system=system,
         poll_interval=1,
     )
     build.build()

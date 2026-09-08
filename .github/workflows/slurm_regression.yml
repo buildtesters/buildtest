@@ -108,7 +108,6 @@ jobs:
             export BUILDTEST_ROOT=/data/buildtest-regression
             export BUILDTEST_SLURM_REGRESSION=1
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
-            export COVERAGE_PROCESS_START=$BUILDTEST_ROOT/.coveragerc
             export PATH=$BUILDTEST_ROOT/bin:$PATH
             export PYTHONPATH=$BUILDTEST_ROOT${PYTHONPATH:+:$PYTHONPATH}
             cd "$BUILDTEST_ROOT"
