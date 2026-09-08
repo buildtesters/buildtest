@@ -7,7 +7,6 @@ from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import is_file
 
-
 if os.getenv("BUILDTEST_SLURM_REGRESSION") != "1":
     pytest.skip(
         "Slurm regression tests require BUILDTEST_SLURM_REGRESSION=1",
