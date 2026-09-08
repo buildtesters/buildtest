@@ -23,7 +23,7 @@ def test_slurm_regression():
     system = BuildTestSystem()
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
-    configuration.validate(moduletool=system.system["moduletool"])
+    configuration.validate()
 
     build = BuildTest(
         configuration=configuration,
