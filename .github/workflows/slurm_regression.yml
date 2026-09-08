@@ -105,8 +105,24 @@ jobs:
             mkdir -p "$BUILDTEST_CI_DIR"
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             cd /workspace/buildtest
-            ./bin/buildtest build -b tests/examples/slurm/ci.yml --pollinterval=1
+            export COVERAGE_FILE="$BUILDTEST_CI_DIR/.coverage"
+            python3 -m coverage run --source=/workspace/buildtest \
+              /workspace/buildtest/bin/buildtest build \
+              -b tests/examples/slurm/ci.yml --pollinterval=1
+            python3 -m coverage xml -o "$BUILDTEST_CI_DIR/coverage.xml"
           '
+
+      - name: Download coverage report
+        if: success()
+        working-directory: .github/slurm
+        run: docker compose cp slurmctld:/data/buildtest-ci/coverage.xml ../../coverage.xml
+
+      - name: Upload coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          verbose: true
 
       - name: Verify Slurm accounting records
         if: always()
