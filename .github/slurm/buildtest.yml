@@ -3,7 +3,7 @@ system:
     hostnames: ['.*']
     moduletool: none
     poolsize: 1
-    testdir: /tmp/buildtest-ci
+    testdir: /data/buildtest-ci
     paths:
       slurm: /usr/bin
     buildspecs:

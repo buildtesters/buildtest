@@ -67,17 +67,41 @@ jobs:
         working-directory: .github/slurm
         run: |
           docker compose exec -T slurmctld bash -lc '
-            export BUILDTEST_CI_DIR=/tmp/buildtest-ci
+            export BUILDTEST_CI_DIR=/data/buildtest-ci
             mkdir -p "$BUILDTEST_CI_DIR"
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             /workspace/buildtest/bin/buildtest config validate
+          '
+
+      - name: Verify Slurm output and error files
+        working-directory: .github/slurm
+        run: |
+          docker compose exec -T slurmctld bash -lc '
+            set -euxo pipefail
+            output_file=/data/slurm-smoke-%j.out
+            error_file=/data/slurm-smoke-%j.err
+            job_id=$(sbatch --parsable \
+              --partition=cpu \
+              --nodes=1 \
+              --ntasks=1 \
+              --output="$output_file" \
+              --error="$error_file" \
+              --wrap="echo smoke output; echo smoke error >&2; hostname")
+            echo "Submitted smoke job ${job_id}"
+            while squeue -h -j "$job_id" | grep -q .; do
+              sleep 1
+            done
+            sacct -X -n -P -j "$job_id" -o JobID,State,ExitCode
+            ls -l /data/slurm-smoke-"${job_id}".out /data/slurm-smoke-"${job_id}".err
+            grep -q "smoke output" /data/slurm-smoke-"${job_id}".out
+            grep -q "smoke error" /data/slurm-smoke-"${job_id}".err
           '
 
       - name: Run Buildtest Slurm regression
         working-directory: .github/slurm
         run: |
           docker compose exec -T slurmctld bash -lc '
-            export BUILDTEST_CI_DIR=/tmp/buildtest-ci
+            export BUILDTEST_CI_DIR=/data/buildtest-ci
             mkdir -p "$BUILDTEST_CI_DIR"
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             cd /workspace/buildtest
@@ -93,6 +117,10 @@ jobs:
             squeue -a
             echo "=== sacct ==="
             sacct -X -n -P -o JobID,State,ExitCode,Partition,NodeList || true
+            echo "=== controller shared test directory ==="
+            find /data/buildtest-ci -maxdepth 5 -type f -printf "%M %s %p\n" 2>/dev/null || true
+            echo "=== controller output/error files ==="
+            find /data -maxdepth 1 -type f -name "slurm-smoke-*" -printf "%M %s %p\n" 2>/dev/null || true
           '
 
       - name: Collect Slurm diagnostics
@@ -101,6 +129,12 @@ jobs:
         run: |
           docker compose ps
           docker compose logs --tail=300 slurmctld cpu-worker slurmdbd mysql > slurm-ci.log 2>&1 || true
+          docker compose exec -T cpu-worker bash -lc '
+            echo "=== worker shared test directory ==="
+            find /data/buildtest-ci -maxdepth 5 -type f -printf "%M %s %p\n" 2>/dev/null || true
+            echo "=== worker output/error files ==="
+            find /data -maxdepth 1 -type f -name "slurm-smoke-*" -printf "%M %s %p\n" 2>/dev/null || true
+          ' >> slurm-ci.log 2>&1 || true
 
       - name: Upload Slurm diagnostics
         if: always()
