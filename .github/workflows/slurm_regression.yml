@@ -101,20 +101,35 @@ jobs:
         working-directory: .github/slurm
         run: |
           docker compose exec -T slurmctld bash -lc '
-            set -euo pipefail
+            echo "Preparing writable Buildtest checkout"
             rm -rf /data/buildtest-regression
             mkdir -p /data/buildtest-regression
             cp -a /workspace/buildtest/. /data/buildtest-regression/
             export BUILDTEST_ROOT=/data/buildtest-regression
             export BUILDTEST_SLURM_REGRESSION=1
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
+            echo "Sourcing Buildtest setup: $BUILDTEST_ROOT/setup.sh"
             source "$BUILDTEST_ROOT/setup.sh"
+            setup_status=$?
+            echo "Buildtest setup exit code: $setup_status"
             cd "$BUILDTEST_ROOT"
             command -v python3
             python3 --version
             python3 -c "import pytest, buildtest; print('pytest and buildtest imports succeeded')"
+            import_status=$?
+            echo "Python import exit code: $import_status"
             python3 $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+            regression_status=$?
+            echo "Buildtest regression exit code: $regression_status"
             python3 -m coverage xml -o /data/buildtest-ci/coverage.xml
+            coverage_status=$?
+            echo "Coverage export exit code: $coverage_status"
+            if [ "$regression_status" -ne 0 ]; then
+              exit "$regression_status"
+            fi
+            if [ "$coverage_status" -ne 0 ]; then
+              exit "$coverage_status"
+            fi
           '
 
       - name: Download coverage report
