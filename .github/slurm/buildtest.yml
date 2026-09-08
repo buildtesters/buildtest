@@ -1,7 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: N/A
+    moduletool: none
     poolsize: 1
     testdir: /tmp/buildtest-ci
     paths:
