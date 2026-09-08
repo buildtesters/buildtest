@@ -1,13 +1,20 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: lmod
+    moduletool: N/A
     poolsize: 1
-    testdir: /tmp/buildtest
+    testdir: /tmp/buildtest-ci
     paths:
       slurm: /usr/bin
     report:
       format: "name,id,state,runtime,returncode"
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
     executors:
       defaults:
         pollinterval: 1
