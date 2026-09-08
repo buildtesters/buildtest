@@ -68,7 +68,7 @@ jobs:
         run: |
           docker compose exec -T slurmctld bash -lc '
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
-            buildtest config validate
+            /workspace/buildtest/bin/buildtest config validate
           '
 
       - name: Run Buildtest Slurm regression
@@ -77,7 +77,7 @@ jobs:
           docker compose exec -T slurmctld bash -lc '
             export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             cd /workspace/buildtest
-            buildtest build -b tests/examples/slurm/ci.yml --pollinterval=1
+            ./bin/buildtest build -b tests/examples/slurm/ci.yml --pollinterval=1
           '
 
       - name: Verify Slurm accounting records
