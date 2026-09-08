@@ -106,6 +106,8 @@ jobs:
             mkdir -p /data/buildtest-regression
             cp -a /workspace/buildtest/. /data/buildtest-regression/
             export BUILDTEST_ROOT=/data/buildtest-regression
+            export BUILDTEST_SLURM_REGRESSION=1
+            export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
             source "$BUILDTEST_ROOT/setup.sh"
             cd "$BUILDTEST_ROOT"
             python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c

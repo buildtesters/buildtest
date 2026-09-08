@@ -76,10 +76,10 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
     # run regression test
     retcode = pytest.main(pytest_cmd)
+    console.print(f"pytest exit code: {retcode}")
 
-    # if there is a failure in pytest raise exit 1
-    if retcode == pytest.ExitCode.TESTS_FAILED:
-        sys.exit(1)
+    if retcode != pytest.ExitCode.OK:
+        sys.exit(int(retcode))
 
     if enable_coverage:
         cov.stop()
