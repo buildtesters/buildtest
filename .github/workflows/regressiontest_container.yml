@@ -1,17 +1,13 @@
 name: Regression Test in Container
 
 on:
-  pull_request:
-    branches: [devel]
-    paths:
-      - 'buildtest/**'
-      - 'tests/**'
-      - '.github/workflows/regressiontest_container.yml'
-      - 'requirements.txt'
-      - 'pyproject.toml'
+  workflow_run:
+    workflows: ["Build Container"]
+    types: [completed]
 
 jobs:
   buildtest_tutorial_container:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,8 +16,10 @@ jobs:
       image: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
       options: "-it --user root"
     steps:
-      - name: Check out the repo
+      - name: Check out the PR revision
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Regression test in container
         shell: bash
