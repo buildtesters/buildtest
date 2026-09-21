@@ -604,7 +604,9 @@ def test_discover_max_depth(monkeypatch):
         discovered = discover_buildspecs(buildspecs=[tempdir], max_depth=1)
         assert sorted(discovered["detected"]) == [os.path.abspath(root_buildspec)]
 
-        config = DummySiteConfig(target_config={"file_traversal_limit": 1000, "max-depth": 1})
+        config = DummySiteConfig(
+            target_config={"file_traversal_limit": 1000, "max-depth": 1}
+        )
         discovered_with_config = discover_buildspecs(
             buildspecs=[tempdir], site_config=config
         )
