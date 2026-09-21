@@ -467,6 +467,24 @@ If you specify 0 or negative number you will get an error as follows
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --limit=0
         :returncode: 2
 
+Maximum Depth search (``buildtest build --max-depth``)
+-----------------------------------------------------
+
+The ``--max-depth`` option allows you to limit the depth of the directory tree that buildtest will search for buildspec files. 
+This can be useful when you have a large directory structure and want to restrict the search to a certain level instead of 
+searching through all directories which can be time-consuming.
+
+The ``--max-depth`` option must be a positive integer > 0, otherwise buildtest will raise an error. 
+
+For example, if you want buildtest to only search for buildspecs in the top-level directory you can run the following
+
+.. dropdown:: ``buildtest build -b tutorials/tutorials --max-depth=1 --dry-run``
+
+    .. command-output:: buildtest build -b tutorials/tutorials --max-depth=1 --dry-run
+
+The command line option will override any default configuration set in the configuration file.
+
+
 Rerun Last Command (``buildtest build --rerun``)
 -------------------------------------------------
 
