@@ -478,9 +478,9 @@ The ``--max-depth`` option must be a positive integer > 0, otherwise buildtest w
 
 For example, if you want buildtest to only search for buildspecs in the top-level directory you can run the following
 
-.. dropdown:: ``buildtest build -b tutorials/tutorials --max-depth=1 --dry-run``
+.. dropdown:: ``buildtest build -b tutorials --max-depth=1 --dry-run``
 
-    .. command-output:: buildtest build -b tutorials/tutorials --max-depth=1 --dry-run
+    .. command-output:: buildtest build -b tutorials --max-depth=1 --dry-run
 
 The command line option will override any default configuration set in the configuration file.
 
