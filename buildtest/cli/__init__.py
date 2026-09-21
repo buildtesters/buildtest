@@ -815,6 +815,14 @@ class BuildTestParser:
                         "help": "Rerun last successful buildtest build command.",
                     },
                 ),
+                (
+                    ["--max-depth"],
+                    {
+                        "dest": "max_depth",
+                        "type": positive_number,
+                        "help": "Maximum directory depth to traverse when discovering buildspecs.",
+                    },
+                ),
             ],
             "filter": [
                 (
@@ -1160,6 +1168,14 @@ class BuildTestParser:
                             "type": str,
                             "action": "append",
                             "help": "Specify buildspecs by name to validate",
+                        },
+                    ),
+                    (
+                        ["--max-depth"],
+                        {
+                            "dest": "max_depth",
+                            "type": positive_number,
+                            "help": "Maximum directory depth to traverse when discovering buildspecs.",
                         },
                     ),
                 ],
