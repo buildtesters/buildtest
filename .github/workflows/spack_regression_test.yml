@@ -19,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5.0.0
       - name: Set up Spack
-        uses: spack/setup-spack@v2
+        uses: spack/setup-spack@v3
       - name: Spack Regression Test
         shell: spack-bash {0}
         run: |
