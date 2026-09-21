@@ -185,7 +185,7 @@ _buildtest ()
   case "$next" in
     build|bd)
       local shortoption="-b -e -et -f -m -n -s -t -u -x -xt"
-      local longoption="--account --buildspec --display --dry-run --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rebuild --rerun --remove-stagedir --retry --save-profile --strict --tags --testdir --timeout --unload-modules --validate --write-config-file"
+      local longoption="--account --buildspec --display --dry-run --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --max-depth --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rebuild --rerun --remove-stagedir --retry --save-profile --strict --tags --testdir --timeout --unload-modules --validate --write-config-file"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( "$( compgen -W "$allopts" -- "${cur}" )" )
@@ -463,7 +463,7 @@ _buildtest ()
         esac
         ;;
       validate|val)
-        local opts="--buildspec --exclude --executor --name --tag -b -e -n -t -x "
+        local opts="--buildspec --exclude --executor --max-depth --name --tag -b -e -n -t -x "
         COMPREPLY=( "$( compgen -W "${opts}" -- "${cur}" )" )
 
         case "${prev}" in
