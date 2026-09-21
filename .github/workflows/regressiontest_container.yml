@@ -1,39 +1,72 @@
 name: Regression Test in Container
 
 on:
-  workflow_run:
-    workflows: ["Build Container"]
-    types: [completed]
+  pull_request:
+    branches: [devel]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - 'scripts/spack_container/**'
+      - '.github/workflows/regressiontest_container.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
 
 jobs:
   buildtest_tutorial_container:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: read
-    container:
-      image: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
-      options: "-it --user root"
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
     steps:
-      - name: Check out the PR revision
+      - name: Check out the repo
         uses: actions/checkout@v7
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for the SC25 container image
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            if docker manifest inspect "${IMAGE}" >/dev/null 2>&1; then
+              echo "Found ${IMAGE}"
+              exit 0
+            fi
+            echo "Waiting for ${IMAGE} (attempt ${attempt}/60)"
+            sleep 30
+          done
+          echo "Timed out waiting for ${IMAGE}" >&2
+          exit 1
 
       - name: Regression test in container
         shell: bash
         run: |
-          set +xe
-          . /etc/profile
-          which csh zsh
-          module load python
-          python3 -m venv env
-          source env/bin/activate
-          source setup.sh
-          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
-          returncode=$?
-          if [ $returncode != 0 ]; then exit $returncode; fi
+          set -e
+          docker run --rm \
+            --platform linux/amd64 \
+            --user root \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            "${IMAGE}" \
+            bash -lc '
+              set +e
+              . /etc/profile
+              which csh zsh
+              module load python
+              python3 -m venv env
+              source env/bin/activate
+              source setup.sh
+              python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
+              returncode=$?
+              if [ $returncode != 0 ]; then exit $returncode; fi
+            '
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
