@@ -5,10 +5,10 @@ buildspecs:
     description: post run example that will remove symbolic link
     run: |
       ln -s $HOME/.bashrc $HOME/.bashrc_link
-      mkdir demo
+      mkdir -v demo
     post_run: |
       unlink $HOME/.bashrc_link
-      rmdir demo
+      rmdir -v demo
     status:
       is_dir:
         - demo

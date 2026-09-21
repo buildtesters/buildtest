@@ -19,11 +19,17 @@ import tempfile
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
+from pathlib import Path
+
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE, VAR_DIR
 from buildtest.utils.file import is_dir
+
+HERE = Path(__file__).parent
+
+(HERE / "api").mkdir(exist_ok=True)
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
 os.environ["BUILDTEST_ROOT"] = here

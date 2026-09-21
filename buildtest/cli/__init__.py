@@ -640,6 +640,13 @@ class BuildTestParser:
                     "action": "append",
                 },
             ),
+            (
+                ["--configfile"],
+                {
+                    "type": str,
+                    "help": "Specify the configuration file to use for the regression test",
+                },
+            ),
         ]
 
         for args, kwargs in unittests_args:

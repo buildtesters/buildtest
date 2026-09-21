@@ -91,6 +91,10 @@ if ( $status != 0 ) then
   $pip install "${BUILDTEST_ROOT}/." >& /dev/null
 endif
 
+if ( -f "${BUILDTEST_ROOT}/.coveragerc" ) then
+  setenv COVERAGE_PROCESS_START "${BUILDTEST_ROOT}/.coveragerc"
+endif
+
 set path=($path ${BUILDTEST_ROOT}/bin)
 
 # add PYTHONPATH for buildtest to persist in shell environment

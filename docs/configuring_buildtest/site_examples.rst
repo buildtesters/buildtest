@@ -11,7 +11,7 @@ offices. NERSC has one production HPC systems `Perlmutter <https://docs.nersc.go
 Shown below is the buildtest configuration at NERSC. We have defined multiple slurm executors, along with settings for
 configuring compilers that is available on Perlmutter.
 
-.. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-nersc/devel/config.yml
+.. literalinclude:: ../../tests/settings/nersc.yml
    :language: yaml
 
 Oak Ridge National Laboratory

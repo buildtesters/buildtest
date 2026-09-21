@@ -166,6 +166,7 @@ def main():
             pytestopts=args.pytestopts,
             sourcefiles=args.sourcefiles,
             enable_coverage=args.coverage,
+            config_file=args.configfile,
         )
 
     elif args.subcommands == "tutorial-examples":

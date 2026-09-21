@@ -75,6 +75,8 @@ based on the ``sbatch`` property defined in the ``executors`` field.
 
    .. command-output:: buildtest inspect query -t executors_sbatch_declaration/
 
+.. _cray_burstbuffer_datawarp:
+
 Cray Burst Buffer and Data Warp
 ---------------------------------
 
