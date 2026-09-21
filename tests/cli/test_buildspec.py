@@ -53,11 +53,13 @@ def test_buildspec_validate():
             configuration=configuration,
         )
 
-    buildspec_validate_command(
-        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
-        max_depth=1,
-        configuration=configuration,
-    )
+    # test with max_depth option to 1. This is expected to fail since we have some invalid buildspecs in subdirectories
+    with pytest.raises(SystemExit):
+        buildspec_validate_command(
+            buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
+            max_depth=1,
+            configuration=configuration,
+        )
 
 
 class TestBuildSpecFind:
