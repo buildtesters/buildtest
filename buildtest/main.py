@@ -304,6 +304,7 @@ def handle_build_command(args, configuration, report_file):
                 helpfilter=args.helpfilter,
                 limit=args.limit,
                 max_jobs=args.max_jobs,
+                max_depth=args.max_depth,
                 maxpendtime=args.maxpendtime,
                 modules=args.modules,
                 modulepurge=args.module_purge,

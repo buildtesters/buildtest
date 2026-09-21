@@ -120,6 +120,7 @@ def discover_buildspecs(
     name: Optional[List[str]] = None,
     executors: Optional[List[str]] = None,
     tags: Optional[List[str]] = None,
+    max_depth: Optional[int] = None,
     verbose: Optional[bool] = False,
     site_config: Optional[SiteConfiguration] = None,
 ) -> Dict[str, List[str]]:
@@ -132,6 +133,7 @@ def discover_buildspecs(
         name (list, optional): List of test names to discover buildspecs that are specified by ``buildtest build --name``
         tags (list, optional): List of input tags for discovering buildspecs by argument ``buildtest build --tags``
         executors (list, optional): List of input executors for discovering buildspecs by argument ``buildtest build --executor``
+        max_depth (int, optional): Maximum directory depth to traverse while discovering buildspecs.
         verbose (bool, optional): Enable verbose output for buildtest that is specified by ``buildtest --verbose``
         site_config (buildtest.config.SiteConfiguration, optional): instance of SiteConfiguration class that has the buildtest configuration
 
@@ -159,8 +161,13 @@ def discover_buildspecs(
         file_traversal_limit = site_config.target_config.get(
             "file_traversal_limit", 1000
         )
+        config_max_depth = site_config.target_config.get("max-depth")
     else:
         file_traversal_limit = 1000
+        config_max_depth = None
+
+    if max_depth is None:
+        max_depth = config_max_depth
 
     # discover buildspecs based on --tags
     if tags:
@@ -215,7 +222,7 @@ def discover_buildspecs(
         # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
         # times we need to invoke discover_buildspecs once per argument.
         for option in buildspecs:
-            bp = discover_by_buildspecs(option, file_traversal_limit)
+            bp = discover_by_buildspecs(option, file_traversal_limit, max_depth)
 
             # only add buildspecs if its not None
             if bp:
@@ -247,7 +254,7 @@ def discover_buildspecs(
         # discover all excluded buildspecs, if its file add to list,
         # if its directory traverse all .yml files
         for name in exclude_buildspecs:
-            bp = discover_by_buildspecs(name, file_traversal_limit)
+            bp = discover_by_buildspecs(name, file_traversal_limit, max_depth)
             if bp:
                 buildspec_dict["excluded"] += bp
 
@@ -510,7 +517,9 @@ def discover_buildspecs_by_executor(buildspec_cache, executors):
     return buildspecs, buildspecs_by_executors
 
 
-def discover_by_buildspecs(buildspec: str, file_traversal_limit: int) -> list:
+def discover_by_buildspecs(
+    buildspec: str, file_traversal_limit: int, max_depth: Optional[int] = None
+) -> list:
     """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
     discover one or more files and return a list for buildtest to process.
     This method is called once per argument of ``--buildspec`` or ``--exclude``
@@ -536,6 +545,7 @@ def discover_by_buildspecs(buildspec: str, file_traversal_limit: int) -> list:
     Args:
         buildspec (str): Full path to buildspec based on argument ``buildtest build --buildspec``
         file_traversal_limit (int): Limit the number of files that can be traversed when searching for buildspecs
+        max_depth (int, optional): Maximum directory depth to traverse when searching buildspecs in a directory.
 
     Returns:
         list: List of resolved buildspecs.
@@ -559,7 +569,10 @@ def discover_by_buildspecs(buildspec: str, file_traversal_limit: int) -> list:
             f"Buildspec File: {buildspec} is a directory so traversing directory tree to find all Buildspec files with .yml extension"
         )
         buildspecs = walk_tree(
-            buildspec, ext=".yml", file_traverse_limit=file_traversal_limit
+            buildspec,
+            ext=".yml",
+            max_depth=max_depth,
+            file_traverse_limit=file_traversal_limit,
         )
     elif os.path.isfile(buildspec):
         # if buildspec doesn't end in .yml extension we print message and return None
@@ -621,6 +634,7 @@ class BuildTest:
         helpfilter=None,
         limit=None,
         max_jobs=None,
+        max_depth=None,
         maxpendtime=None,
         modulepurge=None,
         modules=None,
@@ -663,6 +677,7 @@ class BuildTest:
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
             max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
+            max_depth (int, optional): Maximum directory depth to traverse while discovering buildspecs.
             maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
             modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
             modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
@@ -733,6 +748,12 @@ class BuildTest:
                 if field <= 0:
                     raise BuildTestError(f"{field} must be greater than 0")
 
+        if max_depth is not None:
+            if not isinstance(max_depth, int):
+                raise BuildTestError(f"{max_depth} is not of type int")
+            if max_depth < 0:
+                raise BuildTestError(f"{max_depth} must be greater than or equal to 0")
+
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
         self.buildspecs = buildspecs
@@ -763,6 +784,7 @@ class BuildTest:
         self.save_profile = save_profile
         self.profile = profile
         self.max_jobs = max_jobs
+        self.max_depth = max_depth
         self.strict = strict
         self.write_config_file = write_config_file
 
@@ -915,6 +937,7 @@ class BuildTest:
         self.timeout = content["timeout"]
         self.limit = content["limit"]
         self.max_jobs = content["max_jobs"]
+        self.max_depth = content.get("max_depth")
         self.strict = content["strict"]
 
     def save_rerun_file(self):
@@ -948,6 +971,7 @@ class BuildTest:
             "timeout": self.timeout,
             "limit": self.limit,
             "max_jobs": self.max_jobs,
+            "max_depth": self.max_depth,
             "strict": self.strict,
         }
 
@@ -1009,6 +1033,7 @@ class BuildTest:
             "filter": self.filter_buildspecs,
             "executor-type": self.executor_type,
             "max_jobs": self.max_jobs,
+            "max-depth": self.max_depth,
             "remove-stagedir": self.remove_stagedir,
             "strict": self.strict,
         }
@@ -1094,6 +1119,7 @@ class BuildTest:
         self.filter_buildspecs = profile_configuration.get("filter")
         self.executor_type = profile_configuration.get("executor-type")
         self.max_jobs = profile_configuration.get("max_jobs")
+        self.max_depth = profile_configuration.get("max-depth")
         self.remove_stagedir = profile_configuration.get("remove-stagedir")
         self.strict = profile_configuration.get("strict")
 
@@ -1139,6 +1165,7 @@ class BuildTest:
             name=self.name,
             tags=self.tags,
             executors=self.executors,
+            max_depth=self.max_depth,
             verbose=self.verbose,
             site_config=self.configuration,
         )

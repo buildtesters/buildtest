@@ -23,6 +23,11 @@ configuration.detect_system()
 configuration.validate()
 
 
+class DummySiteConfig:
+    def __init__(self, target_config):
+        self.target_config = target_config
+
+
 @pytest.mark.cli
 def test_clean():
     """This test will check ``buildtest clean`` command."""
@@ -569,6 +574,39 @@ def test_discover():
         discover_buildspecs(buildspecs=[tf.name])
 
 
+def test_discover_max_depth(monkeypatch):
+    monkeypatch.setattr("buildtest.cli.build.load_json", lambda _: {})
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        root_buildspec = os.path.join(tempdir, "root.yml")
+        nested_dir = os.path.join(tempdir, "nested")
+        nested_buildspec = os.path.join(nested_dir, "nested.yml")
+
+        os.makedirs(nested_dir, exist_ok=True)
+        with open(root_buildspec, "w") as fd:
+            fd.write("buildspecs:\n")
+        with open(nested_buildspec, "w") as fd:
+            fd.write("buildspecs:\n")
+
+        discovered = discover_buildspecs(buildspecs=[tempdir], max_depth=1)
+        assert sorted(discovered["detected"]) == [os.path.abspath(root_buildspec)]
+
+        config = DummySiteConfig(target_config={"file_traversal_limit": 1000, "max-depth": 1})
+        discovered_with_config = discover_buildspecs(
+            buildspecs=[tempdir], site_config=config
+        )
+        assert sorted(discovered_with_config["detected"]) == [
+            os.path.abspath(root_buildspec)
+        ]
+
+        discovered_with_override = discover_buildspecs(
+            buildspecs=[tempdir], site_config=config, max_depth=2
+        )
+        assert sorted(discovered_with_override["detected"]) == sorted(
+            [os.path.abspath(root_buildspec), os.path.abspath(nested_buildspec)]
+        )
+
+
 class TestBuildTest_TypeCheck:
     def test_buildspec(self):
         # buildspec must be a list not a string
@@ -631,6 +669,13 @@ class TestBuildTest_TypeCheck:
         # must be an integer
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], max_jobs=0.1)
+
+    def test_invalid_max_depth(self):
+        with pytest.raises(BuildTestError):
+            BuildTest(configuration=configuration, tags=["pass"], max_depth=-1)
+
+        with pytest.raises(BuildTestError):
+            BuildTest(configuration=configuration, tags=["pass"], max_depth=0.1)
 
     def test_invalid_exclude_tags_type(self):
         # exclude_tags must be a list

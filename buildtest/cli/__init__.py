@@ -123,6 +123,28 @@ def positive_number(value):
     return int_val
 
 
+def non_negative_number(value):
+    """Checks if input is a non-negative integer and returns value as int type."""
+
+    if not isinstance(value, (str, int)):
+        raise argparse.ArgumentTypeError(
+            f"Input must be an integer or string type, you have specified '{value}' which is of type {type(value)}"
+        )
+
+    try:
+        int_val = int(value)
+    except ValueError:
+        console.print(f"[red]Unable to convert {value} to int ")
+        console.print_exception()
+        raise ValueError
+
+    if int_val < 0:
+        raise argparse.ArgumentTypeError(
+            f"Input: {value} converted to int: {int_val} must be a non-negative number"
+        )
+    return int_val
+
+
 def supported_color(input_color):
     """Checks if input is a supported color and returns value as an Color type.
 
@@ -813,6 +835,13 @@ class BuildTestParser:
                     {
                         "action": "store_true",
                         "help": "Rerun last successful buildtest build command.",
+                    },
+                ),
+                (
+                    ["--max-depth"],
+                    {
+                        "type": non_negative_number,
+                        "help": "Maximum directory depth to traverse when discovering buildspecs.",
                     },
                 ),
             ],

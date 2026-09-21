@@ -6,6 +6,7 @@ from buildtest.cli import (
     BuildTestParser,
     build_filters_format,
     handle_kv_string,
+    non_negative_number,
     positive_number,
     supported_color,
     valid_time,
@@ -24,6 +25,20 @@ def test_positive_number():
 
     with pytest.raises(ValueError):
         positive_number("hello")
+
+
+def test_non_negative_number():
+    assert 0 == non_negative_number(0)
+    assert 1 == non_negative_number("1")
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        non_negative_number(-1)
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        non_negative_number([1, 2, 3])
+
+    with pytest.raises(ValueError):
+        non_negative_number("hello")
 
 
 def test_handle_kv_string():
