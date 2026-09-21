@@ -126,17 +126,27 @@ def positive_number(value):
 def non_negative_number(value):
     """Checks if input is a non-negative integer and returns value as int type."""
 
+    if isinstance(value, bool):
+        raise argparse.ArgumentTypeError(
+            f"Input must be an integer or string type, you have specified '{value}' which is of type {type(value)}"
+        )
+
     if not isinstance(value, (str, int)):
         raise argparse.ArgumentTypeError(
             f"Input must be an integer or string type, you have specified '{value}' which is of type {type(value)}"
         )
 
+    if isinstance(value, str) and not value.isdigit():
+        raise argparse.ArgumentTypeError(
+            f"Input must be a non-negative integer, unable to convert '{value}' to int"
+        )
+
     try:
         int_val = int(value)
     except ValueError:
-        console.print(f"[red]Unable to convert {value} to int ")
-        console.print_exception()
-        raise ValueError
+        raise argparse.ArgumentTypeError(
+            f"Input must be an integer or string type, unable to convert '{value}' to int"
+        )
 
     if int_val < 0:
         raise argparse.ArgumentTypeError(
@@ -840,6 +850,7 @@ class BuildTestParser:
                 (
                     ["--max-depth"],
                     {
+                        "dest": "max_depth",
                         "type": non_negative_number,
                         "help": "Maximum directory depth to traverse when discovering buildspecs.",
                     },

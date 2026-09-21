@@ -749,7 +749,7 @@ class BuildTest:
                     raise BuildTestError(f"{field} must be greater than 0")
 
         if max_depth is not None:
-            if not isinstance(max_depth, int):
+            if isinstance(max_depth, bool) or not isinstance(max_depth, int):
                 raise BuildTestError(f"{max_depth} is not of type int")
             if max_depth < 0:
                 raise BuildTestError(f"{max_depth} must be greater than or equal to 0")
@@ -937,7 +937,7 @@ class BuildTest:
         self.timeout = content["timeout"]
         self.limit = content["limit"]
         self.max_jobs = content["max_jobs"]
-        self.max_depth = content.get("max_depth")
+        self.max_depth = content.get("max_depth", content.get("max-depth"))
         self.strict = content["strict"]
 
     def save_rerun_file(self):
@@ -1120,6 +1120,8 @@ class BuildTest:
         self.executor_type = profile_configuration.get("executor-type")
         self.max_jobs = profile_configuration.get("max_jobs")
         self.max_depth = profile_configuration.get("max-depth")
+        if self.max_depth is None:
+            self.max_depth = profile_configuration.get("max_depth")
         self.remove_stagedir = profile_configuration.get("remove-stagedir")
         self.strict = profile_configuration.get("strict")
 

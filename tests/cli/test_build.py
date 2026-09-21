@@ -73,6 +73,16 @@ class TestBuildTest:
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, rerun=True, dry_run=True)
 
+    def test_rerun_loads_max_depth(self):
+        cmd = BuildTest(configuration=configuration, tags=["pass"], max_depth=2)
+        cmd.save_rerun_file()
+
+        rerun_cmd = BuildTest(configuration=configuration, rerun=True, dry_run=True)
+        assert rerun_cmd.max_depth == 2
+
+        if os.path.exists(BUILDTEST_RERUN_FILE):
+            os.remove(BUILDTEST_RERUN_FILE)
+
     @pytest.mark.cli
     def test_build_executor_type(self):
 
@@ -440,12 +450,14 @@ class TestBuildTest:
             executor_type="local",
             remove_stagedir=True,
             max_jobs=2,
+            max_depth=2,
             save_profile="demo",
             verbose=True,
             strict=True,
         )
         profile_configuration = buildtest_configuration.get_profile(profile_name="demo")
         pprint(profile_configuration)
+        assert profile_configuration.get("max-depth") == 2
 
         # When --module-purge is not specified (i.e False) then this key should not be in profile configuration and set to None
         BuildTest(
@@ -464,6 +476,7 @@ class TestBuildTest:
         cmd = BuildTest(
             profile="demo", configuration=buildtest_configuration, verbose=True
         )
+        assert cmd.max_depth == 2
         cmd.build()
 
     def test_save_profile_and_write_to_alternate_configuration_file(self):
@@ -676,6 +689,9 @@ class TestBuildTest_TypeCheck:
 
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], max_depth=0.1)
+
+        with pytest.raises(BuildTestError):
+            BuildTest(configuration=configuration, tags=["pass"], max_depth=True)
 
     def test_invalid_exclude_tags_type(self):
         # exclude_tags must be a list

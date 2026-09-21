@@ -37,8 +37,14 @@ def test_non_negative_number():
     with pytest.raises(argparse.ArgumentTypeError):
         non_negative_number([1, 2, 3])
 
-    with pytest.raises(ValueError):
+    with pytest.raises(argparse.ArgumentTypeError):
+        non_negative_number(True)
+
+    with pytest.raises(argparse.ArgumentTypeError):
         non_negative_number("hello")
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        non_negative_number("1.0")
 
 
 def test_handle_kv_string():
@@ -102,3 +108,12 @@ def test_valid_time():
 def test_retrieve_main_opts():
     parser = BuildTestParser()
     print(parser.retrieve_main_options())
+
+
+def test_build_max_depth_argument():
+    parser = BuildTestParser()
+    args = parser.parser.parse_args(["build", "--max-depth", "1", "-b", "tutorials"])
+    assert args.max_depth == 1
+
+    with pytest.raises(SystemExit):
+        parser.parser.parse_args(["build", "--max-depth", "-1", "-b", "tutorials"])
