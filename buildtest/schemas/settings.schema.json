@@ -73,7 +73,7 @@
         },
         "max-depth": {
           "type": "integer",
-          "minimum": 0,
+          "minimum": 1,
           "description": "Maximum directory depth to traverse when searching for buildspecs"
         },
         "testdir": {

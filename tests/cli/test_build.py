@@ -688,6 +688,9 @@ class TestBuildTest_TypeCheck:
             BuildTest(configuration=configuration, tags=["pass"], max_depth=-1)
 
         with pytest.raises(BuildTestError):
+            BuildTest(configuration=configuration, tags=["pass"], max_depth=0)
+
+        with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], max_depth=0.1)
 
         with pytest.raises(BuildTestError):

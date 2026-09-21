@@ -6,7 +6,6 @@ from buildtest.cli import (
     BuildTestParser,
     build_filters_format,
     handle_kv_string,
-    non_negative_number,
     positive_number,
     supported_color,
     valid_time,
@@ -25,26 +24,6 @@ def test_positive_number():
 
     with pytest.raises(ValueError):
         positive_number("hello")
-
-
-def test_non_negative_number():
-    assert 0 == non_negative_number(0)
-    assert 1 == non_negative_number("1")
-
-    with pytest.raises(argparse.ArgumentTypeError):
-        non_negative_number(-1)
-
-    with pytest.raises(argparse.ArgumentTypeError):
-        non_negative_number([1, 2, 3])
-
-    with pytest.raises(argparse.ArgumentTypeError):
-        non_negative_number(True)
-
-    with pytest.raises(argparse.ArgumentTypeError):
-        non_negative_number("hello")
-
-    with pytest.raises(argparse.ArgumentTypeError):
-        non_negative_number("1.0")
 
 
 def test_handle_kv_string():
@@ -114,6 +93,9 @@ def test_build_max_depth_argument():
     parser = BuildTestParser()
     args = parser.parser.parse_args(["build", "--max-depth", "1", "-b", "tutorials"])
     assert args.max_depth == 1
+
+    with pytest.raises(SystemExit):
+        parser.parser.parse_args(["build", "--max-depth", "0", "-b", "tutorials"])
 
     with pytest.raises(SystemExit):
         parser.parser.parse_args(["build", "--max-depth", "-1", "-b", "tutorials"])
