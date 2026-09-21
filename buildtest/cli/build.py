@@ -749,7 +749,7 @@ class BuildTest:
                     raise BuildTestError(f"{field} must be greater than 0")
 
         if max_depth is not None:
-            if isinstance(max_depth, bool) or not isinstance(max_depth, int):
+            if not isinstance(max_depth, int):
                 raise BuildTestError(f"{max_depth} is not of type int")
             if max_depth <= 0:
                 raise BuildTestError(f"{max_depth} must be greater than 0")

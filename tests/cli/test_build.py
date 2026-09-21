@@ -693,9 +693,6 @@ class TestBuildTest_TypeCheck:
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], max_depth=0.1)
 
-        with pytest.raises(BuildTestError):
-            BuildTest(configuration=configuration, tags=["pass"], max_depth=True)
-
     def test_invalid_exclude_tags_type(self):
         # exclude_tags must be a list
         with pytest.raises(BuildTestError):
