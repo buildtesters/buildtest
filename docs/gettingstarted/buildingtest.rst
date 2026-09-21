@@ -468,7 +468,7 @@ If you specify 0 or negative number you will get an error as follows
         :returncode: 2
 
 Maximum Depth search (``buildtest build --max-depth``)
------------------------------------------------------
+-------------------------------------------------------
 
 The ``--max-depth`` option allows you to limit the depth of the directory tree that buildtest will search for buildspec files. 
 This can be useful when you have a large directory structure and want to restrict the search to a certain level instead of 
