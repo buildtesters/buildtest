@@ -9,20 +9,23 @@ on:
       - '.github/workflows/regressiontest_container.yml'
       - 'requirements.txt'
       - 'pyproject.toml'
-    
+
 jobs:
   buildtest_tutorial_container:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     container:
-      image: ghcr.io/buildtesters/buildtest_spack:spack-sc23
+      image: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
       options: "-it --user root"
     steps:
       - name: Check out the repo
         uses: actions/checkout@v7
 
-      - name: regression test in container
+      - name: Regression test in container
         shell: bash
-        run: | 
+        run: |
           set +xe
           . /etc/profile
           which csh zsh
@@ -33,6 +36,7 @@ jobs:
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
         with:
