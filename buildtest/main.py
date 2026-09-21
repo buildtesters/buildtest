@@ -389,6 +389,7 @@ def handle_buildspec_command(args, configuration, report_file, buildtest_editor)
             tags=args.tag,
             executors=args.executor,
             name=args.name,
+            max_depth=args.max_depth,
             configuration=configuration,
         )
 

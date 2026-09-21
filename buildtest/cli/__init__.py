@@ -1170,6 +1170,14 @@ class BuildTestParser:
                             "help": "Specify buildspecs by name to validate",
                         },
                     ),
+                    (
+                        ["--max-depth"],
+                        {
+                            "dest": "max_depth",
+                            "type": positive_number,
+                            "help": "Maximum directory depth to traverse when discovering buildspecs.",
+                        },
+                    ),
                 ],
             },
         ]

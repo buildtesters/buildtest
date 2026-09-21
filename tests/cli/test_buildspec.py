@@ -53,6 +53,12 @@ def test_buildspec_validate():
             configuration=configuration,
         )
 
+    buildspec_validate_command(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
+        max_depth=1,
+        configuration=configuration,
+    )
+
 
 class TestBuildSpecFind:
     cache = BuildspecCache(configuration=configuration, rebuild=True)
