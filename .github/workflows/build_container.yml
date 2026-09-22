@@ -61,6 +61,38 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
 
+      - name: Verify container binaries and executable files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=== Docker image metadata ==="
+          docker image inspect buildtest_spack:spack-sc25 \\
+            --format 'OS={{.Os}} ARCH={{.Architecture}} USER={{.Config.User}} ENTRYPOINT={{json .Config.Entrypoint}} CMD={{json .Config.Cmd}}'
+
+          echo "=== Host checkout permissions ==="
+          stat -c '%A %a %n' \\
+            setup.sh \\
+            scripts/spack_container/setup.sh \\
+            scripts/spack_container/spack_setup.sh \\
+            scripts/spack_container/run-tutorial-examples.sh
+
+          echo "=== Files from the built image (no container process is executed) ==="
+          cid=$(docker create --platform linux/amd64 buildtest_spack:spack-sc25)
+          trap 'docker rm -f "$cid" >/dev/null 2>&1 || true' EXIT
+          mkdir -p /tmp/sc25-image-check
+          docker cp "$cid:/usr/bin/bash" /tmp/sc25-image-check/bash
+          docker cp "$cid:/etc/profile.d/spack_setup.sh" /tmp/sc25-image-check/spack_setup.sh
+          stat -c '%A %a %n' /tmp/sc25-image-check/bash /tmp/sc25-image-check/spack_setup.sh
+          file /tmp/sc25-image-check/bash /tmp/sc25-image-check/spack_setup.sh
+          readelf -h /tmp/sc25-image-check/bash | grep -E 'Class:|Machine:'
+
+          echo "=== Expected runtime architecture ==="
+          test "$(docker image inspect buildtest_spack:spack-sc25 --format '{{.Architecture}}')" = amd64
+
+          echo "=== Bash ELF architecture ==="
+          file /tmp/sc25-image-check/bash | grep -E 'ELF 64-bit.*x86-64|x86-64.*ELF 64-bit'
+
       - name: Regression test in the PR container
         if: github.event_name == 'pull_request'
         shell: bash
