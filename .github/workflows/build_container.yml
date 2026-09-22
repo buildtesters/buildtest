@@ -3,6 +3,15 @@ name: Build Container
 on:
   pull_request:
     branches: [devel]
+    paths:
+      - 'scripts/spack_container/**'
+      - '.github/workflows/build_container.yml'
+  push:
+    branches: [devel]
+    paths:
+      - 'scripts/spack_container/**'
+      - '.github/workflows/build_container.yml'
+  workflow_dispatch:
 
 jobs:
   build_container:
@@ -10,6 +19,10 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
+      IMAGE_SHA: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25-${{ github.sha }}
 
     steps:
       - name: Check out the repo
@@ -22,18 +35,55 @@ jobs:
         uses: docker/setup-buildx-action@v4
 
       - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build SC25 container
         uses: docker/build-push-action@v6
         with:
           context: scripts/spack_container
           platforms: linux/amd64
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
+          load: ${{ github.event_name == 'pull_request' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+          tags: |
+            buildtest_spack:spack-sc25
+            ${{ env.IMAGE }}
+            ${{ env.IMAGE_SHA }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Regression test in the PR container
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --platform linux/amd64 \
+            --user root \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            buildtest_spack:spack-sc25 \
+            bash -lc '
+              set +e
+              . /etc/profile
+              which csh zsh
+              module load python
+              python3 -m venv env
+              source env/bin/activate
+              source setup.sh
+              python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
+              returncode=$?
+              if [ $returncode != 0 ]; then exit $returncode; fi
+            '
+
+      - name: Publish summary
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Published:"
+          echo "  ${IMAGE}"
+          echo "  ${IMAGE_SHA}"
