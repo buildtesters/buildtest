@@ -4,8 +4,12 @@ on:
   pull_request:
     branches: [devel]
     paths:
+      - 'buildtest/**'
+      - 'tests/**'
       - 'scripts/spack_container/**'
       - '.github/workflows/build_container.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
   push:
     branches: [devel]
     paths:
