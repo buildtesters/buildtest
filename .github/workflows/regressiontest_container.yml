@@ -1,54 +1,39 @@
 name: Regression Test in Container
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["Build Container"]
+    types: [completed]
     branches: [devel]
-    paths:
-      - 'buildtest/**'
-      - 'tests/**'
-      - 'scripts/spack_container/**'
-      - '.github/workflows/regressiontest_container.yml'
-      - 'requirements.txt'
-      - 'pyproject.toml'
 
 jobs:
   buildtest_tutorial_container:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: read
     env:
-      IMAGE: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
+      IMAGE: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25-${{ github.event.workflow_run.head_sha }}
+
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v7
+      - name: Check out the built commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Wait for the SC25 container image
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in $(seq 1 60); do
-            if docker manifest inspect "${IMAGE}" >/dev/null 2>&1; then
-              echo "Found ${IMAGE}"
-              exit 0
-            fi
-            echo "Waiting for ${IMAGE} (attempt ${attempt}/60)"
-            sleep 30
-          done
-          echo "Timed out waiting for ${IMAGE}" >&2
-          exit 1
-
       - name: Regression test in container
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
+          docker pull "${IMAGE}"
           docker run --rm \
             --platform linux/amd64 \
             --user root \
