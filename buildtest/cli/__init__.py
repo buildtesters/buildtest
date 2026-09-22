@@ -640,6 +640,13 @@ class BuildTestParser:
                     "action": "append",
                 },
             ),
+            (
+                ["--configfile"],
+                {
+                    "type": str,
+                    "help": "Specify the configuration file to use for the regression test",
+                },
+            ),
         ]
 
         for args, kwargs in unittests_args:
@@ -806,6 +813,14 @@ class BuildTestParser:
                     {
                         "action": "store_true",
                         "help": "Rerun last successful buildtest build command.",
+                    },
+                ),
+                (
+                    ["--max-depth"],
+                    {
+                        "dest": "max_depth",
+                        "type": positive_number,
+                        "help": "Maximum directory depth to traverse when discovering buildspecs.",
                     },
                 ),
             ],
@@ -1153,6 +1168,14 @@ class BuildTestParser:
                             "type": str,
                             "action": "append",
                             "help": "Specify buildspecs by name to validate",
+                        },
+                    ),
+                    (
+                        ["--max-depth"],
+                        {
+                            "dest": "max_depth",
+                            "type": positive_number,
+                            "help": "Maximum directory depth to traverse when discovering buildspecs.",
                         },
                     ),
                 ],

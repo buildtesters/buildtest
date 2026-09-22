@@ -1234,6 +1234,7 @@ def buildspec_validate_command(
     tags=None,
     executors=None,
     name=None,
+    max_depth=None,
 ):
     """Entry point for ``buildtest buildspec validate``. This method is responsible for discovering buildspec
     with same options used for building buildspecs that includes ``--buildspec``, ``--exclude``, ``--tag``, and
@@ -1247,6 +1248,7 @@ def buildspec_validate_command(
         tags (list, optional): List of tag names to search for buildspec to validate. This option is specified via ``buildtest buildspec validate --tag``
         executors (list, optional): List of executor names to search for buildspecs to validate. This option is specified via ``buildtest buildspec validate --executor``
         name (str, optional): Name of test to validate. This option is specified via ``buildtest buildspec validate --name``
+        max_depth (int, optional): Maximum directory depth to traverse when discovering buildspecs. This option is specified via ``buildtest buildspec validate --max-depth``
     """
 
     buildspecs_dict = discover_buildspecs(
@@ -1256,6 +1258,7 @@ def buildspec_validate_command(
         executors=executors,
         name=name,
         site_config=configuration,
+        max_depth=max_depth,
     )
     detected_buildspecs = buildspecs_dict["detected"]
 

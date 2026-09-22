@@ -87,3 +87,15 @@ def test_valid_time():
 def test_retrieve_main_opts():
     parser = BuildTestParser()
     print(parser.retrieve_main_options())
+
+
+def test_build_max_depth_argument():
+    parser = BuildTestParser()
+    args = parser.parser.parse_args(["build", "--max-depth", "1", "-b", "tutorials"])
+    assert args.max_depth == 1
+
+    with pytest.raises(SystemExit):
+        parser.parser.parse_args(["build", "--max-depth", "0", "-b", "tutorials"])
+
+    with pytest.raises(SystemExit):
+        parser.parser.parse_args(["build", "--max-depth", "-1", "-b", "tutorials"])

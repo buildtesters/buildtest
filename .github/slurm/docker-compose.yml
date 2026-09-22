@@ -1,0 +1,98 @@
+services:
+  mysql:
+    image: mariadb:12
+    hostname: mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: slurm_acct_db
+      MYSQL_USER: slurm
+      MYSQL_PASSWORD: password
+    volumes:
+      - var_lib_mysql:/var/lib/mysql
+    networks: [slurm-network]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  slurmdbd:
+    image: slurm-docker-cluster:${SLURM_VERSION:-25.11.8}
+    command: ["slurmdbd"]
+    hostname: slurmdbd
+    volumes:
+      - etc_munge:/etc/munge
+      - etc_slurm:/etc/slurm
+      - var_log_slurm:/var/log/slurm
+    environment:
+      MYSQL_USER: slurm
+      MYSQL_PASSWORD: password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks: [slurm-network]
+    healthcheck:
+      test: ["CMD-SHELL", "pidof slurmdbd"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  slurmctld:
+    image: slurm-docker-cluster:${SLURM_VERSION:-25.11.8}
+    command: ["slurmctld"]
+    hostname: slurmctld
+    privileged: true
+    working_dir: /data
+    volumes:
+      - etc_munge:/etc/munge
+      - etc_slurm:/etc/slurm
+      - slurm_jobdir:/data
+      - var_log_slurm:/var/log/slurm
+      - ${GITHUB_WORKSPACE:-.}:/workspace/buildtest:ro
+    depends_on:
+      slurmdbd:
+        condition: service_healthy
+    networks: [slurm-network]
+    healthcheck:
+      test: ["CMD-SHELL", "scontrol ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  cpu-worker:
+    image: slurm-docker-cluster:${SLURM_VERSION:-25.11.8}
+    command: ["slurmd-cpu"]
+    hostname: c1
+    privileged: true
+    working_dir: /data
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-buildtest-slurm}
+    volumes:
+      - etc_munge:/etc/munge
+      - etc_slurm:/etc/slurm
+      - slurm_jobdir:/data
+      - var_log_slurm:/var/log/slurm
+    depends_on:
+      slurmctld:
+        condition: service_healthy
+    networks: [slurm-network]
+    healthcheck:
+      test: ["CMD-SHELL", "pidof slurmd"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+volumes:
+  etc_munge:
+  etc_slurm:
+  slurm_jobdir:
+  var_lib_mysql:
+  var_log_slurm:
+
+networks:
+  slurm-network:
+    driver: bridge

@@ -19,6 +19,8 @@ system:
 
     # This configuration is used to limit the number of files that can be traversed when searching for buildspecs
     # file_traversal_limit: 1000
+    # Maximum directory depth when traversing for buildspecs. Set to 1 to only include files in the specified directory.
+    # max-depth: 1
 
     # enable pagination for buildtest
     pager: false

@@ -1,0 +1,184 @@
+name: Slurm regression
+
+on:
+  pull_request:
+    branches: [devel]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - '.github/slurm/**'
+      - '.github/workflows/slurm_regression.yml'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+jobs:
+  slurm_regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      SLURM_VERSION: 26.05.2
+      COMPOSE_PROJECT_NAME: buildtest-slurm
+
+    steps:
+      - name: Check out Buildtest
+        uses: actions/checkout@v4
+
+      - name: Pull Slurm test image
+        run: |
+          docker pull giovtorres/slurm-docker-cluster:latest
+          docker tag giovtorres/slurm-docker-cluster:latest slurm-docker-cluster:${SLURM_VERSION}
+
+      - name: Start Slurm cluster
+        working-directory: .github/slurm
+        run: |
+          docker compose up -d
+          docker compose ps
+
+      - name: Wait for Slurm controller and worker
+        working-directory: .github/slurm
+        run: |
+          set -euxo pipefail
+          for i in {1..60}; do
+            if docker compose exec -T slurmctld scontrol ping >/dev/null 2>&1 && \
+               docker compose exec -T slurmctld sinfo -h -o '%T' | grep -q idle; then
+              break
+            fi
+            if [ "$i" -eq 60 ]; then
+              docker compose ps
+              docker compose logs --tail=200
+              exit 1
+            fi
+            sleep 2
+          done
+          docker compose exec -T slurmctld scontrol ping
+          docker compose exec -T slurmctld sinfo -N -l
+          docker compose exec -T slurmctld sacctmgr show cluster
+
+      - name: Install Buildtest in Slurm controller
+        working-directory: .github/slurm
+        run: |
+          docker compose exec -T slurmctld bash -lc '
+            dnf -y install python3.12-pip &&
+            python3 -m pip install --disable-pip-version-check --no-cache-dir -e /workspace/buildtest
+          '
+
+      - name: Validate Buildtest configuration
+        working-directory: .github/slurm
+        run: |
+          docker compose exec -T slurmctld bash -lc '
+            export BUILDTEST_CI_DIR=/data/buildtest-ci
+            mkdir -p "$BUILDTEST_CI_DIR"
+            export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
+            /workspace/buildtest/bin/buildtest config validate
+          '
+
+      - name: Verify Slurm output and error files
+        working-directory: .github/slurm
+        run: |
+          docker compose exec -T slurmctld bash -lc '
+            set -euxo pipefail
+            output_file=/data/slurm-smoke-%j.out
+            error_file=/data/slurm-smoke-%j.err
+            job_id=$(sbatch --parsable \
+              --partition=cpu \
+              --nodes=1 \
+              --ntasks=1 \
+              --output="$output_file" \
+              --error="$error_file" \
+              --wrap="echo smoke output; echo smoke error >&2; hostname")
+            echo "Submitted smoke job ${job_id}"
+            while squeue -h -j "$job_id" | grep -q .; do
+              sleep 1
+            done
+            sacct -X -n -P -j "$job_id" -o JobID,State,ExitCode
+            ls -l /data/slurm-smoke-"${job_id}".out /data/slurm-smoke-"${job_id}".err
+            grep -q "smoke output" /data/slurm-smoke-"${job_id}".out
+            grep -q "smoke error" /data/slurm-smoke-"${job_id}".err
+          '
+
+      - name: Run Buildtest regression suite
+        working-directory: .github/slurm
+        run: |
+          docker compose exec -T slurmctld bash -lc '
+            echo "Preparing writable Buildtest checkout"
+            rm -rf /data/buildtest-regression
+            mkdir -p /data/buildtest-regression
+            cp -a /workspace/buildtest/. /data/buildtest-regression/
+            export BUILDTEST_ROOT=/data/buildtest-regression
+            export BUILDTEST_SLURM_REGRESSION=1
+            export BUILDTEST_CONFIGFILE=/workspace/buildtest/.github/slurm/buildtest.yml
+            export PATH=$BUILDTEST_ROOT/bin:$PATH
+            export PYTHONPATH=$BUILDTEST_ROOT${PYTHONPATH:+:$PYTHONPATH}
+            cd "$BUILDTEST_ROOT"
+            command -v python3
+            python3 --version
+            python3 $BUILDTEST_ROOT/buildtest/tools/unittests.py \
+              --coverage \
+              --pytestopts "-m slurm" \
+              --configfile "$BUILDTEST_CONFIGFILE"
+            regression_status=$?
+            echo "Buildtest regression exit code: $regression_status"
+            python3 -m coverage xml -o /data/buildtest-ci/coverage.xml
+            coverage_status=$?
+            echo "Coverage export exit code: $coverage_status"
+            if [ "$regression_status" -ne 0 ]; then
+              exit "$regression_status"
+            fi
+            if [ "$coverage_status" -ne 0 ]; then
+              exit "$coverage_status"
+            fi
+          '
+
+      - name: Download coverage report
+        if: success()
+        working-directory: .github/slurm
+        run: docker compose cp slurmctld:/data/buildtest-ci/coverage.xml ../../coverage.xml
+
+      - name: Upload coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          verbose: true
+
+      - name: Verify Slurm accounting records
+        if: always()
+        working-directory: .github/slurm
+        run: |
+          docker compose exec -T slurmctld bash -lc '
+            echo "=== squeue ==="
+            squeue -a
+            echo "=== sacct ==="
+            sacct -X -n -P -o JobID,State,ExitCode,Partition,NodeList || true
+            echo "=== controller shared test directory ==="
+            find /data/buildtest-ci -maxdepth 5 -type f -printf "%M %s %p\n" 2>/dev/null || true
+            echo "=== controller output/error files ==="
+            find /data -maxdepth 1 -type f -name "slurm-smoke-*" -printf "%M %s %p\n" 2>/dev/null || true
+          '
+
+      - name: Collect Slurm diagnostics
+        if: always()
+        working-directory: .github/slurm
+        run: |
+          docker compose ps
+          docker compose logs --tail=300 slurmctld cpu-worker slurmdbd mysql > slurm-ci.log 2>&1 || true
+          docker compose exec -T cpu-worker bash -lc '
+            echo "=== worker shared test directory ==="
+            find /data/buildtest-ci -maxdepth 5 -type f -printf "%M %s %p\n" 2>/dev/null || true
+            echo "=== worker output/error files ==="
+            find /data -maxdepth 1 -type f -name "slurm-smoke-*" -printf "%M %s %p\n" 2>/dev/null || true
+          ' >> slurm-ci.log 2>&1 || true
+
+      - name: Upload Slurm diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: slurm-regression-logs
+          path: .github/slurm/slurm-ci.log
+          if-no-files-found: ignore
+
+      - name: Stop Slurm cluster
+        if: always()
+        working-directory: .github/slurm
+        run: docker compose down -v
