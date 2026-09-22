@@ -1,8 +1,10 @@
-FROM ghcr.io/spack/tutorial:sc25
+# syntax=docker/dockerfile:1
+
+FROM --platform=linux/amd64 ghcr.io/spack/tutorial:sc25
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# The SC25 tutorial image targets Ubuntu 22.04/x86_64. Keep the build
+# The SC25 tutorial image is an x86_64/amd64 image. Keep the build
 # environment aligned with the tutorial while adding the shells/tools used
 # by buildtest's Spack regression tests.
 USER root
@@ -20,7 +22,11 @@ ENV PATH=/home/spack/spack/bin:$PATH
 
 RUN git clone --depth=2 --branch=releases/v1.1 https://github.com/spack/spack.git ${SPACK_ROOT}
 
+# Docker COPY preserves the source file mode. Explicitly set the mode here so
+# the profile hook is executable in the resulting image.
 COPY spack_setup.sh /etc/profile.d/spack_setup.sh
+RUN chmod 0755 /etc/profile.d/spack_setup.sh
+
 COPY modules.yaml ${SPACK_ROOT}/etc/spack/modules.yaml
 
 USER spack
@@ -33,5 +39,5 @@ RUN cd ${SPACK_ROOT} && \
     spack uninstall -ay && \
     spack config add "modules:default:enable:[tcl]" && \
     spack install lmod python openmpi && \
-    . $(spack location -i lmod)/lmod/lmod/init/bash && \
+    . \$(spack location -i lmod)/lmod/lmod/init/bash && \
     spack module tcl refresh --delete-tree -y
