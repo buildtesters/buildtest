@@ -36,9 +36,9 @@ jobs:
           docker pull "${IMAGE}"
           docker run --rm \
             --platform linux/amd64 \
-            --user root \
-            -v "${GITHUB_WORKSPACE}:/workspace" \
-            -w /workspace \
+            --user spack \
+            -v "${GITHUB_WORKSPACE}:/home/spack/buildtest" \
+            -w /home/spack/buildtest \
             "${IMAGE}" \
             bash -lc '
               set +e
