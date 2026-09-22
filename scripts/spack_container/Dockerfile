@@ -30,9 +30,6 @@ RUN cd ${SPACK_ROOT} && \
     spack tutorial -y && \
     spack bootstrap now && \
     spack compiler find && \
-    # The module tutorial starts from a clean Spack store.  This also
-    # prevents tutorial packages from introducing duplicate concretizations
-    # that collide with our simplified module projections.
     spack uninstall -ay && \
     spack config add "modules:default:enable:[tcl]" && \
     spack install lmod python openmpi mpich && \
