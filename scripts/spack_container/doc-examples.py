@@ -12,7 +12,7 @@ from buildtest.utils.file import create_dir, is_dir, is_file
 if __name__ == "__main__":
     if getpass.getuser() != "spack" or os.getenv("HOME") != "/home/spack":
         sys.exit(
-            "This script can only be run inside container: ghcr.io/buildtesters/buildtest_spack:latest"
+            "This script can only be run inside container: ghcr.io/buildtesters/buildtest_spack:spack-sc25"
         )
 
     autogen_examples_dir = os.path.join(
