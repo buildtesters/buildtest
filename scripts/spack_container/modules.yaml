@@ -5,6 +5,7 @@ modules:
     roots:
       tcl: /home/spack/modules
     tcl:
-      hash_length: 0
+      # Keep a hash in module names so distinct concretizations do not collide.
+      hash_length: 7
       projections:
         all: '{name}/{version}-{compiler.name}-{compiler.version}'
