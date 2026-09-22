@@ -32,6 +32,6 @@ RUN cd ${SPACK_ROOT} && \
     spack compiler find && \
     spack uninstall -ay && \
     spack config add "modules:default:enable:[tcl]" && \
-    spack install lmod python openmpi mpich && \
+    spack install lmod python openmpi && \
     . $(spack location -i lmod)/lmod/lmod/init/bash && \
     spack module tcl refresh --delete-tree -y
