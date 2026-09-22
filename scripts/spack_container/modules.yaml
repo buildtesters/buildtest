@@ -6,7 +6,6 @@ modules:
       tcl: /home/spack/modules
     tcl:
       exclude_implicits: true
-      # Keep a hash in module names so distinct concretizations do not collide.
-      hash_length: 7
+      hash_length: 0
       projections:
         all: '{name}/{version}-{compiler.name}-{compiler.version}'
