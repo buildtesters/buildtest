@@ -13,8 +13,6 @@ jobs:
     permissions:
       contents: read
       packages: read
-    env:
-      IMAGE: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25-${{ github.event.workflow_run.head_sha }}
 
     steps:
       - name: Check out the built commit
@@ -29,19 +27,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Pull SC25 container
+        run: |
+          docker pull ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.event.workflow_run.head_sha }}
+
       - name: Regression test in container
         shell: bash
         run: |
-          set -euo pipefail
-          docker pull "${IMAGE}"
-          docker run --rm \
-            --platform linux/amd64 \
-            --user spack \
-            -v "${GITHUB_WORKSPACE}:/home/spack/buildtest" \
-            -w /home/spack/buildtest \
-            "${IMAGE}" \
-            bash -lc '
-              set +e
+          set +xe
+          docker run --rm             --user root             -v "${GITHUB_WORKSPACE}:/workspace"             -w /workspace             ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.event.workflow_run.head_sha }}             bash -lc '
               . /etc/profile
               which csh zsh
               module load python
