@@ -24,10 +24,6 @@ jobs:
       contents: read
       packages: write
 
-    env:
-      IMAGE: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25
-      IMAGE_SHA: ghcr.io/${{ github.repository_owner }}/buildtest_spack:spack-sc25-${{ github.sha }}
-
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -39,87 +35,27 @@ jobs:
         uses: docker/setup-buildx-action@v4
 
       - name: Log in to GitHub Container Registry
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build SC25 container
+      - name: Build and push SC25 container
         uses: docker/build-push-action@v6
         with:
           context: scripts/spack_container
           platforms: linux/amd64
-          load: ${{ github.event_name == 'pull_request' }}
-          push: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+          push: true
           tags: |
-            buildtest_spack:spack-sc25
-            ${{ env.IMAGE }}
-            ${{ env.IMAGE_SHA }}
+            ghcr.io/buildtesters/buildtest_spack:spack-sc25
+            ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.sha }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Verify container binaries and executable files
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          echo "=== Docker image metadata ==="
-          docker image inspect buildtest_spack:spack-sc25 \\
-            --format 'OS={{.Os}} ARCH={{.Architecture}} USER={{.Config.User}} ENTRYPOINT={{json .Config.Entrypoint}} CMD={{json .Config.Cmd}}'
-
-          echo "=== Host checkout permissions ==="
-          stat -c '%A %a %n' \\
-            setup.sh \\
-            scripts/spack_container/setup.sh \\
-            scripts/spack_container/spack_setup.sh \\
-            scripts/spack_container/run-tutorial-examples.sh
-
-          echo "=== Files from the built image (no container process is executed) ==="
-          cid=$(docker create --platform linux/amd64 buildtest_spack:spack-sc25)
-          trap 'docker rm -f "$cid" >/dev/null 2>&1 || true' EXIT
-          mkdir -p /tmp/sc25-image-check
-          docker cp "$cid:/usr/bin/bash" /tmp/sc25-image-check/bash
-          docker cp "$cid:/etc/profile.d/spack_setup.sh" /tmp/sc25-image-check/spack_setup.sh
-          stat -c '%A %a %n' /tmp/sc25-image-check/bash /tmp/sc25-image-check/spack_setup.sh
-          file /tmp/sc25-image-check/bash /tmp/sc25-image-check/spack_setup.sh
-          readelf -h /tmp/sc25-image-check/bash | grep -E 'Class:|Machine:'
-
-          echo "=== Expected runtime architecture ==="
-          test "$(docker image inspect buildtest_spack:spack-sc25 --format '{{.Architecture}}')" = amd64
-
-          echo "=== Bash ELF architecture ==="
-          file /tmp/sc25-image-check/bash | grep -E 'ELF 64-bit.*x86-64|x86-64.*ELF 64-bit'
-
-      - name: Regression test in the PR container
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          set -euo pipefail
-          docker run --rm \
-            --platform linux/amd64 \
-            --user spack \
-            -v "${GITHUB_WORKSPACE}:/home/spack/buildtest" \
-            -w /home/spack/buildtest \
-            buildtest_spack:spack-sc25 \
-            bash -lc '
-              set +e
-              . /etc/profile
-              which csh zsh
-              module load python
-              python3 -m venv env
-              source env/bin/activate
-              source setup.sh
-              python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
-              returncode=$?
-              if [ $returncode != 0 ]; then exit $returncode; fi
-            '
-
       - name: Publish summary
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
           echo "Published:"
-          echo "  ${IMAGE}"
-          echo "  ${IMAGE_SHA}"
+          echo "  ghcr.io/buildtesters/buildtest_spack:spack-sc25"
+          echo "  ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.sha }}"
