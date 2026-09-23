@@ -1,8 +1,11 @@
 modules:
   default:
+    enable:
+      - tcl
     roots:
       tcl: /home/spack/modules
     tcl:
+      exclude_implicits: true
       hash_length: 0
       projections:
         all: '{name}/{version}-{compiler.name}-{compiler.version}'
