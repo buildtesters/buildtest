@@ -1,38 +1,52 @@
 name: Regression Test in Container
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["Build Container"]
+    types: [completed]
     branches: [devel]
-    paths:
-      - 'buildtest/**'
-      - 'tests/**'
-      - '.github/workflows/regressiontest_container.yml'
-      - 'requirements.txt'
-      - 'pyproject.toml'
-    
+
 jobs:
   buildtest_tutorial_container:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/buildtesters/buildtest_spack:spack-sc23
-      options: "-it --user root"
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v7
+    permissions:
+      contents: read
+      packages: read
 
-      - name: regression test in container
+    steps:
+      - name: Check out the built commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull SC25 container
+        run: |
+          docker pull ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.event.workflow_run.head_sha }}
+
+      - name: Regression test in container
         shell: bash
-        run: | 
+        run: |
           set +xe
-          . /etc/profile
-          which csh zsh
-          module load python
-          python3 -m venv env
-          source env/bin/activate
-          source setup.sh
-          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
-          returncode=$?
-          if [ $returncode != 0 ]; then exit $returncode; fi
+          docker run --rm             --user root             -v "${GITHUB_WORKSPACE}:/workspace"             -w /workspace             ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.event.workflow_run.head_sha }}             bash -lc '
+              . /etc/profile
+              which csh zsh
+              module load python
+              python3 -m venv env
+              source env/bin/activate
+              source setup.sh
+              python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c --pytest="-m spack"
+              returncode=$?
+              if [ $returncode != 0 ]; then exit $returncode; fi
+            '
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
         with:
