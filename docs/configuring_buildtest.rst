@@ -10,4 +10,3 @@ How to configure buildtest
    configuring_buildtest/executors
    configuring_buildtest/compilers
    configuring_buildtest/cli_to_buildtest_configuration
-   configuring_buildtest/site_examples
