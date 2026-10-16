@@ -33,8 +33,8 @@ you can use `podman <https://docs.podman.io/en/latest/>`_ or `shifter <https://g
 
         .. code-block:: console
 
-            docker pull ghcr.io/buildtesters/buildtest_spack:spack-sc23
-            docker run -it ghcr.io/buildtesters/buildtest_spack:spack-sc23
+            docker pull ghcr.io/buildtesters/buildtest_spack:spack-sc25
+            docker run -it ghcr.io/buildtesters/buildtest_spack:spack-sc25
 
 
     .. tab-item:: podman
@@ -68,8 +68,8 @@ you can use `podman <https://docs.podman.io/en/latest/>`_ or `shifter <https://g
 
         .. code-block:: console
 
-            podman pull ghcr.io/buildtesters/buildtest_spack:spack-sc23
-            podman run -it ghcr.io/buildtesters/buildtest_spack:spack-sc23
+            podman pull ghcr.io/buildtesters/buildtest_spack:spack-sc25
+            podman run -it ghcr.io/buildtesters/buildtest_spack:spack-sc25
 
     .. tab-item:: shifter
 

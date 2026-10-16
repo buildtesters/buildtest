@@ -1,28 +1,31 @@
-FROM ghcr.io/spack/tutorial:sc23
+FROM ghcr.io/spack/tutorial:sc25
 
-# upgrade git version see https://github.com/actions/checkout/issues/238 and https://phoenixnap.com/kb/add-apt-repository-command-not-found-ubuntu
+ARG DEBIAN_FRONTEND=noninteractive
+
+# The SC25 tutorial image targets Ubuntu 22.04/x86_64. Keep the build
+# environment aligned with the tutorial while adding the shells/tools used
+# by buildtest's Spack regression tests.
 USER root
-RUN apt update && \
-    apt-get update && \
-    # need to install following package in-order to get apt-get-repository
-    apt install -y software-properties-common && \
-    add-apt-repository ppa:git-core/ppa -y && \
-    apt-get update && \
-    apt-get install -y tcsh zsh && \
-    apt-get install -y git 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git tcsh zsh && \
+    rm -rf /var/lib/apt/lists/*
 
 USER spack
-RUN git clone --depth=100 --branch=releases/v0.21 https://github.com/spack/spack.git ~/spack
 
-COPY /spack_setup.sh /etc/profile.d/spack_setup.sh
-COPY /modules.yaml   /home/spack/spack/etc/spack/modules.yaml
-COPY /compilers.yaml /home/spack/spack/etc/spack/compilers.yaml
+RUN git clone --depth=2 --branch=releases/v1.1 https://github.com/spack/spack.git ${SPACK_ROOT}
+
+COPY spack_setup.sh /etc/profile.d/spack_setup.sh
+COPY modules.yaml /home/spack/spack/etc/spack/modules.yaml
 
 USER spack
-RUN  cd ~/spack && \
+RUN cd ~/spack && \
     . ~/spack/share/spack/setup-env.sh && \
+    spack repo update builtin --tag v2025.11.0 && \
     spack tutorial -y && \
-    spack install lmod python gcc@12.3.0 openmpi mpich && \
-    . $(spack location -i lmod)/lmod/lmod/init/bash \
+    spack bootstrap now && \
+    spack compiler find && \
+    spack uninstall -ay && \
+    spack config add "modules:default:enable:[tcl]" && \
+    spack install lmod python openmpi && \
+    . $(spack location -i lmod)/lmod/lmod/init/bash && \
     spack module tcl refresh --delete-tree -y
-

@@ -12,11 +12,12 @@ from buildtest.defaults import BUILDTEST_ROOT
 
 @pytest.mark.spack
 def test_spack_examples():
-    # spack builds must run in container  ghcr.io/buildtesters/buildtest_spack:latest which comes with username 'spack' and home directory '/home/spack'
-    # if not (getpass.getuser() == "spack" and os.path.expanduser("~") == "/home/spack"):
+    # Spack integration tests require the buildtest Spack tutorial container,
+    # which is based on the SC25 Spack tutorial image.
     if not (getpass.getuser() in ["root", "spack", "runner"] and shutil.which("spack")):
         pytest.skip(
-            "Unable to run this test requires docker container:  ghcr.io/buildtesters/buildtest_spack:spack-sc23"
+            "Unable to run this test; requires the "
+            "ghcr.io/buildtesters/buildtest_spack:spack-sc25 container"
         )
 
     configuration = SiteConfiguration(

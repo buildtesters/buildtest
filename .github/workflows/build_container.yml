@@ -3,18 +3,31 @@ name: Build Container
 on:
   pull_request:
     branches: [devel]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - 'scripts/spack_container/**'
+      - '.github/workflows/build_container.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+  push:
+    branches: [devel]
+    paths:
+      - 'scripts/spack_container/**'
+      - '.github/workflows/build_container.yml'
+  workflow_dispatch:
 
-jobs:  
+jobs:
   build_container:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-      
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
 
@@ -28,9 +41,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push SC25 container
         uses: docker/build-push-action@v6
         with:
-          tags: ghcr.io/buildtesters/buildtest_spack:spack-sc23
           context: scripts/spack_container
+          platforms: linux/amd64
           push: true
+          tags: |
+            ghcr.io/buildtesters/buildtest_spack:spack-sc25
+            ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Publish summary
+        run: |
+          echo "Published:"
+          echo "  ghcr.io/buildtesters/buildtest_spack:spack-sc25"
+          echo "  ghcr.io/buildtesters/buildtest_spack:spack-sc25-${{ github.sha }}"
