@@ -16,7 +16,7 @@ dependencies=[
    'distro',
    'jsonschema >= 4.18',
    'lmodule',
-   'PyYAML >= 5.12',
+   'PyYAML >= 6.0.3',
    'requests',
    'rich',
    'urllib3>=2.7.0',
