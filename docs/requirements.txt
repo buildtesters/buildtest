@@ -4,7 +4,7 @@ sphinx==9.0.4
 sphinx-argparse==0.5.2
 sphinx-autoapi==3.0.0
 sphinx-rtd-theme==2.0.0
-sphinxcontrib-programoutput==0.17
+sphinxcontrib-programoutput==0.20
 sphinxext-remoteliteralinclude==0.4.0
 sphinx-copybutton==0.5.2
 sphinx-design==0.7.0
